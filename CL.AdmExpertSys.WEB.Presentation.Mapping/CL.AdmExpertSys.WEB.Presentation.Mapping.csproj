@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{23314B02-B4B4-47B0-8C66-35BAB793EB4A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CL.AdmExpertSys.WEB.Presentation.Mapping</RootNamespace>
+    <AssemblyName>CL.AdmExpertSys.WEB.Presentation.Mapping</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\Libs\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Pragma.Commons, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Pragma.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Factories\AccionInfoFactory.cs" />
+    <Compile Include="Factories\BaseFactory.cs" />
+    <Compile Include="Factories\HelpFactory.cs" />
+    <Compile Include="Factories\HomeFactory.cs" />
+    <Compile Include="Factories\HomeSysWebFactory.cs" />
+    <Compile Include="Factories\LogInfoFactory.cs" />
+    <Compile Include="Mapping\ViewModelProfile.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.ADClassLib\CL.AdmExpertSys.WEB.Application.ADClassLib.csproj">
+      <Project>{0293275a-55a6-4b8d-87df-d8f7692996a9}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.ADClassLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.CommonLib\CL.AdmExpertSys.WEB.Application.CommonLib.csproj">
+      <Project>{5baa8a83-fc3d-423c-8ec0-3453f56c0be4}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.CommonLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.Contracts\CL.AdmExpertSys.WEB.Application.Contracts.csproj">
+      <Project>{e87e558c-eef9-4146-9713-044a9abdd9d9}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib.csproj">
+      <Project>{2448d991-0f84-447b-be07-0c8b8c9c4fa0}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain\CL.AdmExpertSys.WEB.Core.Domain.csproj">
+      <Project>{6b8e12bd-1a87-43f9-9cde-ecdc568bf31f}</Project>
+      <Name>CL.AdmExpertSys.WEB.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj">
+      <Project>{41f020d6-a334-4d00-b974-bf8ba71bdea1}</Project>
+      <Name>CL.AdmExpertSys.Web.Infrastructure.LogTransaccional</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Presentation.ViewModel\CL.AdmExpertSys.WEB.Presentation.ViewModel.csproj">
+      <Project>{4e9666d7-8b7a-4690-8c66-24ab9056364a}</Project>
+      <Name>CL.AdmExpertSys.WEB.Presentation.ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

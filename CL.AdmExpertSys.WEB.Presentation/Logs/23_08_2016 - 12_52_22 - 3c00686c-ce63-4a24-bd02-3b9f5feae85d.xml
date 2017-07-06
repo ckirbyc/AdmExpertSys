@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2147024809</HResult>
+  <Message>Error al guardar grupo : No se pudo recuperar la información acerca del dominio (1355).</Message>
+  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
+  <StackTrace>   en CL.AdmExpertSys.WEB.Presentation.Mapping.Factories.HomeSysWebFactory.GuardarGrupos(String nomGrupos, String userName) en c:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Presentation.Mapping\Factories\HomeSysWebFactory.cs:línea 379
+   en CL.AdmExpertSys.WEB.Presentation.Controllers.HomeController.VerificarUsuario(String nombreUsuario) en c:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Presentation\Controllers\HomeController.cs:línea 160</StackTrace>
+  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
+  <Message>Error al guardar grupo : No se pudo recuperar la información acerca del dominio (1355).</Message>
+</ExceptionSerialize>

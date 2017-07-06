@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D09249CE-87C1-4909-AD8D-2A58B5EEA39A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot</RootNamespace>
+    <AssemblyName>CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\Libs\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling">
+      <HintPath>..\Libs\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.PolicyInjection">
+      <HintPath>..\Libs\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\Libs\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
+      <HintPath>..\Libs\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\Libs\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Pragma.Commons">
+      <HintPath>..\Libs\Pragma.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="Pragma.Commons.Data.Ef">
+      <HintPath>..\Libs\Pragma.Commons.Data.Ef.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Mvc5">
+      <HintPath>..\Libs\Unity.Mvc5.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContainerBootstrapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.Contracts\CL.AdmExpertSys.WEB.Application.Contracts.csproj">
+      <Project>{e87e558c-eef9-4146-9713-044a9abdd9d9}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application\CL.AdmExpertSys.WEB.Application.csproj">
+      <Project>{5512c838-0c47-44a8-abca-919430af1ce9}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj">
+      <Project>{ff0584ab-f5df-4342-b2eb-6e56bec43baa}</Project>
+      <Name>CL.AdmExpertSys.WEB.Core.Domain.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain\CL.AdmExpertSys.WEB.Core.Domain.csproj">
+      <Project>{6b8e12bd-1a87-43f9-9cde-ecdc568bf31f}</Project>
+      <Name>CL.AdmExpertSys.WEB.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Infrastructure.Data\CL.AdmExpertSys.WEB.Infrastructure.Data.csproj">
+      <Project>{c3e04a30-64dc-4f84-b828-52afd6fc2469}</Project>
+      <Name>CL.AdmExpertSys.WEB.Infrastructure.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Presentation.Mapping\CL.AdmExpertSys.WEB.Presentation.Mapping.csproj">
+      <Project>{23314b02-b4b4-47b0-8c66-35bab793eb4a}</Project>
+      <Name>CL.AdmExpertSys.WEB.Presentation.Mapping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Presentation.ViewModel\CL.AdmExpertSys.WEB.Presentation.ViewModel.csproj">
+      <Project>{4e9666d7-8b7a-4690-8c66-24ab9056364a}</Project>
+      <Name>CL.AdmExpertSys.WEB.Presentation.ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

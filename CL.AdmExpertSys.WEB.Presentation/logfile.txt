@@ -1,0 +1,5 @@
+18-07-2016 10:01:56: Se abre conexión objeto Runspace
+18-07-2016 10:02:11: Se ejecuta comando objeto Runspace : Connect-MsolService
+18-07-2016 10:02:12: Se ejecuta comando objeto Runspace : Get-MsolAccountSku
+18-07-2016 14:59:12: Se ejecuta comando objeto Runspace : Connect-MsolService
+18-07-2016 14:59:12: Se ejecuta comando objeto Runspace : Get-MsolAccountSku

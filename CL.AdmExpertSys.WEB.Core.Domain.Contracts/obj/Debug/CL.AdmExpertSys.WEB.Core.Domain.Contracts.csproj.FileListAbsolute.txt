@@ -1,0 +1,16 @@
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\CL.AdmExpertSys.WEB.Core.Domain.Contracts.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\CL.AdmExpertSys.WEB.Core.Domain.Contracts.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\CL.AdmExpertSys.WEB.Core.Domain.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Pragma.Commons.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\EntityFramework.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Microsoft.Practices.Unity.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\Newtonsoft.Json.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\CL.AdmExpertSys.WEB.Core.Domain.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\bin\Debug\EntityFramework.xml
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csprojResolveAssemblyReference.cache
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.Contracts.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain.Contracts\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.Contracts.pdb

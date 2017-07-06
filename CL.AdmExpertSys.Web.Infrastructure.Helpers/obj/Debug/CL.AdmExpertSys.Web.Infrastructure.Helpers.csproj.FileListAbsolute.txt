@@ -1,0 +1,9 @@
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.csprojResolveAssemblyReference.cache

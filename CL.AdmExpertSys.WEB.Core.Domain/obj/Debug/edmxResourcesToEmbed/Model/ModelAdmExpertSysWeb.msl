@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AdmSysWebModelStoreContainer" CdmEntityContainer="AdmSysWebEntities">
+    <EntitySetMapping Name="ACCION_INFO">
+      <EntityTypeMapping TypeName="AdmSysWebModel.AccionInfo">
+        <MappingFragment StoreEntitySet="ACCION_INFO">
+          <ScalarProperty Name="IdAccionInfo" ColumnName="IdAccionInfo" />
+          <ScalarProperty Name="NombreAccionInfo" ColumnName="NombreAccionInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LOG_INFO">
+      <EntityTypeMapping TypeName="AdmSysWebModel.LogInfo">
+        <MappingFragment StoreEntitySet="LOG_INFO">
+          <ScalarProperty Name="IdInfo" ColumnName="IdInfo" />
+          <ScalarProperty Name="MsgInfo" ColumnName="MsgInfo" />
+          <ScalarProperty Name="UserInfo" ColumnName="UserInfo" />
+          <ScalarProperty Name="FechaInfo" ColumnName="FechaInfo" />
+          <ScalarProperty Name="AccionIdInfo" ColumnName="AccionIdInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

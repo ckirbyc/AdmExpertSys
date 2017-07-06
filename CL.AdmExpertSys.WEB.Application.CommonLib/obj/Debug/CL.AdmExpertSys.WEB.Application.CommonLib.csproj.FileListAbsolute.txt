@@ -1,0 +1,9 @@
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.csprojResolveAssemblyReference.cache

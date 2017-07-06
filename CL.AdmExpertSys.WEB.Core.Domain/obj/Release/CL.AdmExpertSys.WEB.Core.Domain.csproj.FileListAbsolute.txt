@@ -1,0 +1,17 @@
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.dll.config
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\EntityFramework.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\EntityFramework.SqlServer.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Pragma.Commons.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.Unity.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\EntityFramework.xml
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\EntityFramework.SqlServer.xml
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\obj\Release\CL.AdmExpertSys.WEB.Core.Domain.csprojResolveAssemblyReference.cache
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\obj\Release\CL.AdmExpertSys.WEB.Core.Domain.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\obj\Release\CL.AdmExpertSys.WEB.Core.Domain.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Newtonsoft.Json.dll

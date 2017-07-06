@@ -1,0 +1,14 @@
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csprojResolveAssemblyReference.cache
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+C:\_personal\_mauro\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csprojResolveAssemblyReference.cache
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb

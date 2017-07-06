@@ -1,0 +1,15 @@
+﻿.col-md-8 {
+    display: block;
+    width: 100% !important;
+    padding-left:0em !important;
+}
+
+.table-secondary th {
+    padding-left:1em;
+    text-align:left;
+    height: 37px;
+}
+
+.table-secondary td {
+    text-align: left;
+}

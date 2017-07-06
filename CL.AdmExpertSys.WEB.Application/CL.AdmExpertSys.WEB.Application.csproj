@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5512C838-0C47-44A8-ABCA-919430AF1CE9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CL.AdmExpertSys.WEB.Application</RootNamespace>
+    <AssemblyName>CL.AdmExpertSys.WEB.Application</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Pragma.Commons">
+      <HintPath>..\Libs\Pragma.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccionInfoService.cs" />
+    <Compile Include="Services\BaseService.cs" />
+    <Compile Include="Services\LogInfoService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.Contracts\CL.AdmExpertSys.WEB.Application.Contracts.csproj">
+      <Project>{e87e558c-eef9-4146-9713-044a9abdd9d9}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj">
+      <Project>{ff0584ab-f5df-4342-b2eb-6e56bec43baa}</Project>
+      <Name>CL.AdmExpertSys.WEB.Core.Domain.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain\CL.AdmExpertSys.WEB.Core.Domain.csproj">
+      <Project>{6b8e12bd-1a87-43f9-9cde-ecdc568bf31f}</Project>
+      <Name>CL.AdmExpertSys.WEB.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj">
+      <Project>{41f020d6-a334-4d00-b974-bf8ba71bdea1}</Project>
+      <Name>CL.AdmExpertSys.Web.Infrastructure.LogTransaccional</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

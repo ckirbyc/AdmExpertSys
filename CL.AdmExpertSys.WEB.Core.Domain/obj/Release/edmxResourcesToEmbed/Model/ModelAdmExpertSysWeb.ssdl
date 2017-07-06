@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AdmSysWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="ACCION_INFO">
+    <Key>
+      <PropertyRef Name="IdAccionInfo" />
+    </Key>
+    <Property Name="IdAccionInfo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NombreAccionInfo" Type="nvarchar" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LOG_INFO">
+    <Key>
+      <PropertyRef Name="IdInfo" />
+    </Key>
+    <Property Name="IdInfo" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MsgInfo" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="UserInfo" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="FechaInfo" Type="datetime" Nullable="false" />
+    <Property Name="AccionIdInfo" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_LOG_INFO_ACCION_INFO">
+    <End Role="ACCION_INFO" Type="Self.ACCION_INFO" Multiplicity="1" />
+    <End Role="LOG_INFO" Type="Self.LOG_INFO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ACCION_INFO">
+        <PropertyRef Name="IdAccionInfo" />
+      </Principal>
+      <Dependent Role="LOG_INFO">
+        <PropertyRef Name="AccionIdInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AdmSysWebModelStoreContainer">
+    <EntitySet Name="ACCION_INFO" EntityType="Self.ACCION_INFO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LOG_INFO" EntityType="Self.LOG_INFO" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_LOG_INFO_ACCION_INFO" Association="Self.FK_LOG_INFO_ACCION_INFO">
+      <End Role="ACCION_INFO" EntitySet="ACCION_INFO" />
+      <End Role="LOG_INFO" EntitySet="LOG_INFO" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

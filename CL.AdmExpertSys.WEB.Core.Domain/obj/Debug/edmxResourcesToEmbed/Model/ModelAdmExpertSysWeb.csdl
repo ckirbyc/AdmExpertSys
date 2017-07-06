@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AdmSysWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AccionInfo">
+    <Key>
+      <PropertyRef Name="IdAccionInfo" />
+    </Key>
+    <Property Name="IdAccionInfo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NombreAccionInfo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="LOG_INFO" Relationship="Self.FK_LOG_INFO_ACCION_INFO" FromRole="ACCION_INFO" ToRole="LOG_INFO" />
+  </EntityType>
+  <EntityType Name="LogInfo">
+    <Key>
+      <PropertyRef Name="IdInfo" />
+    </Key>
+    <Property Name="IdInfo" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MsgInfo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserInfo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FechaInfo" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="AccionIdInfo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ACCION_INFO" Relationship="Self.FK_LOG_INFO_ACCION_INFO" FromRole="LOG_INFO" ToRole="ACCION_INFO" />
+  </EntityType>
+  <Association Name="FK_LOG_INFO_ACCION_INFO">
+    <End Role="ACCION_INFO" Type="AdmSysWebModel.AccionInfo" Multiplicity="1" />
+    <End Role="LOG_INFO" Type="AdmSysWebModel.LogInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ACCION_INFO">
+        <PropertyRef Name="IdAccionInfo" />
+      </Principal>
+      <Dependent Role="LOG_INFO">
+        <PropertyRef Name="AccionIdInfo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AdmSysWebEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ACCION_INFO" EntityType="AdmSysWebModel.AccionInfo" />
+    <EntitySet Name="LOG_INFO" EntityType="AdmSysWebModel.LogInfo" />
+    <AssociationSet Name="FK_LOG_INFO_ACCION_INFO" Association="Self.FK_LOG_INFO_ACCION_INFO">
+      <End Role="ACCION_INFO" EntitySet="ACCION_INFO" />
+      <End Role="LOG_INFO" EntitySet="LOG_INFO" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

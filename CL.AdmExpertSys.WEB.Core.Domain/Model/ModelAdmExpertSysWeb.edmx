@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AdmSysWebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACCION_INFO">
+          <Key>
+            <PropertyRef Name="IdAccionInfo" />
+          </Key>
+          <Property Name="IdAccionInfo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreAccionInfo" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LOG_INFO">
+          <Key>
+            <PropertyRef Name="IdInfo" />
+          </Key>
+          <Property Name="IdInfo" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MsgInfo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="UserInfo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FechaInfo" Type="datetime" Nullable="false" />
+          <Property Name="AccionIdInfo" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LOG_INFO_ACCION_INFO">
+          <End Role="ACCION_INFO" Type="Self.ACCION_INFO" Multiplicity="1" />
+          <End Role="LOG_INFO" Type="Self.LOG_INFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCION_INFO">
+              <PropertyRef Name="IdAccionInfo" />
+            </Principal>
+            <Dependent Role="LOG_INFO">
+              <PropertyRef Name="AccionIdInfo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdmSysWebModelStoreContainer">
+          <EntitySet Name="ACCION_INFO" EntityType="Self.ACCION_INFO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LOG_INFO" EntityType="Self.LOG_INFO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_LOG_INFO_ACCION_INFO" Association="Self.FK_LOG_INFO_ACCION_INFO">
+            <End Role="ACCION_INFO" EntitySet="ACCION_INFO" />
+            <End Role="LOG_INFO" EntitySet="LOG_INFO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdmSysWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccionInfo">
+          <Key>
+            <PropertyRef Name="IdAccionInfo" />
+          </Key>
+          <Property Name="IdAccionInfo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreAccionInfo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="LOG_INFO" Relationship="Self.FK_LOG_INFO_ACCION_INFO" FromRole="ACCION_INFO" ToRole="LOG_INFO" />
+        </EntityType>
+        <EntityType Name="LogInfo">
+          <Key>
+            <PropertyRef Name="IdInfo" />
+          </Key>
+          <Property Name="IdInfo" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MsgInfo" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserInfo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaInfo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AccionIdInfo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACCION_INFO" Relationship="Self.FK_LOG_INFO_ACCION_INFO" FromRole="LOG_INFO" ToRole="ACCION_INFO" />
+        </EntityType>
+        <Association Name="FK_LOG_INFO_ACCION_INFO">
+          <End Role="ACCION_INFO" Type="AdmSysWebModel.AccionInfo" Multiplicity="1" />
+          <End Role="LOG_INFO" Type="AdmSysWebModel.LogInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCION_INFO">
+              <PropertyRef Name="IdAccionInfo" />
+            </Principal>
+            <Dependent Role="LOG_INFO">
+              <PropertyRef Name="AccionIdInfo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AdmSysWebEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACCION_INFO" EntityType="AdmSysWebModel.AccionInfo" />
+          <EntitySet Name="LOG_INFO" EntityType="AdmSysWebModel.LogInfo" />
+          <AssociationSet Name="FK_LOG_INFO_ACCION_INFO" Association="Self.FK_LOG_INFO_ACCION_INFO">
+            <End Role="ACCION_INFO" EntitySet="ACCION_INFO" />
+            <End Role="LOG_INFO" EntitySet="LOG_INFO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdmSysWebModelStoreContainer" CdmEntityContainer="AdmSysWebEntities">
+          <EntitySetMapping Name="ACCION_INFO">
+            <EntityTypeMapping TypeName="AdmSysWebModel.AccionInfo">
+              <MappingFragment StoreEntitySet="ACCION_INFO">
+                <ScalarProperty Name="IdAccionInfo" ColumnName="IdAccionInfo" />
+                <ScalarProperty Name="NombreAccionInfo" ColumnName="NombreAccionInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LOG_INFO">
+            <EntityTypeMapping TypeName="AdmSysWebModel.LogInfo">
+              <MappingFragment StoreEntitySet="LOG_INFO">
+                <ScalarProperty Name="IdInfo" ColumnName="IdInfo" />
+                <ScalarProperty Name="MsgInfo" ColumnName="MsgInfo" />
+                <ScalarProperty Name="UserInfo" ColumnName="UserInfo" />
+                <ScalarProperty Name="FechaInfo" ColumnName="FechaInfo" />
+                <ScalarProperty Name="AccionIdInfo" ColumnName="AccionIdInfo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

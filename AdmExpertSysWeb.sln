@@ -1,0 +1,140 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Presentation Layer", "1. Presentation Layer", "{C233747B-B3D8-43FE-83A7-7933E2DDBB46}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.1. IntranetAdmExpertSys", "1.1. IntranetAdmExpertSys", "{6B2D5B82-F850-4114-815E-250EFABFEE3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Presentation", "CL.AdmExpertSys.WEB.Presentation\CL.AdmExpertSys.WEB.Presentation.csproj", "{FF0D9E9E-E0A2-4235-AEB0-4F361957740C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B28C365B-7DA1-407F-8A84-2B5DC1553B9A}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Infrastructure Layer", "4. Infrastructure Layer", "{DA9F9B06-C62A-4CCF-93A9-9624818CDEE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.2. CrossCutting Layer", "3.2. CrossCutting Layer", "{D62372E8-4EA6-4F29-B933-A435A10180AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.Web.Infrastructure.LogTransaccional", "CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj", "{41F020D6-A334-4D00-B974-BF8BA71BDEA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.Web.Infrastructure.Helpers", "CL.AdmExpertSys.Web.Infrastructure.Helpers\CL.AdmExpertSys.Web.Infrastructure.Helpers.csproj", "{9D3956C8-E4AA-4F9C-B7B0-0F5C1D9F3AE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Presentation.Mapping", "CL.AdmExpertSys.WEB.Presentation.Mapping\CL.AdmExpertSys.WEB.Presentation.Mapping.csproj", "{23314B02-B4B4-47B0-8C66-35BAB793EB4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Application Layer", "2. Application Layer", "{C1751203-0B73-4C1B-9F46-467A312C3A06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Application.ADClassLib", "CL.AdmExpertSys.WEB.Application.ADClassLib\CL.AdmExpertSys.WEB.Application.ADClassLib.csproj", "{0293275A-55A6-4B8D-87DF-D8F7692996A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Application.CommonLib", "CL.AdmExpertSys.WEB.Application.CommonLib\CL.AdmExpertSys.WEB.Application.CommonLib.csproj", "{5BAA8A83-FC3D-423C-8EC0-3453F56C0BE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Presentation.ViewModel", "CL.AdmExpertSys.WEB.Presentation.ViewModel\CL.AdmExpertSys.WEB.Presentation.ViewModel.csproj", "{4E9666D7-8B7A-4690-8C66-24AB9056364A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Application.Contracts", "CL.AdmExpertSys.WEB.Application.Contracts\CL.AdmExpertSys.WEB.Application.Contracts.csproj", "{E87E558C-EEF9-4146-9713-044A9ABDD9D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib", "CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib.csproj", "{2448D991-0F84-447B-BE07-0C8B8C9C4FA0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Domain Layer", "3. Domain Layer", "{68CC8B41-E8E8-4747-992C-EE6F3712A24D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Core.Domain", "CL.AdmExpertSys.WEB.Core.Domain\CL.AdmExpertSys.WEB.Core.Domain.csproj", "{6B8E12BD-1A87-43F9-9CDE-ECDC568BF31F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Core.Domain.Contracts", "CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj", "{FF0584AB-F5DF-4342-B2EB-6E56BEC43BAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.1. Data Layer", "3.1. Data Layer", "{A8C351E8-B45D-4C5F-BE8B-34000193F541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Infrastructure.Data", "CL.AdmExpertSys.WEB.Infrastructure.Data\CL.AdmExpertSys.WEB.Infrastructure.Data.csproj", "{C3E04A30-64DC-4F84-B828-52AFD6FC2469}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Application", "CL.AdmExpertSys.WEB.Application\CL.AdmExpertSys.WEB.Application.csproj", "{5512C838-0C47-44A8-ABCA-919430AF1CE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot", "CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot\CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.csproj", "{D09249CE-87C1-4909-AD8D-2A58B5EEA39A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF0D9E9E-E0A2-4235-AEB0-4F361957740C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0D9E9E-E0A2-4235-AEB0-4F361957740C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0D9E9E-E0A2-4235-AEB0-4F361957740C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0D9E9E-E0A2-4235-AEB0-4F361957740C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41F020D6-A334-4D00-B974-BF8BA71BDEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41F020D6-A334-4D00-B974-BF8BA71BDEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41F020D6-A334-4D00-B974-BF8BA71BDEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41F020D6-A334-4D00-B974-BF8BA71BDEA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D3956C8-E4AA-4F9C-B7B0-0F5C1D9F3AE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D3956C8-E4AA-4F9C-B7B0-0F5C1D9F3AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D3956C8-E4AA-4F9C-B7B0-0F5C1D9F3AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D3956C8-E4AA-4F9C-B7B0-0F5C1D9F3AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23314B02-B4B4-47B0-8C66-35BAB793EB4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23314B02-B4B4-47B0-8C66-35BAB793EB4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23314B02-B4B4-47B0-8C66-35BAB793EB4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23314B02-B4B4-47B0-8C66-35BAB793EB4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0293275A-55A6-4B8D-87DF-D8F7692996A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0293275A-55A6-4B8D-87DF-D8F7692996A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0293275A-55A6-4B8D-87DF-D8F7692996A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0293275A-55A6-4B8D-87DF-D8F7692996A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BAA8A83-FC3D-423C-8EC0-3453F56C0BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BAA8A83-FC3D-423C-8EC0-3453F56C0BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BAA8A83-FC3D-423C-8EC0-3453F56C0BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BAA8A83-FC3D-423C-8EC0-3453F56C0BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E9666D7-8B7A-4690-8C66-24AB9056364A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E9666D7-8B7A-4690-8C66-24AB9056364A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E9666D7-8B7A-4690-8C66-24AB9056364A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E9666D7-8B7A-4690-8C66-24AB9056364A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E87E558C-EEF9-4146-9713-044A9ABDD9D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E87E558C-EEF9-4146-9713-044A9ABDD9D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E87E558C-EEF9-4146-9713-044A9ABDD9D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E87E558C-EEF9-4146-9713-044A9ABDD9D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2448D991-0F84-447B-BE07-0C8B8C9C4FA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2448D991-0F84-447B-BE07-0C8B8C9C4FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2448D991-0F84-447B-BE07-0C8B8C9C4FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2448D991-0F84-447B-BE07-0C8B8C9C4FA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B8E12BD-1A87-43F9-9CDE-ECDC568BF31F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B8E12BD-1A87-43F9-9CDE-ECDC568BF31F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B8E12BD-1A87-43F9-9CDE-ECDC568BF31F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B8E12BD-1A87-43F9-9CDE-ECDC568BF31F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF0584AB-F5DF-4342-B2EB-6E56BEC43BAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0584AB-F5DF-4342-B2EB-6E56BEC43BAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0584AB-F5DF-4342-B2EB-6E56BEC43BAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0584AB-F5DF-4342-B2EB-6E56BEC43BAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E04A30-64DC-4F84-B828-52AFD6FC2469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E04A30-64DC-4F84-B828-52AFD6FC2469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E04A30-64DC-4F84-B828-52AFD6FC2469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E04A30-64DC-4F84-B828-52AFD6FC2469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5512C838-0C47-44A8-ABCA-919430AF1CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5512C838-0C47-44A8-ABCA-919430AF1CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5512C838-0C47-44A8-ABCA-919430AF1CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5512C838-0C47-44A8-ABCA-919430AF1CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D09249CE-87C1-4909-AD8D-2A58B5EEA39A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D09249CE-87C1-4909-AD8D-2A58B5EEA39A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D09249CE-87C1-4909-AD8D-2A58B5EEA39A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D09249CE-87C1-4909-AD8D-2A58B5EEA39A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6B2D5B82-F850-4114-815E-250EFABFEE3F} = {C233747B-B3D8-43FE-83A7-7933E2DDBB46}
+		{FF0D9E9E-E0A2-4235-AEB0-4F361957740C} = {6B2D5B82-F850-4114-815E-250EFABFEE3F}
+		{23314B02-B4B4-47B0-8C66-35BAB793EB4A} = {6B2D5B82-F850-4114-815E-250EFABFEE3F}
+		{4E9666D7-8B7A-4690-8C66-24AB9056364A} = {6B2D5B82-F850-4114-815E-250EFABFEE3F}
+		{D62372E8-4EA6-4F29-B933-A435A10180AE} = {DA9F9B06-C62A-4CCF-93A9-9624818CDEE1}
+		{A8C351E8-B45D-4C5F-BE8B-34000193F541} = {DA9F9B06-C62A-4CCF-93A9-9624818CDEE1}
+		{41F020D6-A334-4D00-B974-BF8BA71BDEA1} = {D62372E8-4EA6-4F29-B933-A435A10180AE}
+		{9D3956C8-E4AA-4F9C-B7B0-0F5C1D9F3AE3} = {D62372E8-4EA6-4F29-B933-A435A10180AE}
+		{D09249CE-87C1-4909-AD8D-2A58B5EEA39A} = {D62372E8-4EA6-4F29-B933-A435A10180AE}
+		{0293275A-55A6-4B8D-87DF-D8F7692996A9} = {C1751203-0B73-4C1B-9F46-467A312C3A06}
+		{5BAA8A83-FC3D-423C-8EC0-3453F56C0BE4} = {C1751203-0B73-4C1B-9F46-467A312C3A06}
+		{E87E558C-EEF9-4146-9713-044A9ABDD9D9} = {C1751203-0B73-4C1B-9F46-467A312C3A06}
+		{2448D991-0F84-447B-BE07-0C8B8C9C4FA0} = {C1751203-0B73-4C1B-9F46-467A312C3A06}
+		{5512C838-0C47-44A8-ABCA-919430AF1CE9} = {C1751203-0B73-4C1B-9F46-467A312C3A06}
+		{6B8E12BD-1A87-43F9-9CDE-ECDC568BF31F} = {68CC8B41-E8E8-4747-992C-EE6F3712A24D}
+		{FF0584AB-F5DF-4342-B2EB-6E56BEC43BAA} = {68CC8B41-E8E8-4747-992C-EE6F3712A24D}
+		{C3E04A30-64DC-4F84-B828-52AFD6FC2469} = {A8C351E8-B45D-4C5F-BE8B-34000193F541}
+	EndGlobalSection
+EndGlobal

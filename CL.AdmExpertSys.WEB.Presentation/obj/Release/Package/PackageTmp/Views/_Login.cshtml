@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script>
+<head>
+    <!--[if lt IE 9]>
+    <script type="text/javascript">
+    document.createElement("nav");
+    document.createElement("header");
+    document.createElement("footer");
+    document.createElement("section");
+    document.createElement("article");
+    document.createElement("aside");
+    document.createElement("hgroup");
+    </script>
+    <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="~/Img/favicon.ico" type="image/x-icon" />
+    <title>@ViewBag.Title</title>
+
+    <!-- CSS -->
+    @System.Web.Optimization.Styles.Render("~/Content/css")
+    @System.Web.Optimization.Scripts.Render("~/bundles/jquery")
+    @System.Web.Optimization.Scripts.Render("~/bundles/otros")
+</head>
+<body>
+    <div role="navigation" class="navbar navbar-inverse navbar-fixed-top"></div>
+
+    @RenderBody()
+    
+    <div id="loading-modal"></div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+﻿.control-label {
+    width: 12em;
+}
+.row {
+    display: table;
+    margin: 0;
+    width: 100%;
+}
+.panel-title {
+    padding-left: 1em;
+    text-align:left;
+    margin-top:1em;
+}
+.col-md-4, .col-md-1, .col-md-9, .col-md-2 {
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #ccc;
+    padding-left: 1em;
+}
+.hidden {
+    display:none;
+}
+.field-validation-valid {
+    display:none;
+}
