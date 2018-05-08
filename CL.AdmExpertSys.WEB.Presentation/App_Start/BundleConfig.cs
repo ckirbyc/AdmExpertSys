@@ -41,7 +41,7 @@ namespace CL.AdmExpertSys.WEB.Presentation
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Css/bootstrap.css",
-                "~/Css/bootstrap-dialog.min.css",
+                //"~/Css/bootstrap-dialog.min.css",
                 "~/Css/Select2/select2.css",
                 "~/Css/bootstrap-table.min.css",
                 "~/Css/dashboard.css",
@@ -53,6 +53,7 @@ namespace CL.AdmExpertSys.WEB.Presentation
                 "~/Css/bootstrap-min.css",
                 "~/Css/tree/style.min.css"
                 ));
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

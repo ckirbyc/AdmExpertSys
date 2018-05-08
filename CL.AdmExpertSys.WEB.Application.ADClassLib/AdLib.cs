@@ -1,13 +1,14 @@
 ﻿
-using System.Globalization;
 using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Application.CommonLib;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
+using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
     {
         #region Propiedades Privadas
 
-        protected Common CommonServices;
+        protected Common CommonServices;        
         private readonly string _sPublicDomain = string.Empty;
         private readonly string _sInternalDomain = string.Empty;
         private readonly string _sTenantDomain = string.Empty;
@@ -27,6 +28,14 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         private  readonly string _sLdapAs = string.Empty;
         private readonly string _sInternalDomainOu = string.Empty;
         private readonly string _sOuDeshabilitarUsr = string.Empty;
+        private readonly string _sDominioAd = string.Empty;
+        private readonly string _sRutaOuDominio = string.Empty;
+        private readonly string _sNombreEmpresa = string.Empty;
+        private readonly string _sLdapServer = string.Empty;
+        private readonly string _sTenantDomainSmtp = string.Empty;
+        private readonly string _sTenantDomainSmtpSecundario = string.Empty;
+        private readonly string _sOuDeshabilitarComp = string.Empty;
+        
         #endregion
 
         public AdLib()
@@ -41,6 +50,13 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             _sLdapAs = CommonServices.GetAppSetting("LdapAs");
             _sInternalDomainOu = CommonServices.GetAppSetting("InternalDomainOu");
             _sOuDeshabilitarUsr = CommonServices.GetAppSetting("OuDeshabilitarUsr");
+            _sDominioAd = CommonServices.GetAppSetting("dominioAd");
+            _sRutaOuDominio = CommonServices.GetAppSetting("RutaOuDominio");
+            _sNombreEmpresa = CommonServices.GetAppSetting("NombreEmpresa");
+            _sLdapServer = CommonServices.GetAppSetting("LdapServidor");
+            _sTenantDomainSmtp = CommonServices.GetAppSetting("TenantDomainSmtp");
+            _sTenantDomainSmtpSecundario = CommonServices.GetAppSetting("TenantDomainSmtpSecundario");
+            _sOuDeshabilitarComp = CommonServices.GetAppSetting("OuDeshabilitarComp");
         }
 
         #region Métodos de Validación
@@ -107,7 +123,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     SamAccountName = oUserPrincipal.SamAccountName,
                     Surname = oUserPrincipal.Surname,
                     Enabled = oUserPrincipal.Enabled,
-                    EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado"
+                    EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado"                    
                 };
 
                 return usuarioAd;
@@ -149,6 +165,13 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             return oUserPrincipal;
         }
 
+        public ComputerPrincipal GetComputerUser(string sComputerName)
+        {
+            PrincipalContext oPrincipalContext = GetPrincipalContext();
+            ComputerPrincipal oComputerPrincipal = ComputerPrincipal.FindByIdentity(oPrincipalContext, IdentityType.Name, sComputerName);
+            return oComputerPrincipal;                                 
+        }
+
         /// <summary>
         /// Obtiene determinado grupo del AD
         /// </summary>
@@ -159,9 +182,25 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         public GroupPrincipal GetGroup(string sGroupName)
         {
             PrincipalContext oPrincipalContext = GetPrincipalContext();
-            var oGroupPrincipal = GroupPrincipal.FindByIdentity(oPrincipalContext, sGroupName);
+            var oGroupPrincipal = GroupPrincipal.FindByIdentity(oPrincipalContext, sGroupName);            
             return oGroupPrincipal;
         }
+        /// <summary>
+        /// Obtiene listado de todos los grupos pertenecientes a una OU especifica
+        /// </summary>
+        /// <param name="sOu">Ruta de la OU</param>
+        /// <returns></returns>
+        public PrincipalSearcher GetListGroupByOu(string sOuCompleto)
+        {
+            var sOu = sOuCompleto.Replace(_sLdapServer, string.Empty);
+            PrincipalContext ctx = GetPrincipalContext(sOu);
+            GroupPrincipal objGroup = new GroupPrincipal(ctx);
+            objGroup.IsSecurityGroup = false;
+            PrincipalSearcher pSearch = new PrincipalSearcher(objGroup);
+
+            return pSearch;
+        }
+
         #endregion
 
         #region Métodos de la cuenta de usuario
@@ -214,8 +253,8 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     oUserPrincipal.Save();
 
                     string dnUser = oUserPrincipal.DistinguishedName;
-                    var sLdapUser = @"LDAP://DC1ASPCORTES/" + dnUser;
-                    var sLdapUserDest = @"LDAP://DC1ASPCORTES/" + _sOuDeshabilitarUsr;
+                    var sLdapUser = _sLdapServer + dnUser;
+                    var sLdapUserDest = _sLdapServer + _sOuDeshabilitarUsr;
                     using (var oLocation = new DirectoryEntry(sLdapUser, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
                     {
                         using (var dLocation = new DirectoryEntry(sLdapUserDest, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
@@ -230,6 +269,40 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
+            }
+        }
+
+        public bool DisableComputerAccount(string sComputerName)
+        {
+            try
+            {
+                using (ComputerPrincipal oComputerPrincipal = GetComputerUser(sComputerName))
+                {
+                    if (oComputerPrincipal != null)
+                    {
+                        oComputerPrincipal.Enabled = false;
+                        oComputerPrincipal.Save();
+
+                        string dnComputer = oComputerPrincipal.DistinguishedName;
+                        var sLdapComputer = _sLdapServer + dnComputer;
+                        var sLdapComputerDest = _sLdapServer + _sOuDeshabilitarComp;
+                        using (var oLocation = new DirectoryEntry(sLdapComputer, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                        {
+                            using (var dLocation = new DirectoryEntry(sLdapComputerDest, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                            {
+                                oLocation.MoveTo(dLocation, oLocation.Name);
+                                dLocation.Close();
+                            }
+                            oLocation.Close();
+                        }
+                    }                    
+                    return true;
+                }                
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
             }
         }
 
@@ -281,17 +354,20 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
 
             if (existeUsr == false)
             {
-                var sOu = ldapOu.Replace("LDAP://DC1ASPCORTES/", "");
+                var sOu = ldapOu.Replace(_sLdapServer, string.Empty);
                 PrincipalContext oPrincipalContext = GetPrincipalContext(sOu);
 
                 var oUserPrincipal = new UserPrincipal  
                    (oPrincipalContext, sUserName, sPassword, true){Enabled = true, PasswordNeverExpires = false};
 
-                //Proxy Addresses
-                string[] proxyaddresses = { "", "", "" };
+                //Proxy Addresses                
                 string emailOnmicrosoft = sUserName + "@" + _sTenantDomain;
-                string emailTransporte = "SMTP:"+ sUserName + "@agrosuper.mail.onmicrosoft.com";
-                string emailSecundario = sUserName + "@agrosuper.cl";
+                //string emailTransporte = "SMTP:"+ sUserName + "@agrosuper.mail.onmicrosoft.com";
+                string emailTransporte = "SMTP:" + sUserName + '@' + _sTenantDomainSmtp;
+                //string emailSecundario = sUserName + "@agrosuper.cl";
+                string emailSecundario = sUserName + "@" + _sTenantDomainSmtpSecundario;
+
+                string[] proxyaddresses = { "", "", "" };
                 proxyaddresses[0] = "smtp:" + emailOnmicrosoft;
                 proxyaddresses[1] = "SMTP:" + upn;
                 proxyaddresses[2] = "smtp:" + emailSecundario;
@@ -300,11 +376,9 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 oUserPrincipal.SamAccountName = sUserName;
                 oUserPrincipal.UserPrincipalName = upn;
                 oUserPrincipal.GivenName = sGivenName;
-                oUserPrincipal.Surname = sSurname;
-                //oUserPrincipal.Name = sGivenName + " " + sSurname;
+                oUserPrincipal.Surname = sSurname;                
                 oUserPrincipal.Name = sSurname + ", " + sGivenName;
-                oUserPrincipal.MiddleName = sSurname;
-                //oUserPrincipal.DisplayName = sGivenName + " " + sSurname;
+                oUserPrincipal.MiddleName = sSurname;                
                 oUserPrincipal.DisplayName = sSurname + ", " + sGivenName;
                 oUserPrincipal.EmailAddress = upn;
                 oUserPrincipal.ExpirePasswordNow();
@@ -316,18 +390,13 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
 
                 /*
                     *  Update Properties
-                */
+                */               
 
-                //var strSearchAd = string.Empty;
-                //strSearchAd += "(sAMAccountName=" + sUserName + ")";
-                //var adSearch = new DirectorySearcher(ent) {Filter = "(&(objectClass=user)" + strSearchAd + ")"};
-                //var results = adSearch.FindOne();
-                //if (results == null) return oUserPrincipal;
-
+                
                 string dn = oUserPrincipal.DistinguishedName;
-                var sLdapAsAux = @"LDAP://DC1ASPCORTES/" + dn;
+                var sLdapAsAux = _sLdapServer + dn;
 
-                using (var ent = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Signing))
+                using (var ent = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
                 {
                     ent.Invoke("SetPassword", passWord);
                     //Propiedades que son necesarias problar en AD para crear un usuario en Office 365
@@ -346,6 +415,101 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             }
 
             return GetUser(sUserName);
+        }
+
+        public bool UpdateUser(HomeSysWebVm usrData)
+        {
+            if (usrData.CambioPatchOu)
+            {
+                using (UserPrincipal oUserPrincipal = GetUser(usrData.NombreUsuario))
+                {
+                    if (oUserPrincipal != null)
+                    {
+                        string dn = oUserPrincipal.DistinguishedName;
+                        var sLdapAsAux = _sLdapServer + dn;
+
+                        using (var eLocation = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                        {
+                            using (var nLocation = new DirectoryEntry(usrData.PatchOu, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                            {
+                                eLocation.MoveTo(nLocation);
+                                nLocation.Close();
+                            }
+                            eLocation.Close();
+                        }
+                    }
+                }
+            }            
+
+            using (UserPrincipal oUserPrincipalAux = GetUser(usrData.NombreUsuario))
+            {
+                string dn = oUserPrincipalAux.DistinguishedName;
+                var sLdapAsAux = _sLdapServer + dn;
+
+                using (var eUserActual = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                {
+                    if (usrData.CambioPatchOu)
+                    {
+                        //Elimina los grupos asociados a la cuenta de usuario
+                        var contMember = eUserActual.Properties["memberOf"].Count;
+                        int equalsIndex, commaIndex;
+                        for (int val = 0; val < contMember; val++)
+                        {
+                            var valMember = eUserActual.Properties["memberOf"][val].ToString();
+
+                            equalsIndex = valMember.IndexOf("=", 1);
+                            commaIndex = valMember.IndexOf(",", 1);
+
+                            var groupName = valMember.Substring((equalsIndex + 1), (commaIndex - equalsIndex) - 1);
+
+                            if (!string.IsNullOrEmpty(groupName))
+                            {
+                                RemoveUserFromGroup(usrData.NombreUsuario.Trim().ToLower(), groupName);
+                            }
+                        }
+                    }                    
+
+                    //Actualiza propiedades de la cuenta
+                    CommonServices = new Common();
+                    var sGivenName = CommonServices.UppercaseWords(usrData.Nombres.Trim().ToLower());
+                    var sSurname = CommonServices.UppercaseWords(usrData.Apellidos.Trim().ToLower());
+                    string upn = usrData.NombreUsuario.Trim() + usrData.UpnPrefijo.Trim();
+
+                    eUserActual.Invoke("SetPassword", usrData.Clave.Trim());
+
+                    eUserActual.Properties["userAccountControl"].Value = 0x200;
+                    eUserActual.Properties["userPrincipalName"].Value = upn;
+                    eUserActual.Properties["givenName"].Value = sGivenName;
+                    eUserActual.Properties["sn"].Value = sSurname;                    
+                    eUserActual.Properties["middleName"].Value = sSurname;
+                    eUserActual.Properties["displayName"].Value = sSurname + ", " + sGivenName;
+                    eUserActual.Properties["mail"].Value = upn;
+                    eUserActual.Properties["description"].Value = usrData.Descripcion.Trim();
+                    eUserActual.Properties["mailnickname"].Value = usrData.NombreUsuario.Trim().ToLower();                    
+                    eUserActual.Properties["pwdLastSet"].Value = 0;
+
+                    //Proxy Addresses                
+                    string emailOnmicrosoft = usrData.NombreUsuario.Trim().ToLower() + "@" + _sTenantDomain;                    
+                    string emailTransporte = "SMTP:" + usrData.NombreUsuario.Trim().ToLower() + '@' + _sTenantDomainSmtp;                    
+                    string emailSecundario = usrData.NombreUsuario.Trim().ToLower() + "@" + _sTenantDomainSmtpSecundario;
+
+                    string[] proxyaddresses = { "", "", "" };
+                    proxyaddresses[0] = "smtp:" + emailOnmicrosoft;
+                    proxyaddresses[1] = "SMTP:" + upn;
+                    proxyaddresses[2] = "smtp:" + emailSecundario;
+
+                    eUserActual.Properties["proxyAddresses"].Add(proxyaddresses[0]);
+                    eUserActual.Properties["proxyAddresses"].Add(proxyaddresses[1]);
+                    eUserActual.Properties["proxyAddresses"].Add(proxyaddresses[2]);
+
+                    eUserActual.Properties["targetAddress"].Value = emailTransporte;
+
+                    eUserActual.CommitChanges();
+                    eUserActual.Close();
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -417,21 +581,55 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         /// <returns>
         /// Retorna el objeto GroupPrincipal
         /// </returns>
-        public GroupPrincipal CreateNewGroup(string sOu, string sGroupName, string sDescription, GroupScope oGroupScope, bool bSecurityGroup)
+        public void CreateNewGroup(string sOu, string sGroupName, string sDescription, string sMail, GroupScope oGroupScope, bool bSecurityGroup)
         {
-            PrincipalContext oPrincipalContext = GetPrincipalContext(sOu);
+            var ldapOu = sOu.Replace(_sLdapServer, string.Empty);
+            PrincipalContext oPrincipalContext = GetPrincipalContext(ldapOu);
 
             var oGroupPrincipal = new GroupPrincipal(oPrincipalContext, sGroupName)
             {
                 Description = sDescription,
                 GroupScope = oGroupScope,
-                IsSecurityGroup = bSecurityGroup
+                IsSecurityGroup = bSecurityGroup                
             };
             oGroupPrincipal.Save();
 
-            return oGroupPrincipal;
+            oGroupPrincipal = GetGroup(sGroupName);
+            ((DirectoryEntry)oGroupPrincipal.GetUnderlyingObject()).Properties["mail"].Value = sMail;
+
+            oGroupPrincipal.Save();
+
+            oGroupPrincipal.Dispose();
         }
 
+        public void UpdateGroup(string sOu, string sGroupName, string sGroupNameAnt, string sDescription, string sMail, GroupScope oGroupScope, bool bSecurityGroup)
+        {
+            var ldapOu = sOu.Replace(_sLdapServer, string.Empty);            
+
+            var oGroupPrincipal = GetGroup(sGroupNameAnt);
+            var listaUsers = new List<string>();
+            foreach (Principal objP in oGroupPrincipal.GetMembers(false))
+            {
+                listaUsers.Add(objP.SamAccountName);
+            }
+
+            oGroupPrincipal.Delete();
+            oGroupPrincipal.Dispose();
+
+            CreateNewGroup(sOu, sGroupName, sDescription, sMail, GroupScope.Global, false);
+
+            foreach (var nameUsr in listaUsers)
+            {
+                AddUserToGroup(nameUsr, sGroupName);
+            }            
+        }
+
+        public void DeleteGroup(string sGroupName)
+        {
+            var oGroupPrincipal = GetGroup(sGroupName);
+            oGroupPrincipal.Delete();
+            oGroupPrincipal.Dispose();
+        }
 
         /// <summary>
         /// Agrega un usuario a un grupo dado
@@ -453,8 +651,14 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                         {
                             if (!IsUserGroupMember(oUserPrincipal, oGroupPrincipal))
                             {
-                                oGroupPrincipal.Members.Add(oUserPrincipal);
-                                oGroupPrincipal.Save();
+                                string userSid = string.Format("<SID={0}>", oUserPrincipal.Sid.ToString());
+                                using (DirectoryEntry groupDirectoryEntry = (DirectoryEntry)oGroupPrincipal.GetUnderlyingObject())
+                                {
+                                    groupDirectoryEntry.Properties["member"].Add(userSid);
+                                    groupDirectoryEntry.CommitChanges();
+                                }                                                                                              
+                                //oGroupPrincipal.Members.Add(oUserPrincipal);                                
+                                //oGroupPrincipal.Save();
                             }
                         }
                     }
@@ -491,8 +695,14 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                         {
                             if (IsUserGroupMember(oUserPrincipal, oGroupPrincipal))
                             {
-                                oGroupPrincipal.Members.Remove(oUserPrincipal);
-                                oGroupPrincipal.Save();
+                                string userSid = string.Format("<SID={0}>", oUserPrincipal.Sid.ToString());
+                                using (DirectoryEntry groupDirectoryEntry = (DirectoryEntry)oGroupPrincipal.GetUnderlyingObject())
+                                {
+                                    groupDirectoryEntry.Properties["member"].Remove(userSid);
+                                    groupDirectoryEntry.CommitChanges();
+                                }
+                                //oGroupPrincipal.Members.Remove(oUserPrincipal);
+                                //oGroupPrincipal.Save();
                             }
                         }
                     }
@@ -570,7 +780,6 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             var oPrincipalContext = new PrincipalContext(ContextType.Domain, _sInternalDomain, _sInternalDomainOu, _sUserAdDomain, _sPassAdDomain);
              return oPrincipalContext;
         }
-
         /// <summary>
         /// Gets the principal context on specified OU
         /// </summary>
@@ -615,8 +824,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         {
             var hOut = new Dictionary<string, string>
             {
-                {"OU=Users,DC=agrosuper,DC=org", "Empresas Agrosuper"}
-
+                {_sRutaOuDominio, _sNombreEmpresa}
             };
             return hOut;
         }
@@ -658,8 +866,10 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             {
                 Path = _sLdapAs,
                 AuthenticationType = AuthenticationTypes.Secure,
-                Username = @"as\mauricio.gonzalez",
-                Password = @"inicio01"
+                Username = string.Format("{0}\\{1}",_sDominioAd,_sUserAdDomain),
+                Password = _sPassAdDomain
+                //Username = @"as\mauricio.gonzalez",
+                //Password = @"inicio01"
             };
             return ldapConnection;
         }

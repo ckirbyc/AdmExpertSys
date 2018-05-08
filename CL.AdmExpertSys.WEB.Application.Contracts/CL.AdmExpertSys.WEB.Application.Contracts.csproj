@@ -64,6 +64,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,8 +78,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IAccionInfoService.cs" />
     <Compile Include="Services\IBaseService.cs" />
+    <Compile Include="Services\IEstadoCuentaUsuarioService.cs" />
     <Compile Include="Services\IHomeSysWebService.cs" />
+    <Compile Include="Services\ILicenciaO365Service.cs" />
     <Compile Include="Services\ILogInfoService.cs" />
+    <Compile Include="Services\IMantenedorLicenciaService.cs" />
+    <Compile Include="Services\IPerfilUsuarioService.cs" />
+    <Compile Include="Services\IRolCargoService.cs" />
+    <Compile Include="Services\ITransversalService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj">

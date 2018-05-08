@@ -19,9 +19,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             return View();
         }
 
-        public ActionResult IndexLogin(string message)
+        public ActionResult IndexLogin(string mensajeError)
         {
-            ViewBag.Mensaje = message;
+            ViewBag.Mensaje = mensajeError;
             return View();
         }
     }

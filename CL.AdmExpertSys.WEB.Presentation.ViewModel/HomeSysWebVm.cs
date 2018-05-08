@@ -1,7 +1,9 @@
 ﻿
-using System.Collections.Generic;
-using System.Web.Mvc;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
 {
@@ -26,5 +28,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         public List<MsolAccountSku> ListaAccountSkus { get; set; }
         public string NombreGrupo { get; set; }
         public string Descripcion { get; set; }
+        [DisplayName(@"Código Licencia")]        
+        public string CodigoLicencia { get; set; }
+        public bool CambioPatchOu { get; set; }
     }
 }

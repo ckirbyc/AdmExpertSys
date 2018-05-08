@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <HResult>-2146233088</HResult>
-  <Message> | Problema al obtener los datos</Message>
-  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
-  <StackTrace>   en CL.AdmExpertSys.WEB.Presentation.Mapping.Factories.HomeSysWebFactory.ExisteLicenciaUsuarioPortal(String userName) en c:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.WEB.Presentation.Mapping\Factories\HomeSysWebFactory.cs:línea 393</StackTrace>
-  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
-  <Message> | Problema al obtener los datos</Message>
-</ExceptionSerialize>

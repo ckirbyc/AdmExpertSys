@@ -66,12 +66,12 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 
         public void CrearLogInfo(LogInfoVm tipo)
         {
-            var tip = new LogInfo
+            var tip = new LOG_INFO
             {
                 MsgInfo = tipo.MsgInfo,
                 UserInfo = tipo.UserInfo,
                 FechaInfo = tipo.FechaInfo,
-                AccionIdInfo = tipo.AccionIdInfo
+                AccionIdInfo = tipo.AccionIdInfo                
             };
 
             LogInfoService.Create(tip);

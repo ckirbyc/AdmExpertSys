@@ -1,9 +1,9 @@
 ﻿
-using System.Collections.Generic;
-using System.Linq;
 using CL.AdmExpertSys.WEB.Application.Contracts.Services;
 using CL.AdmExpertSys.WEB.Core.Domain.Model;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 {
@@ -55,7 +55,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 
         public void CrearAccionInfo(AccionInfoVm tipo)
         {
-            var tip = new AccionInfo
+            var tip = new ACCION_INFO
             {
                 NombreAccionInfo = tipo.NombreAccionInfo
             };

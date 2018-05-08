@@ -28,10 +28,12 @@
     @Scripts.Render("~/bundles/otros")
     <script type="text/javascript" src="~/Scripts/bootstrap-dialog.min.js"></script>
     <script type="text/javascript" src="~/Scripts/jstree/jstree.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/TableTools/js/dataTables.tableTools.js"></script>    
     <!-- CSS -->
     @Styles.Render("~/Content/css")
     <link href="~/Css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css"/>
     <link href="~/Css/tree/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/TableTools/css/dataTables.tableTools.css" rel="stylesheet" type="text/css" />    
     <!--CSS-PRINT-->
     <link href="@Styles.Url("~/Css/media-print.css")" rel="stylesheet" type="text/css" media="print" />
 </head>
@@ -46,7 +48,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("HomeSysWeb", "Home")">
+                <a class="navbar-brand" href="@Url.Action("HomeSysWeb", "Home")" onclick="javascript:$('#loading-modal').show();">
                     <img src="@Url.Content("~/Img/logo_header.png")" style="width: 100px; margin-top: -25px;" alt="" />
                     <div style="font-weight: bold; font-size: 14px;" class="hideMobile">
                         <span class="saniHeaderLink colorWhite"></span> <span class="colorWhite">WEB EASY USER OFFICE 365</span>
@@ -55,7 +57,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="@Url.Action("HomeSysWeb", "Home")" title="Home"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li><a href="@Url.Action("HomeSysWeb", "Home")" title="Home" onclick="javascript:$('#loading-modal').show();"><span class="glyphicon glyphicon-home"></span></a></li>
                     <li><a href="@Url.Action("Index", "Home")" title="Mantenedores"><span class="glyphicon glyphicon-wrench"></span></a></li>
                     <li><a href="#" target="_blank" title="Ayuda"><span class="glyphicon glyphicon-question-sign"></span></a></li>
                     <li><a href="@Url.Action("Index", "Home")" title="Usuario"><span class="glyphicon glyphicon-user"></span>&nbsp;@SessionViewModel.Usuario.Nombre</a></li>
@@ -81,11 +83,7 @@
                             @ViewBag.Title
                         </div>
                     </div>
-                }
-                else
-                {
-                    //Html.RenderPartial("~/Views/Partials/_Panel.cshtml");
-                }
+                }                
 
                 @if (IsSectionDefined("Menu"))
                 {
@@ -97,12 +95,8 @@
                 }
                 else
                 {
-                    //Html.RenderPartial("~/Views/Partials/_Menu.cshtml");
-                }
-
-                @*<div class="snoopy">
-                    <img src="~/Img/vecinos.png" class="img-responsive" alt="Vecinos image" height="20px">
-                </div>*@
+                    Html.RenderPartial("~/Views/Partials/_Menu.cshtml");
+                }                
             </div>
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

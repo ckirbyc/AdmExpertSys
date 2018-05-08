@@ -1,0 +1,56 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@model IEnumerable<EstadoCuentaUsuarioVm>
+
+<div class="row">
+    <table class="table table-hover tablaMantenedores" id="TablaCtaDesh">
+        <thead>
+            <tr>
+                <th style="display:none;">Id</th>
+                <th>Cuenta AD</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Fecha Creación</th>
+                <th>Fecha Baja</th>
+                <th>Tiempo</th>
+                <th>Licencia</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderByDescending(x => x.CuentaAd))
+            {
+                var item1 = item;
+                var fechaBajaFormat = item1.FechaBaja != null ? Convert.ToDateTime(item1.FechaBaja).ToString("dd-MM-yyyy HH:mm") : string.Empty;
+                var fechaCreacionFormat = item1.FechaCreacion != null ? Convert.ToDateTime(item1.FechaCreacion).ToString("dd-MM-yyyy HH:mm") : string.Empty;
+                var mesesTrancurrir = "0 meses";
+                var mesDif = 0;
+                if (item1.FechaBaja != null)
+                {
+                    var fechaBaja = Convert.ToDateTime(item1.FechaBaja);
+                    var fechaActual = DateTime.Now;
+                    mesDif = Math.Abs((fechaActual.Month - fechaBaja.Month) + 12 * (fechaActual.Year - fechaBaja.Year));
+                    mesesTrancurrir = mesDif.ToString() + " meses";
+                }
+                <tr>
+                    <td style="display:none;">@Html.TextBoxFor(m => item1.IdEstadoCuentaUsuario)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.CuentaAd)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Nombres)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Apellidos)</td>
+                    <td class="textCenter">@fechaCreacionFormat</td>
+                    <td class="textCenter">@fechaBajaFormat</td>
+                    <td class="textCenter"><strong>@mesesTrancurrir</strong></td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.LICENCIAS_O365.Nombre)</td>
+                    @if (mesDif >= 3)
+                    {
+                        <td class="textCenter"><input type="checkbox" name="sel" checked /></td>
+                    }
+                    else
+                    {
+                        <td class="textCenter"><input type="checkbox" name="sel" /></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>

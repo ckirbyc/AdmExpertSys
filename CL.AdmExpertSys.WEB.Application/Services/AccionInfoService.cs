@@ -5,7 +5,7 @@ using CL.AdmExpertSys.WEB.Core.Domain.Model;
 
 namespace CL.AdmExpertSys.WEB.Application.Services
 {
-    public class AccionInfoService : BaseService<AccionInfo>, IAccionInfoService
+    public class AccionInfoService : BaseService<ACCION_INFO>, IAccionInfoService
     {
         protected IAccionInfoRepository Repo;
 

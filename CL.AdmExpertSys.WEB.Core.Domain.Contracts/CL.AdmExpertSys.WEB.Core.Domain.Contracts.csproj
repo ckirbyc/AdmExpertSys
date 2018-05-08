@@ -44,7 +44,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IAccionInfoRepository.cs" />
+    <Compile Include="Repository\IEstadoCuentaUsuarioRepository.cs" />
+    <Compile Include="Repository\ILicenciaO365Repository.cs" />
     <Compile Include="Repository\ILogInfoRepository.cs" />
+    <Compile Include="Repository\IMantenedorLicenciaRepository.cs" />
+    <Compile Include="Repository\IPerfilUsuarioRepository.cs" />
+    <Compile Include="Repository\IRolCargoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain\CL.AdmExpertSys.WEB.Core.Domain.csproj">

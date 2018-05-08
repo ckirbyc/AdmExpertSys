@@ -2,21 +2,99 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="AdmSysWebModelStoreContainer" CdmEntityContainer="AdmSysWebEntities">
     <EntitySetMapping Name="ACCION_INFO">
-      <EntityTypeMapping TypeName="AdmSysWebModel.AccionInfo">
+      <EntityTypeMapping TypeName="AdmSysWebModel.ACCION_INFO">
         <MappingFragment StoreEntitySet="ACCION_INFO">
-          <ScalarProperty Name="IdAccionInfo" ColumnName="IdAccionInfo" />
           <ScalarProperty Name="NombreAccionInfo" ColumnName="NombreAccionInfo" />
+          <ScalarProperty Name="IdAccionInfo" ColumnName="IdAccionInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESTADO_ASIGNACION_LICENCIA">
+      <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_ASIGNACION_LICENCIA">
+        <MappingFragment StoreEntitySet="ESTADO_ASIGNACION_LICENCIA">
+          <ScalarProperty Name="Asignando" ColumnName="Asignando" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESTADO_CUENTA_USUARIO">
+      <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_CUENTA_USUARIO">
+        <MappingFragment StoreEntitySet="ESTADO_CUENTA_USUARIO">
+          <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <ScalarProperty Name="LicenciaAsignada" ColumnName="LicenciaAsignada" />
+          <ScalarProperty Name="Vigente" ColumnName="Vigente" />
+          <ScalarProperty Name="CodigoLicencia" ColumnName="CodigoLicencia" />
+          <ScalarProperty Name="FechaBaja" ColumnName="FechaBaja" />
+          <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+          <ScalarProperty Name="Eliminado" ColumnName="Eliminado" />
+          <ScalarProperty Name="Habilitado" ColumnName="Habilitado" />
+          <ScalarProperty Name="LicenciaId" ColumnName="LicenciaId" />
+          <ScalarProperty Name="Sincronizado" ColumnName="Sincronizado" />
+          <ScalarProperty Name="CreadoAd" ColumnName="CreadoAd" />
+          <ScalarProperty Name="Dominio" ColumnName="Dominio" />
+          <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+          <ScalarProperty Name="Correo" ColumnName="Correo" />
+          <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+          <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+          <ScalarProperty Name="CuentaAd" ColumnName="CuentaAd" />
+          <ScalarProperty Name="IdEstadoCuentaUsuario" ColumnName="IdEstadoCuentaUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESTADO_SINCRONIZACION">
+      <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_SINCRONIZACION">
+        <MappingFragment StoreEntitySet="ESTADO_SINCRONIZACION">
+          <ScalarProperty Name="Sincronizando" ColumnName="Sincronizando" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LICENCIAS_O365">
+      <EntityTypeMapping TypeName="AdmSysWebModel.LICENCIAS_O365">
+        <MappingFragment StoreEntitySet="LICENCIAS_O365">
+          <ScalarProperty Name="Vigente" ColumnName="Vigente" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="IdLicencia" ColumnName="IdLicencia" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="LOG_INFO">
-      <EntityTypeMapping TypeName="AdmSysWebModel.LogInfo">
+      <EntityTypeMapping TypeName="AdmSysWebModel.LOG_INFO">
         <MappingFragment StoreEntitySet="LOG_INFO">
-          <ScalarProperty Name="IdInfo" ColumnName="IdInfo" />
-          <ScalarProperty Name="MsgInfo" ColumnName="MsgInfo" />
-          <ScalarProperty Name="UserInfo" ColumnName="UserInfo" />
-          <ScalarProperty Name="FechaInfo" ColumnName="FechaInfo" />
           <ScalarProperty Name="AccionIdInfo" ColumnName="AccionIdInfo" />
+          <ScalarProperty Name="FechaInfo" ColumnName="FechaInfo" />
+          <ScalarProperty Name="UserInfo" ColumnName="UserInfo" />
+          <ScalarProperty Name="MsgInfo" ColumnName="MsgInfo" />
+          <ScalarProperty Name="IdInfo" ColumnName="IdInfo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MANTENEDOR_LICENCIA">
+      <EntityTypeMapping TypeName="AdmSysWebModel.MANTENEDOR_LICENCIA">
+        <MappingFragment StoreEntitySet="MANTENEDOR_LICENCIA">
+          <ScalarProperty Name="Vigente" ColumnName="Vigente" />
+          <ScalarProperty Name="LicenciaId" ColumnName="LicenciaId" />
+          <ScalarProperty Name="RolCargoId" ColumnName="RolCargoId" />
+          <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+          <ScalarProperty Name="IdMantenedorLicencia" ColumnName="IdMantenedorLicencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERFIL_USUARIO">
+      <EntityTypeMapping TypeName="AdmSysWebModel.PERFIL_USUARIO">
+        <MappingFragment StoreEntitySet="PERFIL_USUARIO">
+          <ScalarProperty Name="NombrePerfil" ColumnName="NombrePerfil" />
+          <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ROL_CARGO">
+      <EntityTypeMapping TypeName="AdmSysWebModel.ROL_CARGO">
+        <MappingFragment StoreEntitySet="ROL_CARGO">
+          <ScalarProperty Name="Vigente" ColumnName="Vigente" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="IdRolCargo" ColumnName="IdRolCargo" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

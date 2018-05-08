@@ -1,0 +1,116 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@model IEnumerable<EstadoCuentaUsuarioVm>
+@{
+    ViewBag.Title = "Proceso Sincronizacion";
+    Layout = "~/Views/_Main.cshtml";
+    bool esSync = ViewBag.EstadoSync;
+    var msgSync = string.Empty;
+
+    if (esSync) {
+        msgSync = "Proceso en ejecución, actualice la página para comprobar que el proceso ha terminado.";
+    }
+    else if (esSync == false && Model.Count() == 0)
+    {
+        msgSync = "No existen datos para sincronizar.";
+    }    
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Proceso Sincronizar Cuentas Usuarios</h1>
+    <div class="form-inline col-md-3">
+        <div id="btnSync" class="btn btn-primary pull-right btn-sm">
+            <span class="glyphicon glyphicon-save"></span>
+            <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" data-loading-text="Sincronizando..." title="@msgSync" />
+        </div>
+    </div>
+</div>
+<div class="row">    
+    <h2 class="sub-header">Vista de todas las cuentas que no han sido sincronizados.</h2>
+</div>
+<div class="row">
+    <table class="table table-hover tablaMantenedores">
+        <thead>
+            <tr>
+                <th>Cuenta AD</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Correo</th>
+                <th>Upn</th>
+                <th>Licencia</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.OrderByDescending(x => x.CuentaAd))
+        {
+            var item1 = item;                        
+            <tr>
+                <td class="textCenter">@Html.DisplayFor(m => item1.CuentaAd)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Nombres)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Apellidos)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Correo)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Dominio)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.LICENCIAS_O365.Nombre)</td>
+            </tr>
+        }
+    </table>
+</div>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+<script>
+    $(document).ready(function () {                
+        $("#btnSync").off('click').click(function () {
+            if ('@Model.Count()' == 0 || '@esSync' == 'True') {
+                BootstrapDialog.alert({
+                    title: '¡Validación Inicio Proceso!',
+                    message: '<strong>No se puede iniciar el proceso de sincronización, se puede deber a:</br>1.- Proceso en ejecución</br>2.- No existen datos a sincronizar</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+                return;
+            }
+
+            $("#loading-modal").show();
+
+            var $btn = $("#Sincronizar");
+            $btn.button('loading');
+            $("#btnSync").attr("disabled", true);
+            //$("input").focus(function () {
+            //    $btn.button('reset');
+            //});            
+
+            $.ajax({
+                url: '@Url.Action("SincronizarCuentas", "SyncCuenta")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                //data: JSON.stringify({ nombreUsuario: nombreUsuario }),
+                success: function (data) {
+                    if (data.Validar) {
+                        BootstrapDialog.alert({
+                            title: '¡Ejecución proceso iniciado!',
+                            message: '<strong>Proceso de sincronización iniciado correctamente.</br>Para revisar el estado hacer click <a href="@Url.Action("Index", "UsuarioCreado")">aquí</a></strong>',
+                            type: BootstrapDialog.TYPE_SUCCESS
+                        });
+                    } else {
+                        BootstrapDialog.alert({
+                            title: '¡Error al iniciar el proceso!',
+                            message: '<strong>Error al ejecutar el proceso de sincronización. ' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                },
+                error: function () {
+                    $("#loading-modal").hide();
+                    BootstrapDialog.alert({
+                        title: '¡Error al iniciar el proceso!',
+                        message: '<strong>Error al ejecutar el proceso de sincronización.</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+
+        });
+    });
+</script>

@@ -1,32 +1,43 @@
 ﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Core.Domain.Enums;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
+using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
 using CL.AdmExpertSys.WEB.Presentation.Models;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Threading;
 using System.Web.Mvc;
+using System.Web.Services.Protocols;
 
 namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 {
     [HandleError]
     public class HomeController : BaseController
     {
+        private static Thread _hiloEjecucion;
+
         protected HomeSysWebFactory HomeSysWebFactory;
         protected LogInfoFactory LogInfoFactory;
+        protected EstadoCuentaUsuarioFactory EstadoCuentaUsuarioFactory;
+        protected MantenedorLicenciaFactory MantenedorLicenciaFactory;
 
         public HomeController()
         {
         }
 
-        public HomeController(LogInfoFactory logInfoFactory)
+        public HomeController(LogInfoFactory logInfoFactory, 
+            EstadoCuentaUsuarioFactory estadoCuentaUsuarioFactory,
+            MantenedorLicenciaFactory mantenedorLicenciaFactory)
         {
             LogInfoFactory = logInfoFactory;
+            EstadoCuentaUsuarioFactory = estadoCuentaUsuarioFactory;
+            MantenedorLicenciaFactory = mantenedorLicenciaFactory;
         }
 
         public ActionResult Index(LoginVm model, string mensajeError)
-        {
+        {            
             try
             {
                 ViewBag.MensajeError = mensajeError;
@@ -55,8 +66,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
                     SessionViewModel.EstructuraArbolAd = estructura;
                     ViewBag.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
-                }
-                
+                }                
+
                 return View(HomeSysWebFactory.ObtenerVistaHomeSysWeb());
             }
             catch (Exception ex)
@@ -65,6 +76,32 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 return RedirectToAction("Index", "Error", new { message = "Error al cargar página principal. Si el problema persiste contacte a soporte IT" });
             }
         }
+
+        public ActionResult EditCuenta()
+        {
+            try
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();                
+                if (SessionViewModel.EstructuraArbolAd != null)
+                {
+                    ViewBag.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
+                }
+                else
+                {
+                    var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
+                    SessionViewModel.EstructuraArbolAd = estructura;
+                    ViewBag.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
+                }
+
+                return View(HomeSysWebFactory.ObtenerVistaHomeSysWeb());
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return RedirectToAction("Index", "Error", new { message = "Error al cargar página Editar Cuenta Usuario. Si el problema persiste contacte a soporte IT" });
+            }
+        }
+
         /// <summary>
         /// Controler valida credenciales del usuario al ingresar al sistema.
         /// </summary>
@@ -75,7 +112,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         {
             try
             {
-                System.Web.HttpContext.Current.Session["UsuarioVM"] = "asd";
+                System.Web.HttpContext.Current.Session["AdmExpertSys"] = "AdmExpertSys";
                 //Seccion registra Log Transaccional
                 var log = new LogInfoVm
                 {
@@ -92,8 +129,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 catch (Exception ex)
                 {
                     Utils.LogErrores(ex);
-                }
-
+                }                
                 SessionViewModel.Usuario = new UsuarioVm
                 {
                     Id = 1,
@@ -120,12 +156,12 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 }
 
                 model.EstaAutenticado = false;
-                return RedirectToAction("IndexLogin", "Error", new { message = "Error, usuario o contraseña no corresponden. Si el problema persiste contacte a soporte IT" });
+                return RedirectToAction("IndexLogin", "Error", new { mensajeError = "Error, usuario o contraseña no corresponden. Si el problema persiste contacte a soporte IT" });
             }
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
-                return RedirectToAction("IndexLogin", "Error", new { message = "Error al iniciar sesión. Si el problema persiste contacte a soporte IT" });
+                return RedirectToAction("IndexLogin", "Error", new { mensajeError = "Error al iniciar sesión. Si el problema persiste contacte a soporte IT" });
             }
         }
 
@@ -156,18 +192,25 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
 
                 
-                HomeSysWebFactory = new HomeSysWebFactory();
-                //var sUpn = nombreUsuario.Trim() + "@agrosuper.com";
-                //var existe = HomeSysWebFactory.ExisteLicenciaUsuarioPortal(sUpn);
+                HomeSysWebFactory = new HomeSysWebFactory();                
                 var usuarioAd = HomeSysWebFactory.ObtenerUsuarioExistente(nombreUsuario.Trim());
                 bool chequear = usuarioAd != null;
+                decimal codigoLic = 0;
+                var claveCta = string.Empty;
+
+                if (chequear) {
+                    codigoLic = EstadoCuentaUsuarioFactory.GetCodigoLicenciaByUsuario(nombreUsuario.Trim());
+                    claveCta = EstadoCuentaUsuarioFactory.GetClaveCuentaByUsuario(nombreUsuario.Trim());
+                }
 
                 return new JsonResult
                 {
                     Data = new
                     {
                         Validar = chequear,
-                        DatosUsuario = usuarioAd
+                        DatosUsuario = usuarioAd,
+                        CodigoLicencia = codigoLic.ToString(),
+                        Clave = claveCta
                     }
                 };
             }
@@ -190,8 +233,10 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 if (string.IsNullOrEmpty(model.Nombres)) throw new ArgumentException("Ingresar nombres del usuario");
                 if (string.IsNullOrEmpty(model.Apellidos)) throw new ArgumentException("Ingresar apellidos del usuario");
                 if (string.IsNullOrEmpty(model.NombreUsuario)) throw new ArgumentException("Ingresar ID del usuario");
+                if (string.IsNullOrEmpty(model.Correo)) throw new ArgumentException("Asignar correo");
                 if (string.IsNullOrEmpty(model.UpnPrefijo)) throw new ArgumentException("Ingresar Dominio");
                 if (string.IsNullOrEmpty(model.Descripcion)) throw new ArgumentException("Ingresar Descripción");
+                if (string.IsNullOrEmpty(model.CodigoLicencia)) throw new ArgumentException("Ingresar Código Licencia");
                 if (model.ExisteUsuario == false)
                 {
                     if (string.IsNullOrEmpty(model.Clave)) throw new ArgumentException("Ingresar clave del usuario");
@@ -207,7 +252,20 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         throw new ArgumentException("Seleccionar unidad organizativa");
                     }
                 }
-                
+
+                //Validar que el código ingresado sea numerico                
+                try
+                {
+                    var codigoNum = Convert.ToDecimal(model.CodigoLicencia);
+                }
+                catch {
+                    throw new ArgumentException("El código licencia ingresado debe ser númerico.");
+                }
+                //Validar que el código ingresado exista
+                if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia)) {
+                    throw new ArgumentException("El código licencia ingresado no existe en la base de datos.");
+                }
+
                 //Seccion registra Log Transaccional
                 var log = new LogInfoVm
                 {
@@ -248,12 +306,47 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 var exitoGuardar = HomeSysWebFactory.CrearUsuario(model);
                 if (exitoGuardar)
                 {
-                    //Task.Delay(TimeSpan.FromSeconds(10)).Wait();
-                    var ejecSync = HomeSysWebFactory.ForzarDirSync(model);
-                    if (ejecSync)
+                    //Obtener Codigo Licencia                    
+                    var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia);
+                    decimal licenciaId = mantLicObjVm.LicenciaId;
+
+                    //Ingresa datos usuarios a base de datos
+                    var estadoUsr = new EstadoCuentaUsuarioVm {
+                        Apellidos = model.Apellidos,
+                        CodigoLicencia = !string.IsNullOrEmpty(model.CodigoLicencia) ? Convert.ToDecimal(model.CodigoLicencia) : 0,
+                        Correo = model.Correo,
+                        CreadoAd = true,
+                        CuentaAd = model.NombreUsuario,
+                        Descripcion = model.Descripcion,
+                        Dominio = model.UpnPrefijo,
+                        Eliminado = false,
+                        FechaCreacion = DateTime.Now,
+                        Habilitado = true,
+                        LicenciaId = licenciaId, 
+                        Nombres = model.Nombres,
+                        Sincronizado = false,
+                        Clave = model.Clave
+                    };
+
+                    try
                     {
+                        EstadoCuentaUsuarioFactory = new EstadoCuentaUsuarioFactory();
+                        EstadoCuentaUsuarioFactory.CrearEstadoCuentaUsuarioDirecto(estadoUsr);
+                        //HiloEstadoCuentaUsuario.CrearEstadoCuentaUsuario(estadoUsr);                            
                         exitoProceso = true;
                     }
+                    catch (Exception ex)
+                    {
+                        Utils.LogErrores(ex);
+                    }
+
+                    //Código para sincronizar usuario del AD con la Nube
+                    //Task.Delay(TimeSpan.FromSeconds(10)).Wait();
+                    //var ejecSync = HomeSysWebFactory.ForzarDirSync(model);
+                    //if (ejecSync)
+                    //{
+                    //    exitoProceso = true;
+                    //}
                 }
 
                 return new JsonResult
@@ -284,6 +377,142 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     new {message = "Error al ingresar usuario. Si el problema persiste contacte a soporte IT"});
             }
         }
+
+        [HttpPost]
+        public ActionResult ActualizarCuentaUsuario(HomeSysWebVm model)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(model.Nombres)) throw new ArgumentException("Ingresar nombres del usuario");
+                if (string.IsNullOrEmpty(model.Apellidos)) throw new ArgumentException("Ingresar apellidos del usuario");
+                if (string.IsNullOrEmpty(model.NombreUsuario)) throw new ArgumentException("Ingresar ID del usuario");
+                if (string.IsNullOrEmpty(model.Correo)) throw new ArgumentException("Asignar correo");
+                if (string.IsNullOrEmpty(model.UpnPrefijo)) throw new ArgumentException("Ingresar Dominio");
+                if (string.IsNullOrEmpty(model.Descripcion)) throw new ArgumentException("Ingresar Descripción");
+                if (string.IsNullOrEmpty(model.CodigoLicencia)) throw new ArgumentException("Ingresar Código Licencia");
+                if (string.IsNullOrEmpty(model.Clave)) throw new ArgumentException("Ingresar clave del usuario");                                
+                if (string.IsNullOrEmpty(model.PatchOu))
+                {
+                   throw new ArgumentException("Seleccionar unidad organizativa");                   
+                }
+
+                //Validar que el código ingresado sea numerico                
+                try
+                {
+                    var codigoNum = Convert.ToDecimal(model.CodigoLicencia);
+                }
+                catch
+                {
+                    throw new ArgumentException("El código licencia ingresado debe ser númerico.");
+                }
+                //Validar que el código ingresado exista
+                if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia))
+                {
+                    throw new ArgumentException("El código licencia ingresado no existe en la base de datos.");
+                }
+
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var exitoProceso = HomeSysWebFactory.ActualizarCuentaUsuario(model);
+
+                if (exitoProceso)
+                {
+                    //Obtener Codigo Licencia                    
+                    var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia);
+                    decimal licenciaId = mantLicObjVm.LicenciaId;
+
+                    //Ingresa datos usuarios a base de datos
+                    var estadoUsr = EstadoCuentaUsuarioFactory.GetObjetoEstadoCuentaUsuarioAllByCuenta(model.NombreUsuario.Trim());
+                    if (estadoUsr != null)
+                    {
+                        try
+                        {
+                            estadoUsr.Apellidos = model.Apellidos.Trim();
+                            estadoUsr.Clave = model.Clave.Trim();
+                            estadoUsr.CodigoLicencia = Convert.ToDecimal(model.CodigoLicencia);
+                            estadoUsr.Correo = model.Correo.Trim();
+                            estadoUsr.Descripcion = model.Descripcion.Trim();
+                            estadoUsr.Dominio = model.UpnPrefijo.Trim();
+                            estadoUsr.LicenciaAsignada = false;
+                            estadoUsr.LicenciaId = licenciaId;
+                            estadoUsr.Nombres = model.Nombres.Trim();
+                            estadoUsr.Sincronizado = false;
+                            estadoUsr.CreadoAd = true;
+                            estadoUsr.Eliminado = false;
+                            estadoUsr.FechaBaja = null;
+                            estadoUsr.Habilitado = true;
+                            estadoUsr.Vigente = true;
+
+                            EstadoCuentaUsuarioFactory.ActualizaEstadoCuentaUsuario(estadoUsr);
+                        }
+                        catch (Exception ex)
+                        {
+                            Utils.LogErrores(ex);
+                        }
+                    }
+                    else {                    
+
+                        //Ingresa datos usuarios a base de datos
+                        estadoUsr = new EstadoCuentaUsuarioVm
+                        {
+                            Apellidos = model.Apellidos,
+                            CodigoLicencia = Convert.ToDecimal(model.CodigoLicencia),
+                            Correo = model.Correo,
+                            CreadoAd = true,
+                            CuentaAd = model.NombreUsuario.Trim(),
+                            Descripcion = model.Descripcion.Trim(),
+                            Dominio = model.UpnPrefijo,
+                            Eliminado = false,
+                            FechaCreacion = DateTime.Now,                           
+                            Habilitado = true,
+                            LicenciaId = licenciaId,
+                            Nombres = model.Nombres,
+                            Sincronizado = false,
+                            Clave = model.Clave,
+                            Vigente = true,
+                            LicenciaAsignada = false
+                        };
+
+                        try
+                        {
+                            EstadoCuentaUsuarioFactory = new EstadoCuentaUsuarioFactory();
+                            EstadoCuentaUsuarioFactory.CrearEstadoCuentaUsuarioDirecto(estadoUsr);                                                        
+                        }
+                        catch (Exception ex)
+                        {
+                            Utils.LogErrores(ex);
+                        }
+                    }                    
+                }
+
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = exitoProceso,
+                        Error = exitoProceso == false ? "Proceso de actualizar cuenta usuario terminado incorrectamente, favor intentar más tarde." : string.Empty
+                    }
+                };
+            }
+            catch (ArgumentException ex)
+            {
+                Utils.LogErrores(ex);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = true,
+                        Error = ex.Message
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return RedirectToAction("Index", "Error",
+                    new { message = "Error al actualizar cuenta de usuario. Si el problema persiste contacte a soporte IT" });
+            }
+        }
+
         /// <summary>
         /// Sincronizar Usuarios
         /// </summary>
@@ -437,6 +666,68 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 HomeSysWebFactory = new HomeSysWebFactory();
                 var username = model.NombreUsuario.ToLower().Trim();
                 var procExito = HomeSysWebFactory.DeshabilitarUsuarioAd(username);
+                procExito = HomeSysWebFactory.DeshabilitarComputadorAd(username);
+
+                if (procExito)
+                {
+                    //Actualiza cuenta usuario BD cambio Habilitado en False
+                    var estaCtaUsrUnico = EstadoCuentaUsuarioFactory.GetObjetoEstadoCuentaUsuarioByCuenta(model.NombreUsuario.Trim());
+                    if (estaCtaUsrUnico != null)
+                    {
+                        estaCtaUsrUnico.Habilitado = false;
+                        estaCtaUsrUnico.Sincronizado = false;
+                        estaCtaUsrUnico.LicenciaAsignada = false;
+                        estaCtaUsrUnico.FechaBaja = DateTime.Now;
+                        EstadoCuentaUsuarioFactory.ActualizaEstadoCuentaUsuario(estaCtaUsrUnico);
+                    }
+                    else
+                    {
+                        decimal licenciaId = 1;
+                        if (!string.IsNullOrEmpty(model.CodigoLicencia))
+                        {
+                            var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia);
+                            if (mantLicObjVm != null)
+                            {
+                                licenciaId = mantLicObjVm.LicenciaId;
+                            }
+                        }                        
+                        //Ingresa datos usuarios a base de datos
+                        estaCtaUsrUnico = new EstadoCuentaUsuarioVm
+                        {
+                            Apellidos = model.Apellidos,
+                            CodigoLicencia = Convert.ToDecimal(model.CodigoLicencia),
+                            Correo = model.Correo.Trim(),
+                            CreadoAd = true,
+                            CuentaAd = model.NombreUsuario.Trim(),
+                            Descripcion = model.Descripcion.Trim(),
+                            Dominio = model.UpnPrefijo,
+                            Eliminado = false,
+                            FechaCreacion = DateTime.Now,
+                            Habilitado = false,
+                            LicenciaId = licenciaId,
+                            Nombres = model.Nombres.Trim(),
+                            Sincronizado = false,
+                            Clave = string.IsNullOrEmpty(model.Clave) ? @"Inicio01" : model.Clave.Trim(),
+                            Vigente = true,
+                            FechaBaja = DateTime.Now,
+                            LicenciaAsignada = false
+                        };
+
+                        try
+                        {
+                            EstadoCuentaUsuarioFactory = new EstadoCuentaUsuarioFactory();
+                            EstadoCuentaUsuarioFactory.CrearEstadoCuentaUsuarioDirecto(estaCtaUsrUnico);
+                        }
+                        catch (Exception ex)
+                        {
+                            Utils.LogErrores(ex);
+                        }
+                    }
+
+                    //Ejecuta Hilo para el proceso de sync de cuentas
+                    _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta);
+                    _hiloEjecucion.Start();
+                }
 
                 return new JsonResult
                 {
@@ -460,12 +751,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 };
             }
         }
+
+        [SoapDocumentMethod(OneWay = true)]
+        public void InciarProcesoHiloSincronizarCuenta()
+        {
+            HiloEstadoSincronizacion.ActualizarEstadoSync(true);
+
+            HomeSysWebFactory = new HomeSysWebFactory();
+            HomeSysWebFactory.ForzarDirSync();                   
+
+            HiloEstadoSincronizacion.ActualizarEstadoSync(false);
+        }
+
         /// <summary>
         /// Buscar el grupo ingresado en el AD 
         /// </summary>
         /// <param name="nomGrupo"></param>
         /// <returns></returns>
-        
+
         public JsonResult ObtenerGrupoAd(string nomGrupo)
         {
             try
@@ -516,6 +819,68 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         }
 
         [HttpPost]
+        public JsonResult ObtenerListaGruposAdOu(string patchOu)
+        {
+            try
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var listaGrupos = HomeSysWebFactory.ObtenerListadoGrupoAdByOu(patchOu);
+
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        GrupoOu = listaGrupos,
+                        Error = string.Empty
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        GrupoOu = (List<GrupoAdVm>)null,
+                        Error = ex.Message
+                    }
+                };
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ObtenerListaGruposAdOu2(string patchOu, string usrAD)
+        {
+            try
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var listaGrupos = HomeSysWebFactory.ObtenerListadoGrupoAdByOu(patchOu, usrAD);
+
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        GrupoOu = listaGrupos,
+                        Error = string.Empty
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        GrupoOu = (List<GrupoAdVm>)null,
+                        Error = ex.Message
+                    }
+                };
+            }
+        }
+
+        [HttpPost]
         public ActionResult GuardarGrupos(string nomGrupos, string userName, string upnPrefijo)
         {
             try
@@ -559,6 +924,66 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         Validar = false,
                         TieneLicencia = false,
+                        Error = ex.Message
+                    }
+                };
+            }
+        }
+
+        [HttpPost]
+        public ActionResult AsociarGrupoUsuario(string nomGrupo, string userName)
+        {
+            try
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();
+
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = HomeSysWebFactory.AsociarGrupoUsuario(nomGrupo, userName),
+                        Error = string.Empty
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = false,                        
+                        Error = ex.Message
+                    }
+                };
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DesAsociarGrupoUsuario(string nomGrupo, string userName)
+        {
+            try
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();
+
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = HomeSysWebFactory.DesAsociarGrupoUsuario(nomGrupo, userName),
+                        Error = string.Empty
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = false,
                         Error = ex.Message
                     }
                 };

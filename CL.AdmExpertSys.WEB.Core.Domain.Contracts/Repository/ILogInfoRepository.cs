@@ -4,7 +4,7 @@ using Pragma.Commons.Domain.Contracts;
 
 namespace CL.AdmExpertSys.WEB.Core.Domain.Contracts.Repository
 {
-    public interface ILogInfoRepository : IRepository<LogInfo>
+    public interface ILogInfoRepository : IRepository<LOG_INFO>
     {
     }
 }

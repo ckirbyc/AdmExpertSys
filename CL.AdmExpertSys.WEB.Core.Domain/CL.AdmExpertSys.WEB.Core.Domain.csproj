@@ -61,10 +61,30 @@
     <Compile Include="Dto\UsuarioAd.cs" />
     <Compile Include="Enums\EnumAccionInfo.cs" />
     <Compile Include="Enums\EnumSeccionAd.cs" />
-    <Compile Include="Model\AccionInfo.cs">
+    <Compile Include="Model\AccionInfoEntity.cs" />
+    <Compile Include="Model\ACCION_INFO.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\LogInfo.cs">
+    <Compile Include="Model\EstadoCuentaUsuarioEntity.cs" />
+    <Compile Include="Model\ESTADO_ASIGNACION_LICENCIA.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ESTADO_CUENTA_USUARIO.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ESTADO_SINCRONIZACION.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\LicenciaO365Entity.cs" />
+    <Compile Include="Model\LICENCIAS_O365.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\LogInfoEntity.cs" />
+    <Compile Include="Model\LOG_INFO.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MantenedorLicenciaEntity.cs" />
+    <Compile Include="Model\MANTENEDOR_LICENCIA.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ModelAdmExpertSysWeb.Context.cs">
@@ -81,6 +101,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelAdmExpertSysWeb.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PerfilUsuarioEntity.cs" />
+    <Compile Include="Model\PERFIL_USUARIO.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RolCargoEntity.cs" />
+    <Compile Include="Model\ROL_CARGO.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

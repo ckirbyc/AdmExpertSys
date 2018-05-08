@@ -12,3 +12,8 @@ C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Common
 C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.csprojResolveAssemblyReference.cache
 C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
 C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.csprojResolveAssemblyReference.cache
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2147022651</HResult>
+  <Message>La contraseña no cumple con los requisitos de la directiva de contraseñas. Compruebe los requisitos de longitud mínima, complejidad e historial de la contraseña. (Excepción de HRESULT: 0x800708C5)</Message>
+  <Source />
+  <Source>System.DirectoryServices</Source>
+  <Message>Se produjo una excepción en el destino de la invocación.</Message>
+  <Inner>
+  </Inner>
+</ExceptionSerialize>

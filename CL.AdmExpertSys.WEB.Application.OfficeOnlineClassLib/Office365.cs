@@ -128,6 +128,8 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
             sMess = string.Empty;
             try
             {
+                var userNameOnline = sUserName.ToLower().Trim();
+
                 // Create Initial Session State for runspace.
                 InitialSessionState initialSession = InitialSessionState.CreateDefault();
                 initialSession.ImportPSModule(new[] { "MSOnline" });
@@ -147,7 +149,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 var connectCommand = new Command("Connect-MsolService");
                 connectCommand.Parameters.Add((new CommandParameter("Credential", credential)));
                 var getCommand = new Command("Get-MsolUser");
-                getCommand.Parameters.Add((new CommandParameter("UserPrincipalName", sUserName)));
+                getCommand.Parameters.Add((new CommandParameter("UserPrincipalName", userNameOnline)));
 
                 using (Runspace psRunSpace = RunspaceFactory.CreateRunspace(initialSession))
                 {
@@ -213,6 +215,13 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                
                 string usuario = CommonServices.GetAppSetting("usuarioO365");
                 string clave = CommonServices.GetAppSetting("passwordO365");
+                string tenanName = CommonServices.GetAppSetting("TenantName");
+
+                sLicense = tenanName + ":" + sLicense;
+
+                string codEnterPrisePack = tenanName + ":" + "ENTERPRISEPACK";
+                string codStandardPack = tenanName + ":" + "STANDARDPACK";
+
                 var securePass = new SecureString();
 
                 foreach (var secureChar in clave)
@@ -236,7 +245,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 cmdlic.Parameters.Add((new CommandParameter("AddLicenses", sLicense)));
 
                 List<string> desLic;
-                if (sLicense.Equals("agrosuper:ENTERPRISEPACK"))
+                if (sLicense.Equals(codEnterPrisePack))
                 {
                     desLic = new List<string>
                     {
@@ -251,7 +260,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                         "SHAREPOINTENTERPRISE"
                     };
                 }
-                else if (sLicense.Equals("agrosuper:STANDARDPACK"))
+                else if (sLicense.Equals(codStandardPack))
                 {
                     desLic = new List<string>
                     {
@@ -786,6 +795,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 // Create credential object.
                 string usuario = CommonServices.GetAppSetting("usuarioO365");
                 string clave = CommonServices.GetAppSetting("passwordO365");
+                string TenantId = CommonServices.GetAppSetting("TenantId");
                 var securePass = new SecureString();
 
                 foreach (var secureChar in clave)
@@ -800,7 +810,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 connectCommand.Parameters.Add((new CommandParameter("Credential", credential)));
                 // Create command to get office 365 users.
                 var getLicenseCommand = new Command("Get-MsolAccountSku");
-                getLicenseCommand.Parameters.Add((new CommandParameter("TenantId", "1259e2e7-e36c-4aa5-9256-ab0a2bd682bc")));
+                getLicenseCommand.Parameters.Add((new CommandParameter("TenantId", TenantId)));
                 //var lCommands = new List<Command> {connectCommand};
 
                 using (Runspace psRunSpace = RunspaceFactory.CreateRunspace(initialSession))

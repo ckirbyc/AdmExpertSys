@@ -3,3 +3,8 @@ C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.
 C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.csprojResolveAssemblyReference.cache
 C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
 C:\_personal\_mauro\_fuentes\AdmExpertSysWeb\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.csprojResolveAssemblyReference.cache
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb

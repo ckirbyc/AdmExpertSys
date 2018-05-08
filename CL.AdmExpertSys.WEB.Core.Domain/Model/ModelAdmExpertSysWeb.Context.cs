@@ -7,10 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Configuration;
-using System.Data.Common;
-using System.Data.SqlClient;
-
 namespace CL.AdmExpertSys.WEB.Core.Domain.Model
 {
     using System;
@@ -29,7 +25,14 @@ namespace CL.AdmExpertSys.WEB.Core.Domain.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<AccionInfo> ACCION_INFO { get; set; }
-        public virtual DbSet<LogInfo> LOG_INFO { get; set; }
+        public virtual DbSet<ACCION_INFO> ACCION_INFO { get; set; }
+        public virtual DbSet<ESTADO_ASIGNACION_LICENCIA> ESTADO_ASIGNACION_LICENCIA { get; set; }
+        public virtual DbSet<ESTADO_CUENTA_USUARIO> ESTADO_CUENTA_USUARIO { get; set; }
+        public virtual DbSet<ESTADO_SINCRONIZACION> ESTADO_SINCRONIZACION { get; set; }
+        public virtual DbSet<LICENCIAS_O365> LICENCIAS_O365 { get; set; }
+        public virtual DbSet<LOG_INFO> LOG_INFO { get; set; }
+        public virtual DbSet<MANTENEDOR_LICENCIA> MANTENEDOR_LICENCIA { get; set; }
+        public virtual DbSet<PERFIL_USUARIO> PERFIL_USUARIO { get; set; }
+        public virtual DbSet<ROL_CARGO> ROL_CARGO { get; set; }
     }
 }

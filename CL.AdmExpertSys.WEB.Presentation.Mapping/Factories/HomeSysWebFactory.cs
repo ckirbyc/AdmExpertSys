@@ -1,6 +1,4 @@
 ﻿
-using System.DirectoryServices;
-using System.Threading.Tasks;
 using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Application.ADClassLib;
 using CL.AdmExpertSys.WEB.Application.CommonLib;
@@ -9,7 +7,9 @@ using CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Web.Mvc;
@@ -17,7 +17,7 @@ using System.Web.Mvc;
 namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 {
     public class HomeSysWebFactory
-    {
+    {       
         protected IHomeSysWebService HomeSysWebService;
         protected Common CommonFactory;
         protected AdLib AdFactory;
@@ -81,9 +81,22 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             try
             {
                 var adLib = new AdLib();
+                CommonFactory = new Common();
                 var userPrincipal = adLib.IsUserExisting(nombreUsuario);
                 if (userPrincipal != null)
                 {
+                    var distinguishedName = userPrincipal.DistinguishedName;                    
+                    int startIndex = distinguishedName.IndexOf("OU=");
+                    int length = distinguishedName.Length - startIndex;
+                    var dnNew = distinguishedName.Substring(startIndex, length);                    
+                    var nuevaUbicacion = CommonFactory.GetAppSetting("LdapServidor") + dnNew;
+                    userPrincipal.DistinguishedName = nuevaUbicacion;
+
+                    var upnPrefijo = userPrincipal.EmailAddress;
+                    startIndex = upnPrefijo.IndexOf("@");
+                    length = upnPrefijo.Length - startIndex;
+                    userPrincipal.UpnPrefijo = upnPrefijo.Substring(startIndex, length);
+
                     return userPrincipal;
                 }
                 return null;
@@ -204,6 +217,26 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 throw new ArgumentException(ex.Message);
             }
         }
+
+        public void ForzarDirSync()
+        {
+            try
+            {
+                O365Factory = new Office365();
+                var procSync = O365Factory.ForzarDirSync();                               
+            }
+            catch (ArgumentException ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException(ex.Message);
+            }
+        }
+
         /// <summary>
         /// Asigna Licencia Usuiario
         /// </summary>
@@ -244,6 +277,32 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 return false;
             }
         }
+
+        public bool AsignarLicenciaUsuario(string userNameOnline, string codigoLicencia)
+        {
+            try
+            {
+               O365Factory = new Office365();                                               
+
+                string sMessage;
+                if (O365Factory.AllocateLicense(userNameOnline, codigoLicencia, out sMessage))
+                {
+                    return true;
+                }
+                throw new ArgumentException(sMessage);
+            }
+            catch (ArgumentException ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Valida credenciales de logeo del usuario en el AD
         /// </summary>
@@ -274,14 +333,30 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             {
                 AdFactory = new AdLib();                               
                 AdFactory.DisableUserAccount(usuario);
-                O365Factory = new Office365();
-                O365Factory.ForzarDirSync();
+                //O365Factory = new Office365();
+                //O365Factory.ForzarDirSync();
                 return true;
             }
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
                 throw new ArgumentException("Error al deshabilitar usuario : " + ex.Message);
+            }
+        }
+
+        public bool DeshabilitarComputadorAd(string computador)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                var exito = AdFactory.DisableComputerAccount(computador);
+                
+                return exito;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException("Error al deshabilitar computador : " + ex.Message);
             }
         }
 
@@ -355,6 +430,89 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
+        public List<GrupoAdVm> ObtenerListadoGrupoAdByOu(string sOu)
+        {
+            try
+            {
+                var listaGrupo = new List<GrupoAdVm>();
+                AdFactory = new AdLib();
+
+                var objListaGroup = AdFactory.GetListGroupByOu(sOu);
+
+                var i = 1;
+                foreach (GroupPrincipal objGroup in objListaGroup.FindAll())
+                {                                        
+                    var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];                    
+
+                    var grupoVm = new GrupoAdVm
+                    {
+                        NumeroGrupo = i,
+                        NombreGrupo = objGroup.Name,
+                        UbicacionGrupo = objGroup.DistinguishedName,
+                        CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                        ExisteGrupo = true,
+                        DescripcionGrupo = objGroup.Description,
+                        TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value
+                    };
+                    listaGrupo.Add(grupoVm);
+                    i++;                    
+                }
+
+                objListaGroup.Dispose();
+
+                return listaGrupo;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException("Error al obtener grupo : " + ex.Message);
+            }
+        }
+
+        public List<GrupoAdVm> ObtenerListadoGrupoAdByOu(string sOu, string adUsr)
+        {
+            try
+            {
+                var listaGrupo = new List<GrupoAdVm>();
+                AdFactory = new AdLib();
+
+                var userAd = AdFactory.GetUser(adUsr);
+
+                var objListaGroup = AdFactory.GetListGroupByOu(sOu);
+
+                var i = 1;                
+                foreach (GroupPrincipal objGroup in objListaGroup.FindAll())
+                {
+                    var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+                    var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);                                      
+
+                    var grupoVm = new GrupoAdVm
+                    {
+                        NumeroGrupo = i,
+                        NombreGrupo = objGroup.Name,
+                        UbicacionGrupo = objGroup.DistinguishedName,
+                        CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                        ExisteGrupo = true,
+                        DescripcionGrupo = objGroup.Description,
+                        TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
+                        Asociado = asocUsrGrp
+                    };
+                    listaGrupo.Add(grupoVm);
+                    i++;
+                }
+
+                userAd.Dispose();
+                objListaGroup.Dispose();
+
+                return listaGrupo;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException("Error al obtener grupo : " + ex.Message);
+            }
+        }
+
         public bool GuardarGrupos(string nomGrupos, string userName)
         {
             try
@@ -380,6 +538,36 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
+        public bool AsociarGrupoUsuario(string nomGrupo, string userName)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                var exito = AdFactory.AddUserToGroup(userName, nomGrupo);               
+                return exito;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException("Error al asociar grupo a usuario : " + ex.Message);
+            }
+        }
+
+        public bool DesAsociarGrupoUsuario(string nomGrupo, string userName)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                var exito = AdFactory.RemoveUserFromGroup(userName, nomGrupo);
+                return exito;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException("Error al desasociar grupo a usuario : " + ex.Message);
+            }
+        }
+
         public bool ExisteLicenciaUsuarioPortal(string userName)
         {
             try
@@ -388,6 +576,106 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 O365Factory = new Office365();
                 var existeLicencia = O365Factory.IsLicensedUser(userName, out msgError);
                 return existeLicencia;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
+            }
+        }
+
+        public bool ExisteUsuarioPortal(string userName)
+        {
+            try
+            {
+                
+                O365Factory = new Office365();                
+                //Validar que exista usuario en O365
+                string sMessage;
+                var existeUsr = O365Factory.UserExists(userName, out sMessage);
+                                
+                return existeUsr;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
+            }
+        }
+
+        public bool EliminarCuentaAd(string userName)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                var exito = AdFactory.DeleteUser(userName);
+                return exito;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
+            }
+        }
+
+        public GrupoAdVm GetCreateViewGrupo()
+        {
+            var objVm = new GrupoAdVm();
+            return objVm;
+        }
+
+        public void CrearGrupoDistribucion(GrupoAdVm model)
+        {
+            AdFactory = new AdLib();
+            AdFactory.CreateNewGroup(model.UbicacionGrupo, model.NombreGrupo, model.DescripcionGrupo, model.CorreoGrupo, GroupScope.Global, false);
+        }
+
+        public void ActualizarGrupoDistribucion(GrupoAdVm model)
+        {
+            AdFactory = new AdLib();
+            AdFactory.UpdateGroup(model.UbicacionGrupo, model.NombreGrupo, model.NombreGrupoAnterior, model.DescripcionGrupo, model.CorreoGrupo, GroupScope.Global, false);
+        }
+
+        public GrupoAdVm GetGrupoDistribucion(string nombreGrupo)
+        {
+            
+            AdFactory = new AdLib();
+            CommonFactory = new Common();
+            var objAd = AdFactory.GetGroup(nombreGrupo);
+
+            var correo = ((DirectoryEntry)objAd.GetUnderlyingObject()).Properties["mail"];
+            var replaceUbicacion = @"CN=" + objAd.Name + ",";
+            var nuevaUbicacion = CommonFactory.GetAppSetting("LdapServidor") + objAd.DistinguishedName.Replace(replaceUbicacion,"");
+
+            var objVm = new GrupoAdVm
+            {
+                NumeroGrupo = 1,
+                NombreGrupo = objAd.Name,
+                NombreGrupoAnterior = objAd.Name,
+                UbicacionGrupo = nuevaUbicacion,
+                CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                ExisteGrupo = true,
+                DescripcionGrupo = objAd.Description,
+                TipoGrupo = (bool)objAd.IsSecurityGroup ? "Grupo Seguridad - " + objAd.GroupScope.Value : "Grupo Distribución - " + objAd.GroupScope.Value
+            };
+
+            return objVm;
+        }
+
+        public void EliminarGrupoDistribucion(GrupoAdVm model)
+        {
+            AdFactory = new AdLib();
+            AdFactory.DeleteGroup(model.NombreGrupo);
+        }
+
+        public bool ActualizarCuentaUsuario(HomeSysWebVm model)
+        {
+            AdFactory = new AdLib();            
+            try
+            {
+                //Actualizar cuenta usuario en el AD
+                var exitoActUsr = AdFactory.UpdateUser(model);                                
+                return exitoActUsr;
             }
             catch (Exception ex)
             {

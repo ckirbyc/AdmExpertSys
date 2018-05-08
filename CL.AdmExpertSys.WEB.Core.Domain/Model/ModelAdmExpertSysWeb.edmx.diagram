@@ -5,9 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1c702e17faf649a386be03bd5d56ca34" Name="Diagram1">
-        <EntityTypeShape EntityType="AdmSysWebModel.AccionInfo" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AdmSysWebModel.LogInfo" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
-        <AssociationConnector Association="AdmSysWebModel.FK_LOG_INFO_ACCION_INFO" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AdmSysWebModel.ACCION_INFO" Width="1.5" PointX="5.75" PointY="8.125" />
+        <EntityTypeShape EntityType="AdmSysWebModel.ESTADO_ASIGNACION_LICENCIA" Width="1.5" PointX="5.75" PointY="1.625" />
+        <EntityTypeShape EntityType="AdmSysWebModel.ESTADO_CUENTA_USUARIO" Width="1.5" PointX="3" PointY="3.5" />
+        <EntityTypeShape EntityType="AdmSysWebModel.ESTADO_SINCRONIZACION" Width="1.5" PointX="7.75" PointY="1.625" />
+        <EntityTypeShape EntityType="AdmSysWebModel.LICENCIAS_O365" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="AdmSysWebModel.LOG_INFO" Width="1.5" PointX="8" PointY="7.875" />
+        <EntityTypeShape EntityType="AdmSysWebModel.MANTENEDOR_LICENCIA" Width="1.5" PointX="6" PointY="4.5" />
+        <EntityTypeShape EntityType="AdmSysWebModel.PERFIL_USUARIO" Width="1.5" PointX="0.75" PointY="8.625" />
+        <EntityTypeShape EntityType="AdmSysWebModel.ROL_CARGO" Width="1.5" PointX="3.75" PointY="0.75" />
+        <AssociationConnector Association="AdmSysWebModel.FK_LOG_INFO_ACCION_INFO" />
+        <AssociationConnector Association="AdmSysWebModel.FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365" />
+        <AssociationConnector Association="AdmSysWebModel.FK_MANTENEDOR_LICENCIA_LICENCIAS_O365" />
+        <AssociationConnector Association="AdmSysWebModel.FK_MANTENEDOR_LICENCIA_ROL_CARGO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

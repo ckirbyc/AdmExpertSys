@@ -27,16 +27,33 @@ namespace CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot
             container.RegisterType<DbContext, AdmSysWebEntities>(new HierarchicalLifetimeManager(), new InjectionConstructor());
             #endregion
 
-            #region ViewModelFactories
+            #region ViewModelFactories            
             container.RegisterType<LogInfoFactory>();
             container.RegisterType<AccionInfoFactory>();
+            container.RegisterType<EstadoCuentaUsuarioFactory>();
+            container.RegisterType<LicenciaO365Factory>();
+            container.RegisterType<MantenedorLicenciaFactory>();
+            container.RegisterType<PerfilUsuarioFactory>();
+            container.RegisterType<RolCargoFactory>();
             #endregion
 
             #region Repositories and services
             container.RegisterType<ILogInfoService, LogInfoService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<IAccionInfoService, AccionInfoService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IPerfilUsuarioService, PerfilUsuarioService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IRolCargoService, RolCargoService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<ILicenciaO365Service, LicenciaO365Service>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IMantenedorLicenciaService, MantenedorLicenciaService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IEstadoCuentaUsuarioService, EstadoCuentaUsuarioService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<ITransversalService, TransversalService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+
             container.RegisterType<ILogInfoRepository, LogInfoRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<IAccionInfoRepository, AccionInfoRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IPerfilUsuarioRepository, PerfilUsuarioRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IRolCargoRepository, RolCargoRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<ILicenciaO365Repository, LicenciaO365Repository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IMantenedorLicenciaRepository, MantenedorLicenciaRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IEstadoCuentaUsuarioRepository, EstadoCuentaUsuarioRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

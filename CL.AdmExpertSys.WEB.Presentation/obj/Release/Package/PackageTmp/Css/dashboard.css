@@ -10,6 +10,11 @@ body {
 	text-rendering: optimizelegibility;
 }
 
+.field-validation-error
+{
+    color:red;
+}
+
 /*** Global add-ons ***/
 .page-header, h1.page-header {
 	border: 0;

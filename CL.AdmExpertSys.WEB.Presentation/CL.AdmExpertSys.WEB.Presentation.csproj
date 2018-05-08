@@ -23,6 +23,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,13 +56,29 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\Libs\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\EntityFramework.dll</HintPath>
+    <Reference Include="ClosedXML, Version=0.92.1.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.92.1\lib\net40\ClosedXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.0.3.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.0.3\lib\net20\ExcelNumberFormat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FastMember.Signed, Version=1.3.0.0, Culture=neutral, PublicKeyToken=9e8f22703bef9a29, processorArchitecture=MSIL">
+      <HintPath>..\packages\FastMember.Signed.1.3.0\lib\net45\FastMember.Signed.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
@@ -85,7 +102,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management">
       <Private>True</Private>
@@ -204,9 +220,17 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdmPersonalController.cs" />
+    <Compile Include="Controllers\BajaCuentaController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CafController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\GruposController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LicCuentaController.cs" />
+    <Compile Include="Controllers\MantenedorLicController.cs" />
+    <Compile Include="Controllers\SyncCuentaController.cs" />
+    <Compile Include="Controllers\UsuarioCreadoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -323,6 +347,7 @@
     <Content Include="Fonts\fontawesome-webfont.svg" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Images\background.png" />
     <Content Include="Img\ban-circle_red.png" />
     <Content Include="Img\bullet_arrow.gif" />
     <Content Include="Img\bullet_arrow.png" />
@@ -359,6 +384,7 @@
     <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\Fechas\ConfiguracionFecha.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Scripts\autoNumeric.js" />
     <Content Include="Scripts\bootstrap-datepicker.es.js" />
@@ -400,6 +426,7 @@
     <Content Include="Scripts\Select2\bootstrap.min.js" />
     <Content Include="Scripts\Select2\jquery.min.js" />
     <Content Include="Scripts\Select2\select2.full.js" />
+    <Content Include="Scripts\Tabla\ConfiguracionTabla.js" />
     <Content Include="Scripts\tableExport.js" />
     <Content Include="Scripts\TableTools\css\dataTables.tableTools.css" />
     <Content Include="Scripts\TableTools\css\dataTables.tableTools.min.css" />
@@ -470,6 +497,26 @@
     <Content Include="Scripts\TableTools\images\psd\file_types.psd" />
     <Content Include="Scripts\TableTools\images\psd\printer.psd" />
     <Content Include="Views\Partials\_CrearUsuario.cshtml" />
+    <Content Include="Views\Caf\Index.cshtml" />
+    <Content Include="Views\AdmPersonal\Index.cshtml" />
+    <Content Include="Views\UsuarioCreado\Index.cshtml" />
+    <Content Include="Views\Partials\_Menu.cshtml" />
+    <Content Include="Views\SyncCuenta\Index.cshtml" />
+    <Content Include="Views\LicCuenta\Index.cshtml" />
+    <Content Include="Views\BajaCuenta\Index.cshtml" />
+    <Content Include="Views\BajaCuenta\_Index.cshtml" />
+    <Content Include="Views\MantenedorLic\Index.cshtml" />
+    <Content Include="Views\MantenedorLic\Create.cshtml" />
+    <Content Include="Views\MantenedorLic\Edit.cshtml" />
+    <Content Include="Views\MantenedorLic\Details.cshtml" />
+    <Content Include="Views\MantenedorLic\Delete.cshtml" />
+    <Content Include="Views\Grupos\Index.cshtml" />
+    <Content Include="Views\Grupos\Create.cshtml" />
+    <Content Include="Views\Grupos\Edit.cshtml" />
+    <Content Include="Views\Grupos\Delete.cshtml" />
+    <Content Include="Views\Home\EditCuenta.cshtml" />
+    <Content Include="Views\MantenedorLic\DescargarPlanilla.cshtml" />
+    <Content Include="Views\MantenedorLic\CargarPlanilla.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -478,6 +525,10 @@
     <Folder Include="SqlServerTypes\x86\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.CommonLib\CL.AdmExpertSys.WEB.Application.CommonLib.csproj">
+      <Project>{5baa8a83-fc3d-423c-8ec0-3453f56c0be4}</Project>
+      <Name>CL.AdmExpertSys.WEB.Application.CommonLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj">
       <Project>{ff0584ab-f5df-4342-b2eb-6e56bec43baa}</Project>
       <Name>CL.AdmExpertSys.WEB.Core.Domain.Contracts</Name>

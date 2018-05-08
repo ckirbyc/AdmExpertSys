@@ -134,11 +134,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             System.Web.HttpContext ctx = System.Web.HttpContext.Current;
 
             // check  sessions here
-            if (ctx.Session["UsuarioVM"] == null)
-            {
-                //return RedirectToAction("IndexLogin", "Error", new { message = "Su sesión ha expirado" });
-                //filterContext.Result = new RedirectResult("~/Home/Index");
-                //filterContext.Result = RedirectToAction("IndexLogin", "Error", new { message = "Su sesión ha expirado" });
+            if (ctx.Session["AdmExpertSys"] == null)
+            {                
                 filterContext.Result = RedirectToAction("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." });
                 return;
             }

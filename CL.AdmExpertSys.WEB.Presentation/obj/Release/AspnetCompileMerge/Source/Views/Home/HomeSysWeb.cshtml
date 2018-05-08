@@ -4,70 +4,6 @@
     ViewBag.Title = "Home SysWeb";
     Layout = "~/Views/_Main.cshtml";
 }
-
-@section PanelPrimario{
-    <br />
-}
-
-@section Menu{
-    <div class="panel panel-primary">
-        <ul class="nav nav-sidebar">
-            <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Menu Uno</a></li>
-            <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Menu Dos</a></li>
-        </ul>
-        <div class="">
-            <div class="handCursor" data-toggle="collapse" data-parent="#accordion" href="#menuCollapse">
-                <ul class="nav nav-sidebar">
-                    <li><a href=""><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>General</a></li>
-                </ul>
-            </div>
-            <div id="menuCollapse" class="panel-collapse collapse">
-                <div>
-                    <div>
-                        <ul class="nav nav-sidebar">
-                            <ul class="nav nav-sidebar">
-                                <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>General Uno</a></li>
-                                <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>General Dos</a></li>
-                            </ul>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    </div>
-    @*<div class="panel panel-collapse panel-warning">
-        <div class="panel-heading">
-            <h4 class="text-center panel-title text-danger">Alertas</h4>
-            <span class="pull-right glyphicon glyphicon-bell text-danger"></span>
-        </div>
-        <ul class="nav nav-sidebar">
-            <ul class="nav nav-sidebar">
-                <li>
-                    <a href="#">
-                        Usted tiene alarma(s) sin revisar
-                    </a>
-                </li>
-            </ul>
-        </ul>
-    </div>
-    <div class="panel panel-collapse panel-info">
-        <div class="panel-heading">
-            <h4 class="text-center panel-title">Tareas</h4>
-            <span class="pull-right glyphicon glyphicon-calendar"></span>
-        </div>
-        <ul class="nav nav-sidebar">
-            <ul class="nav nav-sidebar">
-                <li>
-                    <a href="#">
-                        Usted tiene tarea(s) pendientes
-                    </a>
-                </li>
-            </ul>
-        </ul>
-    </div>*@
-}
-
 <!-- Nav tabs -->
 <div class="row">
     <ul class="nav nav-tabs homeTabs" role="tablist" id="myTab">
@@ -83,11 +19,7 @@
                 <h3>Crear Buzón Compartido</h3>
             </a>
         </li>
-        <li id="liAdministracion">
-            @*<a role="tab" data-toggle="tab" id="Administración">
-                <div class="icons_ppal graph"></div>
-                <h3>Pestaña Tres</h3>
-            </a>*@
+        <li id="liAdministracion">            
         </li>
     </ul>
 </div>
@@ -127,26 +59,6 @@
                 $("#liAdministracion").addClass("active");
             }
         }
-    });
-
-    //$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    //    $.ajax({
-    //        url: '/Home/ObtenerNegocios',
-    //        type: 'POST',
-    //        contentType: "application/json; charset=utf-8",
-    //        async: false,
-    //        dataType: 'json',
-    //        processData: false,
-    //        data: JSON.stringify({ idetapa: e.target.id == "Generación" ? 1 : e.target.id == "Estructuración" ? 2 : 3 }),
-    //        success: function (data) {
-    //            $("#grillaNegocio").html(data.Html);
-    //        },
-    //        complete: function () {
-    //            setTimeout(function () {
-    //                $("#loading-modal").hide();
-    //            }, 1000);
-    //        }
-    //    });
-    //});
+    });    
 </script>
 

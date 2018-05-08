@@ -61,6 +61,10 @@
       <Project>{41f020d6-a334-4d00-b974-bf8ba71bdea1}</Project>
       <Name>CL.AdmExpertSys.Web.Infrastructure.LogTransaccional</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CL.AdmExpertSys.WEB.Presentation.ViewModel\CL.AdmExpertSys.WEB.Presentation.ViewModel.csproj">
+      <Project>{4e9666d7-8b7a-4690-8c66-24ab9056364a}</Project>
+      <Name>CL.AdmExpertSys.WEB.Presentation.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

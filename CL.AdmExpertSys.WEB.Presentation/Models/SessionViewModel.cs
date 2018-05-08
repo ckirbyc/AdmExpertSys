@@ -1,8 +1,8 @@
 ﻿
-using System;
-using System.Web;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
+using System;
+using System.Web;
 
 namespace CL.AdmExpertSys.WEB.Presentation.Models
 {

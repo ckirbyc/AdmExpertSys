@@ -5,7 +5,7 @@ using CL.AdmExpertSys.WEB.Core.Domain.Model;
 
 namespace CL.AdmExpertSys.WEB.Application.Services
 {
-    public class LogInfoService : BaseService<LogInfo>, ILogInfoService
+    public class LogInfoService : BaseService<LOG_INFO>, ILogInfoService
     {
         protected ILogInfoRepository Repo;
 

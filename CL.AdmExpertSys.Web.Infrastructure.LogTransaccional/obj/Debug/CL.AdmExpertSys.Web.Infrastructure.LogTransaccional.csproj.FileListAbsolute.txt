@@ -19,3 +19,10 @@ C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Log
 C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csprojResolveAssemblyReference.cache
 C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
 C:\_personal\_mauro\_fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csprojResolveAssemblyReference.cache
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb

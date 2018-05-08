@@ -6,7 +6,7 @@ using Pragma.Commons.Data;
 
 namespace CL.AdmExpertSys.WEB.Infrastructure.Data.Repository.Implementation
 {
-    public class AccionInfoRepository : Repository<AccionInfo>, IAccionInfoRepository
+    public class AccionInfoRepository : Repository<ACCION_INFO>, IAccionInfoRepository
     {
         public AccionInfoRepository(DbContext context)
             : base(context)
