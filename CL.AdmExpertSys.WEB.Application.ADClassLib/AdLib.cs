@@ -418,29 +418,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         }
 
         public bool UpdateUser(HomeSysWebVm usrData)
-        {
-            if (usrData.CambioPatchOu)
-            {
-                using (UserPrincipal oUserPrincipal = GetUser(usrData.NombreUsuario))
-                {
-                    if (oUserPrincipal != null)
-                    {
-                        string dn = oUserPrincipal.DistinguishedName;
-                        var sLdapAsAux = _sLdapServer + dn;
-
-                        using (var eLocation = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
-                        {
-                            using (var nLocation = new DirectoryEntry(usrData.PatchOu, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
-                            {
-                                eLocation.MoveTo(nLocation);
-                                nLocation.Close();
-                            }
-                            eLocation.Close();
-                        }
-                    }
-                }
-            }            
-
+        {                        
             using (UserPrincipal oUserPrincipalAux = GetUser(usrData.NombreUsuario))
             {
                 string dn = oUserPrincipalAux.DistinguishedName;
@@ -506,6 +484,23 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
 
                     eUserActual.CommitChanges();
                     eUserActual.Close();
+
+                    //Mueve cuenta de ubicacion
+                    if (usrData.CambioPatchOu)
+                    {
+                        if (oUserPrincipalAux != null)
+                        {                            
+                            using (var eLocation = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                            {
+                                using (var nLocation = new DirectoryEntry(usrData.PatchOu, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                                {
+                                    eLocation.MoveTo(nLocation);
+                                    nLocation.Close();
+                                }
+                                eLocation.Close();
+                            }
+                        }
+                    }
                 }
             }
 

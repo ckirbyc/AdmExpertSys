@@ -420,6 +420,7 @@
     <Content Include="Scripts\jstree\jstree.js" />
     <Content Include="Scripts\jstree\jstree.min.js" />
     <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\Menu\ActivaMenu.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\printArea.js" />
     <Content Include="Scripts\printMedia.js" />

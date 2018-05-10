@@ -188,6 +188,10 @@
 <div class="row">
     <a href="@Url.Action("Index", "UsuarioCreado")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
 </div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#EditarCuenta').addClass('active');
+</script>
 <script>
     $("#UpnPrefijo").attr("disabled", false);
     $("#UpnPrefijo").prop('disabled', 'disabled');
@@ -472,21 +476,42 @@
                         if (data.Validar) {
                             $("#btnSubmit").attr("disabled", true);
 
-                            BootstrapDialog.show({
-                                title: '¡Proceso Exitoso!',
-                                message: '<strong>Cuenta modificada correctamente. Se han eliminado los grupos que tenía asociados. Favor asignar nuevos Grupos.</strong>',
-                                type: BootstrapDialog.TYPE_SUCCESS,
-                                buttons:
-                                [
-                                    {
-                                        label: 'Aceptar',
-                                        cssClass: 'btn-success',
-                                        action: function (dialog) {
-                                            dialog.close();
+                            if ($("#CambioPatchOu").val() == 'true') {
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Cuenta modificada correctamente. Se han eliminado los grupos que tenía asociados. Favor asignar nuevos Grupos.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();
+                                            }
                                         }
-                                    }
-                                ]
-                            });
+                                    ]
+                                });
+                            }
+                            else
+                            {
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Cuenta modificada correctamente.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();
+                                            }
+                                        }
+                                    ]
+                                });
+                            }
+                            
                         } else {
                             $("#btnSubmit").attr("disabled", false);
 
