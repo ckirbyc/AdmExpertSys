@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2147016646</HResult>
+  <Message>El servidor no es funcional.
+</Message>
+  <Source>System.DirectoryServices</Source>
+  <StackTrace>   en System.DirectoryServices.DirectoryEntry.Bind(Boolean throwIfFail)
+   en System.DirectoryServices.DirectoryEntry.Bind()
+   en System.DirectoryServices.DirectoryEntry.get_IsContainer()
+   en System.DirectoryServices.DirectoryEntries.ChildEnumerator..ctor(DirectoryEntry container)
+   en System.DirectoryServices.DirectoryEntries.GetEnumerator()
+   en CL.AdmExpertSys.WEB.Application.ADClassLib.AdLib.EnumerateOu() en C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\AdLib.cs:línea 879
+   en CL.AdmExpertSys.WEB.Presentation.Mapping.Factories.HomeSysWebFactory.GetArquitecturaArbolAd() en C:\Users\ckirby\Dropbox\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation.Mapping\Factories\HomeSysWebFactory.cs:línea 172</StackTrace>
+  <Source>System.DirectoryServices</Source>
+  <Message>El servidor no es funcional.
+</Message>
+</ExceptionSerialize>

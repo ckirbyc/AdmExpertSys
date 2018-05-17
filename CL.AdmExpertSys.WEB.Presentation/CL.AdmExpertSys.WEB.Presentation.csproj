@@ -229,6 +229,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LicCuentaController.cs" />
     <Compile Include="Controllers\MantenedorLicController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\SyncCuentaController.cs" />
     <Compile Include="Controllers\UsuarioCreadoController.cs" />
     <Compile Include="Global.asax.cs">
@@ -421,6 +422,7 @@
     <Content Include="Scripts\jstree\jstree.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\Menu\ActivaMenu.js" />
+    <Content Include="Scripts\Menu\ActivaMenu1.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\printArea.js" />
     <Content Include="Scripts\printMedia.js" />
@@ -518,6 +520,7 @@
     <Content Include="Views\Home\EditCuenta.cshtml" />
     <Content Include="Views\MantenedorLic\DescargarPlanilla.cshtml" />
     <Content Include="Views\MantenedorLic\CargarPlanilla.cshtml" />
+    <Content Include="Views\Reportes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

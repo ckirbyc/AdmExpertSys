@@ -6,8 +6,8 @@ using CL.AdmExpertSys.WEB.Application.Contracts.Services;
 using CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
+using ClosedXML.Excel;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
@@ -123,11 +123,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 var apellidos = CommonFactory.UppercaseWords(model.Apellidos.Trim().ToLower());
                 var username = model.NombreUsuario.ToLower().Trim();
                 var pwd = model.Clave.Trim();
-                var descripcion = model.Descripcion.Trim();
-                //var sTenantName = CommonFactory.GetAppSetting("TenantName");
-                //var sPublicDomain = CommonFactory.GetAppSetting("PublicDomain");
-                //var sLicense = sTenantName + ":" + model.Licencia.Trim();
-                //var sUpn = username + model.UpnPrefijo;
+                var descripcion = model.Descripcion.Trim();               
 
                 //Creo el usuario en AD
                 if (model.ExisteUsuario)
@@ -404,18 +400,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                                 };
                                 listaGrupo.Add(grupoVm);
                                 i++;
-                            }
-                            //else
-                            //{
-                            //    var grupoVm = new GrupoAdVm
-                            //    {
-                            //        NumeroGrupo = i,
-                            //        NombreGrupo = nomGrupo,
-                            //        UbicacionGrupo = string.Empty,
-                            //        ExisteGrupo = false
-                            //    };
-                            //    listaGrupo.Add(grupoVm);
-                            //}
+                            }                            
                         }
                     }
                     //i++;
@@ -682,6 +667,136 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 Utils.LogErrores(ex);
                 return false;
             }
+        }
+
+        public List<UsuarioAd> ObtenerListaCuentaUsuario()
+        {
+            var listaAccount = new List<UsuarioAd>();
+            try
+            {
+                AdFactory = new AdLib();
+                listaAccount = AdFactory.GetListAccountUsers();
+                return listaAccount;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return listaAccount;
+            }
+        }
+
+        public XLWorkbook ExportarArchivoExcelReporteCuentaUsuario()
+        {
+            try
+            {
+                using (var workbook = new XLWorkbook(XLEventTracking.Disabled))
+                {
+                    using (var hojaRep = workbook.Worksheets.Add("Reporte Cuentas"))
+                    {
+                        //Imprime Encabezado
+                        hojaRep.Cell(1, 1).Value = "Nombre";
+                        hojaRep.Cell(1, 1).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 1).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 1).Style.Font.Bold = true;
+
+                        hojaRep.Cell(1, 2).Value = "Cuenta";
+                        hojaRep.Cell(1, 2).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 2).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 2).Style.Font.Bold = true;
+
+                        hojaRep.Cell(1, 3).Value = "Descripción";
+                        hojaRep.Cell(1, 3).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 3).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 3).Style.Font.Bold = true;
+
+                        hojaRep.Cell(1, 4).Value = "Upn Prefijo";
+                        hojaRep.Cell(1, 4).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 4).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 4).Style.Font.Bold = true;
+
+                        hojaRep.Cell(1, 5).Value = "Ubicación";
+                        hojaRep.Cell(1, 5).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 5).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 5).Style.Font.Bold = true;
+
+                        CommonFactory = new Common();
+                        var cantNivel = Convert.ToInt64(CommonFactory.GetAppSetting("NivelesArbolAd"));
+                        var numColCabecera = 6;
+
+                        for (int i = 1; i <= cantNivel; i++)
+                        {
+                            var nombreNivelCabecera = @"Nivel " + i.ToString();
+                            hojaRep.Cell(1, numColCabecera).Value = nombreNivelCabecera;
+                            hojaRep.Cell(1, numColCabecera).Style.Font.FontColor = XLColor.White;
+                            hojaRep.Cell(1, numColCabecera).Style.Fill.BackgroundColor = XLColor.Red;
+                            hojaRep.Cell(1, numColCabecera).Style.Font.Bold = true;
+
+                            numColCabecera++;
+                        }
+
+                        //Obtener los datos para poblar archivo
+                        var listCtaOrdenada = ObtenerListaCuentaUsuario().OrderBy(x => x.DistinguishedName);
+                        var listaExcelRepCtaUsr = new List<string[]>(listCtaOrdenada.Count());
+                        var cantColArray = 5 + cantNivel;
+                        foreach (var ctaUsr in listCtaOrdenada)
+                        {
+                            var listaRepCtaUsr = new string[cantColArray];
+                            listaRepCtaUsr[0] = ctaUsr.Name;
+                            listaRepCtaUsr[1] = ctaUsr.SamAccountName;
+                            listaRepCtaUsr[2] = ctaUsr.Description;
+                            listaRepCtaUsr[3] = ctaUsr.UpnPrefijo;
+                            listaRepCtaUsr[4] = ctaUsr.DistinguishedName;
+
+                            var dnCompleto = ctaUsr.DistinguishedName;
+                            var listaOu = new List<OuExcelVm>();                                                       
+                            
+                            for(int j=1; j<= cantNivel; j++)
+                            {                                
+                                int startIndex = dnCompleto.IndexOf("OU=");
+                                if (startIndex > 0)
+                                {
+                                    int length = dnCompleto.Length - startIndex;
+                                    var dnNewAux = dnCompleto.Substring(startIndex, length);
+                                    int startlengthAux = dnNewAux.IndexOf(",");
+                                    if (startlengthAux > 0)
+                                    {
+                                        var dnNew = dnNewAux.Substring(0, startlengthAux);                                        
+                                        var ouVm = new OuExcelVm
+                                        {
+                                            Numero = j,
+                                            Nombre = dnNew.Replace("OU=", string.Empty)
+                                        };
+                                        listaOu.Add(ouVm);                                        
+                                        dnCompleto = dnCompleto.Replace(dnNew, string.Empty);
+                                    }                                    
+                                }
+                                else
+                                {
+                                    break;
+                                }                                
+                            }
+
+                            var colArray = 5;
+                            foreach (var ouVm in listaOu.OrderByDescending(x => x.Numero))
+                            {
+                                listaRepCtaUsr[colArray] = ouVm.Nombre;
+                                colArray++;
+                            }
+
+                            listaExcelRepCtaUsr.Add(listaRepCtaUsr);                            
+                        }
+
+                        hojaRep.Cell(2, 1).InsertData(listaExcelRepCtaUsr.AsEnumerable());
+                        hojaRep.Columns().AdjustToContents();
+                    }
+                    return workbook;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw;
+            }            
         }
     }
 }

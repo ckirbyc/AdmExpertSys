@@ -993,5 +993,55 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         {
             return _sUpnPrefijo.Split(';').ToDictionary(upnPref => upnPref);
         }
+
+        public List<UsuarioAd> GetListAccountUsers()
+        {
+            var listaUser = new List<UsuarioAd>();
+            using (PrincipalContext oPrincipalContext = GetPrincipalContext())
+            {
+                using (UserPrincipal objUser = new UserPrincipal(oPrincipalContext))
+                {
+                    objUser.Enabled = true;                    
+                    using (PrincipalSearcher pSearch = new PrincipalSearcher(objUser))
+                    {
+                        foreach (UserPrincipal oUserPrincipal in pSearch.FindAll())
+                        {
+                            if (oUserPrincipal != null)
+                            {
+                                var upnPrefijoFinal = string.Empty;
+                                if (oUserPrincipal.EmailAddress != null)
+                                {
+                                    var upnPrefijo = oUserPrincipal.EmailAddress;
+                                    var startIndex = upnPrefijo.IndexOf("@");
+                                    var length = upnPrefijo.Length - startIndex;
+                                    upnPrefijoFinal = upnPrefijo.Substring(startIndex, length);
+                                }                                
+
+                                var usuarioAd = new UsuarioAd
+                                {
+                                    AccountExpirationDate = oUserPrincipal.AccountExpirationDate,
+                                    Description = oUserPrincipal.Description,
+                                    DisplayName = oUserPrincipal.DisplayName,
+                                    DistinguishedName = oUserPrincipal.DistinguishedName,
+                                    EmailAddress = oUserPrincipal.EmailAddress,
+                                    GivenName = oUserPrincipal.GivenName,
+                                    Guid = oUserPrincipal.Guid,
+                                    MiddleName = oUserPrincipal.MiddleName,
+                                    Name = oUserPrincipal.Name,
+                                    SamAccountName = oUserPrincipal.SamAccountName,
+                                    Surname = oUserPrincipal.Surname,
+                                    Enabled = oUserPrincipal.Enabled,
+                                    EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado",                                    
+                                    UpnPrefijo = upnPrefijoFinal
+                                };
+                                listaUser.Add(usuarioAd);
+                            }
+                        }
+
+                        return listaUser;
+                    }                                      
+                }                             
+            }                                
+        }
     }
 }
