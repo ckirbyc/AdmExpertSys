@@ -21,7 +21,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 HomeSysWebFactory = new HomeSysWebFactory();
                 CommonFactory = new Common();
                 var ouAd = CommonFactory.GetAppSetting("RutaOuDominio");
-                var listaGrupo = HomeSysWebFactory.ObtenerListadoGrupoAdByOu(ouAd);
+                var listaGrupo = HomeSysWebFactory.ObtenerListadoGrupoAdByOuMantGroup(ouAd);
                 return View(listaGrupo);
             }
             catch (Exception ex)

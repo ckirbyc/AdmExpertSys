@@ -1,0 +1,157 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.UsuarioPerfilVm
+@{
+    ViewBag.Title = "Perfil Usuario";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Crear</h1>
+    <div class="form-inline col-md-3">
+        <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+            <span class="glyphicon glyphicon-plus"></span>
+            <input type="submit" value="Crear" class="btnInput" id="Crear" data-loading-text="Creando..." />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <h2 class="sub-header">Usuario Perfil</h2>
+    <div class="col-md-8">        
+        <table class="table table-secondary">
+            <tbody>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.Usuario1)</th>
+                    <td>
+                        @Html.TextBoxFor(m => m.Usuario1, new { @class = "form-control" })                        
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.PerfilId)</th>
+                    <td>
+                        @Html.DropDownListFor(m => m.PerfilId, new SelectList(Model.PerfilSelectListItem, "Value", "Text", ""), "--Seleccione--", new { @class = "form-control" })                        
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.EsAdm)</th>
+                    <td>
+                        @Html.CheckBoxFor(m => m.EsAdm, new { @class = "form-control" })
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu2.js"></script>
+<script>
+    $('#UsrPerfil').addClass('active');
+</script>
+<script>
+    $("#btnSubmit").on("click", function () {
+        var valData = true;
+
+        if ($("#Usuario1").val() == '')
+        {
+            valData = false;
+
+            BootstrapDialog.alert({
+                title: '¡Validación!',
+                message: '<strong>Debe asignar un Usuario.</strong>',
+                type: BootstrapDialog.TYPE_DANGER
+            });
+        }
+        if ($("#PerfilId").val() == '' && valData == true) {
+            valData = false;
+
+            BootstrapDialog.alert({
+                title: '¡Validación!',
+                message: '<strong>Debe asignar un Perfil.</strong>',
+                type: BootstrapDialog.TYPE_DANGER
+            });
+        }
+
+        if (valData == true)
+        {
+            var $btn = $("#Crear");
+            $btn.button('loading');
+
+            if (validarUsuario() == true) {                
+                if (guardarUsuario() == true)
+                {                    
+                    $btn.button('reset');                                            
+                    window.location = '@Url.Action("Index")';
+                }                
+                $btn.button('reset');
+                BootstrapDialog.alert({
+                    title: '¡Error al guardar!',
+                    message: '<strong>Se ha producido un error al guardar la información. Favor asegúrese que la cuenta no exista.</strong>',
+                    type: BootstrapDialog.TYPE_DANGER
+                });
+            }
+            else {
+                $btn.button('reset');
+                BootstrapDialog.alert({
+                    title: '¡Validación!',
+                    message: '<strong>Usuario no existe en el directorio activo de la Empresa.</strong>',
+                    type: BootstrapDialog.TYPE_DANGER
+                });
+            }
+        }
+    });
+
+    function validarUsuario()
+    {
+        var varExito = false;
+        var nombreUsuario = $("#Usuario1").val();
+
+        $.ajax({
+            url: '@Url.Action("VerificarUsuario", "Home")',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            dataType: 'json',
+            processData: false,
+            data: JSON.stringify({ nombreUsuario: nombreUsuario }),
+            success: function (data) {
+                varExito = data.Validar;
+            },
+            error: function (data) {
+                varExito = false;
+            }
+        });
+
+        return varExito;
+    }
+
+    function guardarUsuario()
+    {
+        var varExito = false;
+        var usuario = $("#Usuario1").val();
+        var perfil = $("#PerfilId").val();
+        var esAdm = $("#EsAdm").val();
+
+        $.ajax({
+            url: '@Url.Action("GuardarUsuario", "UsuarioPerfil")',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            dataType: 'json',
+            processData: false,
+            data: JSON.stringify({ usuario: usuario, perfil: perfil, esAdm: esAdm }),
+            success: function (data) {
+                varExito = data.Validar;
+                if (varExito == true && data.Mensaje != '')
+                {
+                    varExito = false;
+                }
+            },
+            error: function (data) {
+                varExito = false;
+            }
+        });
+
+        return varExito;
+    }
+</script>
+

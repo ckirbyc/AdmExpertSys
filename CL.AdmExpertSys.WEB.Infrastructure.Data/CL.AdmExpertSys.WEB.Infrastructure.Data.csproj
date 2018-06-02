@@ -59,6 +59,7 @@
     <Compile Include="Repository\Implementation\MantenedorLicenciaRepository.cs" />
     <Compile Include="Repository\Implementation\PerfilUsuarioRepository.cs" />
     <Compile Include="Repository\Implementation\RolCargoRepository.cs" />
+    <Compile Include="Repository\Implementation\UsuarioRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj">

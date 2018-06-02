@@ -26,11 +26,12 @@
     </div>
     <div class="row">
         <h2 class="sub-header">Cuenta Usuario</h2>
-        <div class="col-md-8">
+        <div class="col-md-12">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
             @Html.HiddenFor(m => m.PatchOu)
             @Html.HiddenFor(m => m.ExisteUsuario)
+            @Html.HiddenFor(m => m.CambioPatchOu)
             <input type="hidden" id="NombreGrupoSel" value="" />
             <table class="table table-secondary">
                 <tbody>
@@ -44,6 +45,12 @@
                             <div id="btnVerificar" class="btn btn-primary pull-right btn-sm">
                                 <span class="glyphicon glyphicon-search"></span>
                                 <input type="button" value="Buscar" class="btnInput" id="Buscar" />
+                            </div>
+                        </td>
+                        <td>
+                            <div id="btnDesUsr" class="btn btn-primary pull-right btn-sm">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <input type="button" value="Deshabilitar" class="btnInput" id="DeshabilitarUsr" />
                             </div>
                         </td>
                     </tr>
@@ -187,9 +194,14 @@
 <div class="row">
     <a href="@Url.Action("Index", "UsuarioCreado")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
 </div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#EditarCuenta').addClass('active');
+</script>
 <script>
     $("#UpnPrefijo").attr("disabled", false);
     $("#UpnPrefijo").prop('disabled', 'disabled');
+    $("#btnDesUsr").attr("disabled", true);
     $("#btnLicE1").attr("disabled", true);
     $("#btnLicE3").attr("disabled", true);
     $("#btnLicExO").attr("disabled", true);
@@ -197,8 +209,9 @@
         $('#jstree').jstree();
         //Seleccionar OU desde el Arbol
         $('#jstree').on("changed.jstree", function (e, data) {                        
-            var ldap = data.selected[0];
-            $("#PatchOu").val(ldap);            
+            var ldap = data.selected[0];                                       
+            $("#PatchOu").val(ldap);
+            $("#CambioPatchOu").val(true);
         });
 
         $("#Apellidos").off('blur').blur(function () {
@@ -279,7 +292,8 @@
         function habilitarCampos(data)
         {
             $('#jstree').jstree("deselect_all");
-            $("#btnSubmit").attr("disabled", false);            
+            $("#btnSubmit").attr("disabled", false);  
+            $("#btnDesUsr").attr("disabled", false);
             $("#UpnPrefijo").attr("disabled", false);            
             $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);
             $("#Nombres").removeAttr("disabled");
@@ -304,12 +318,14 @@
             var myLiId = '#' + ubicGrupo;
             $("#jstree").jstree("select_node", myLiId);
             $("#PatchOu").val(ubicGrupo);
+            $("#CambioPatchOu").val(false);
         }
 
         function desHabilitarCampos(data)
         {
             $('#jstree').jstree("deselect_all");
-            $("#btnSubmit").attr("disabled", true);            
+            $("#btnSubmit").attr("disabled", true);     
+            $("#btnDesUsr").attr("disabled", true);
             $("#UpnPrefijo").attr("disabled", true);
             $("#UpnPrefijo").val('');
             $("#Nombres").attr("disabled", true);
@@ -328,6 +344,7 @@
             $("#CodigoLicencia").attr("disabled", true);
             $("#CodigoLicencia").val('');
             $("#PatchOu").val('');
+            $("#CambioPatchOu").val(false);
         }
 
         function listaGruposAdByOu()
@@ -432,7 +449,8 @@
                     'PatchOu': $('#PatchOu').val(),
                     'ExisteUsuario': $("#ExisteUsuario").val(),
                     'Descripcion': $("#Descripcion").val(),
-                    'CodigoLicencia': $("#CodigoLicencia").val()
+                    'CodigoLicencia': $("#CodigoLicencia").val(),
+                    'CambioPatchOu': $("#CambioPatchOu").val()
                 }
             };
 
@@ -467,21 +485,42 @@
                         if (data.Validar) {
                             $("#btnSubmit").attr("disabled", true);
 
-                            BootstrapDialog.show({
-                                title: '¡Proceso Exitoso!',
-                                message: '<strong>Cuenta modificada correctamente. Se han eliminado los grupos que tenía asociados. Favor asignar nuevos Grupos.</strong>',
-                                type: BootstrapDialog.TYPE_SUCCESS,
-                                buttons:
-                                [
-                                    {
-                                        label: 'Aceptar',
-                                        cssClass: 'btn-success',
-                                        action: function (dialog) {
-                                            dialog.close();
+                            if ($("#CambioPatchOu").val() == 'true') {
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Cuenta modificada correctamente. Se han eliminado los grupos que tenía asociados. Favor asignar nuevos Grupos.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();
+                                            }
                                         }
-                                    }
-                                ]
-                            });
+                                    ]
+                                });
+                            }
+                            else
+                            {
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Cuenta modificada correctamente.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();
+                                            }
+                                        }
+                                    ]
+                                });
+                            }
+                            
                         } else {
                             $("#btnSubmit").attr("disabled", false);
 
@@ -525,6 +564,86 @@
                                 }
                             }
                         ]
+                    });
+                }
+            });
+        }
+
+        $("#btnDesUsr").off('click').click(function () {
+            $("#loading-modal").show();
+            $("#SeccionAsociarGrupo").hide();
+            setTimeout(function () {
+                deshabilitarUsuario();
+            }, 1000);
+        });
+
+        function deshabilitarUsuario() {
+            var objEnvio =
+            {
+                model:
+                {
+                    'Nombres': $('#Nombres').val(),
+                    'Apellidos': $('#Apellidos').val(),
+                    'NombreUsuario': $('#NombreUsuario').val(),
+                    'Clave': $('#Clave').val(),
+                    'Licencia': $('#LicenciaSel').val(),
+                    'UpnPrefijo': $('#UpnPrefijo').val(),
+                    'NombreCompleto': $('#NombreCompleto').val(),
+                    'Correo': $('#Correo').val(),
+                    'PatchOu': $('#PatchOu').val(),
+                    'ExisteUsuario': $("#ExisteUsuario").val(),
+                    'Descripcion': $("#Descripcion").val()
+                }
+            };
+            $.ajax({
+                url: '@Url.Action("DeshabilitarUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ model: objEnvio.model }),
+                success: function (data) {
+                    if (data.Error != '') {
+                        $("#btnSubmit").attr("disabled", true);                                                 
+                        $("#btnDesUsr").attr("disabled", false);
+                        BootstrapDialog.alert({
+                            title: '¡Error al Deshabilitar Usuario!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    } else {
+                        if (data.Validar) {
+                            $("#btnSubmit").attr("disabled", true);                                                                                        
+                            $("#btnDesUsr").attr("disabled", true);
+                            BootstrapDialog.alert({
+                                title: '¡Proceso Exitoso!',
+                                message: '<strong>Usuario deshabilitado correctamente</strong>',
+                                type: BootstrapDialog.TYPE_SUCCESS
+                            });
+                        } else {
+                            $("#btnSubmit").attr("disabled", true);                                                            
+                            $("#btnDesUsr").attr("disabled", false);
+                            BootstrapDialog.alert({
+                                title: '¡Error al Deshabilitar Usuario!',
+                                message: '<strong>No se pudo deshabilitar usuario, intente más tarde.</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                },
+                error: function (data) {
+                    $("#btnSubmit").attr("disabled", true);                                                                
+                    $("#btnDesUsr").attr("disabled", false);
+                    $("#loading-modal").hide();
+
+                    BootstrapDialog.alert({
+                        title: '¡Error al Deshabilitar Usuario!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
                     });
                 }
             });

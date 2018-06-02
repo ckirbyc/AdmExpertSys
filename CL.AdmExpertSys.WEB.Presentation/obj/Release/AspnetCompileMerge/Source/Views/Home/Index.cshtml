@@ -17,14 +17,14 @@
                         <img class="img-responsive saniHeaderLoginImg" src="@Url.Content("~/Img/logo_header.png")" width="50%" alt="Agrosuper logo">
                     </div>
                     <div class="text-left">
-                        <h4 class="saniHeaderLogin colorWhite">Easy User</h4>
+                        <h4 class="saniHeaderLogin colorWhite">Easy User - v 2.0</h4>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-5">
+                    @*<div class="col-md-5">
                         <img alt="Snoopy image" class="img-responsive" src="~/Img/vecinos.png">
                         <div class="pull-left">v 1.0.0.0</div>
-                    </div>
+                    </div>*@
                     @using (Html.BeginForm("ValidaLogin", "Home", FormMethod.Post, new { id = "formLogin" }))
                     {
                         @Html.AntiForgeryToken()

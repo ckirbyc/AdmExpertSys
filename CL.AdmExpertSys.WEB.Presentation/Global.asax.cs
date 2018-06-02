@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 
 namespace CL.AdmExpertSys.WEB.Presentation
 {
@@ -34,10 +35,9 @@ namespace CL.AdmExpertSys.WEB.Presentation
         {
             try
             {
-                HttpContext.Current.Session["AdmExpertSys"] = "AdmExpertSys";
+                HttpContext.Current.Session["AdmExpertSys"] = "AdmExpertSys";                
                 var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
-                SessionViewModel.EstructuraArbolAd = estructura;
-                //ParametrosServices.ActualizaDiccionarioParametros();
+                SessionViewModel.EstructuraArbolAd = estructura;                
             }
             catch (Exception ex)
             {

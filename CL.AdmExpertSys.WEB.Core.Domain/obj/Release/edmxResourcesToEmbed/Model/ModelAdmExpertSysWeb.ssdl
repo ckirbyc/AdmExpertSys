@@ -32,7 +32,7 @@
     <Property Name="Eliminado" Type="bit" Nullable="false" />
     <Property Name="FechaCreacion" Type="datetime" Nullable="false" />
     <Property Name="FechaBaja" Type="datetime" />
-    <Property Name="CodigoLicencia" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="CodigoLicencia" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="Vigente" Type="bit" Nullable="false" />
     <Property Name="LicenciaAsignada" Type="bit" Nullable="false" />
     <Property Name="Clave" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -68,7 +68,7 @@
       <PropertyRef Name="IdMantenedorLicencia" />
     </Key>
     <Property Name="IdMantenedorLicencia" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Codigo" Type="numeric" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Codigo" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="RolCargoId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
     <Property Name="LicenciaId" Type="numeric" Precision="18" Scale="0" Nullable="false" />
     <Property Name="Vigente" Type="bit" Nullable="false" />
@@ -79,6 +79,7 @@
     </Key>
     <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NombrePerfil" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Vigente" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="ROL_CARGO">
     <Key>
@@ -87,6 +88,16 @@
     <Property Name="IdRolCargo" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Vigente" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="USUARIO">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Usuario" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="PerfilId" Type="int" />
+    <Property Name="Visible" Type="bit" Nullable="false" />
+    <Property Name="EsAdm" Type="bit" Nullable="false" />
   </EntityType>
   <Association Name="FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365">
     <End Role="LICENCIAS_O365" Type="Self.LICENCIAS_O365" Multiplicity="1" />
@@ -136,6 +147,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_USUARIO_PERFIL_USUARIO">
+    <End Role="PERFIL_USUARIO" Type="Self.PERFIL_USUARIO" Multiplicity="0..1" />
+    <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERFIL_USUARIO">
+        <PropertyRef Name="IdPerfil" />
+      </Principal>
+      <Dependent Role="USUARIO">
+        <PropertyRef Name="PerfilId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="AdmSysWebModelStoreContainer">
     <EntitySet Name="ACCION_INFO" EntityType="Self.ACCION_INFO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ESTADO_ASIGNACION_LICENCIA" EntityType="Self.ESTADO_ASIGNACION_LICENCIA" Schema="dbo" store:Type="Tables" />
@@ -146,6 +169,7 @@
     <EntitySet Name="MANTENEDOR_LICENCIA" EntityType="Self.MANTENEDOR_LICENCIA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERFIL_USUARIO" EntityType="Self.PERFIL_USUARIO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROL_CARGO" EntityType="Self.ROL_CARGO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365" Association="Self.FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365">
       <End Role="LICENCIAS_O365" EntitySet="LICENCIAS_O365" />
       <End Role="ESTADO_CUENTA_USUARIO" EntitySet="ESTADO_CUENTA_USUARIO" />
@@ -161,6 +185,10 @@
     <AssociationSet Name="FK_MANTENEDOR_LICENCIA_ROL_CARGO" Association="Self.FK_MANTENEDOR_LICENCIA_ROL_CARGO">
       <End Role="ROL_CARGO" EntitySet="ROL_CARGO" />
       <End Role="MANTENEDOR_LICENCIA" EntitySet="MANTENEDOR_LICENCIA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIO_PERFIL_USUARIO" Association="Self.FK_USUARIO_PERFIL_USUARIO">
+      <End Role="PERFIL_USUARIO" EntitySet="PERFIL_USUARIO" />
+      <End Role="USUARIO" EntitySet="USUARIO" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

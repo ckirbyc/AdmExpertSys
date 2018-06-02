@@ -1,0 +1,62 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.UsuarioPerfilVm
+@{
+    ViewBag.Title = "Perfil Usuario";
+    Layout = "~/Views/_Main.cshtml";
+    var idUsrPerfil = Convert.ToInt64(Model.Id);
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Eliminar</h1>
+    <div class="form-inline col-md-3">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <div id="btnSubmit" class="btn btn-danger pull-right btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+                <input type="submit" value="Eliminar" class="btnInput" id="Eliminar" data-loading-text="Eliminando..." />
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <h2 class="sub-header">Perfil de Usuario</h2>
+    <div class="col-md-6">
+        <table class="table table-secondary">
+            <tbody>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Id)</th>
+                    <td>@idUsrPerfil</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.Usuario1)</th>
+                    <td>@Html.DisplayFor(m => m.Usuario1)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.PerfilId)</th>
+                    <td>@Html.DisplayFor(m => m.PERFIL_USUARIO.NombrePerfil)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.EsAdm)</th>
+                    <td>@Html.DisplayFor(m => m.EsAdm)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu2.js"></script>
+<script>
+    $('#UsrPerfil').addClass('active');
+</script>
+<script>
+    $("#btnSubmit").on("click", function () {
+        var form = document.getElementsByTagName("form");
+        $(form).submit();
+        var $btn = $("#Eliminar");
+        $btn.button('loading');
+    });
+</script>
+

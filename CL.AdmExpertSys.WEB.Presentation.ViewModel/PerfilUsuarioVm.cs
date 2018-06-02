@@ -5,5 +5,6 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
     {
         public int IdPerfil { get; set; }
         public string NombrePerfil { get; set; }
+        public bool Vigente { get; set; }
     }
 }

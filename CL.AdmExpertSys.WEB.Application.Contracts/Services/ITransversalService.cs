@@ -7,5 +7,6 @@ namespace CL.AdmExpertSys.WEB.Application.Contracts.Services
     {
         List<SelectListItem> GetSelectRolCarga();
         List<SelectListItem> GetSelectLicencia();
+        List<SelectListItem> GetSelectPerfil();
     }
 }

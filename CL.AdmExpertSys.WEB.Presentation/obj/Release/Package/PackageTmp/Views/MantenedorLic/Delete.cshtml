@@ -2,8 +2,7 @@
 @{
     ViewBag.Title = "Mantenedor Licencia";
     Layout = "~/Views/_Main.cshtml";
-    var idMant = Convert.ToInt64(Model.IdMantenedorLicencia);
-    var codigoMant = Convert.ToInt64(Model.Codigo);
+    var idMant = Convert.ToInt64(Model.IdMantenedorLicencia);    
 }
 
 <div class="row">
@@ -31,7 +30,7 @@
                 </tr>
                 <tr>
                     <th scope="row">@Html.DisplayNameFor(model => model.Codigo)</th>
-                    <td>@codigoMant</td>
+                    <td>@Html.DisplayFor(m => m.Codigo)</td>
                 </tr>
                 <tr>
                     <th scope="row">@Html.DisplayNameFor(m => m.RolCargoId)</th>
@@ -48,6 +47,10 @@
 <div class="row">
     <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
 </div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>
 <script>
     $("#btnSubmit").on("click", function () {
         var form = document.getElementsByTagName("form");

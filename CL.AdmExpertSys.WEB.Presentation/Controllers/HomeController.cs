@@ -1,4 +1,5 @@
-﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
+﻿using CL.AdmExpertSys.Web.Infrastructure.Helpers;
+using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Core.Domain.Enums;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
@@ -22,6 +23,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         protected LogInfoFactory LogInfoFactory;
         protected EstadoCuentaUsuarioFactory EstadoCuentaUsuarioFactory;
         protected MantenedorLicenciaFactory MantenedorLicenciaFactory;
+        protected UsuarioFactory UsuarioFactory;
 
         public HomeController()
         {
@@ -29,13 +31,16 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
         public HomeController(LogInfoFactory logInfoFactory, 
             EstadoCuentaUsuarioFactory estadoCuentaUsuarioFactory,
-            MantenedorLicenciaFactory mantenedorLicenciaFactory)
+            MantenedorLicenciaFactory mantenedorLicenciaFactory,
+            UsuarioFactory usuarioFactory)
         {
             LogInfoFactory = logInfoFactory;
             EstadoCuentaUsuarioFactory = estadoCuentaUsuarioFactory;
             MantenedorLicenciaFactory = mantenedorLicenciaFactory;
+            UsuarioFactory = usuarioFactory;
         }
 
+        [AllowNotAutenticate]
         public ActionResult Index(LoginVm model, string mensajeError)
         {            
             try
@@ -107,6 +112,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
+        [AllowNotAutenticate]
         [HttpPost]
         public ActionResult ValidaLogin(LoginVm model)
         {
@@ -129,7 +135,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 catch (Exception ex)
                 {
                     Utils.LogErrores(ex);
-                }                
+                }                                
                 SessionViewModel.Usuario = new UsuarioVm
                 {
                     Id = 1,
@@ -151,6 +157,17 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
                 if (HomeSysWebFactory.ValidarCredencialesUsuarioAd(usuario, clave))
                 {
+                    //Obtener Perfil Usuario
+                    var objUsrPerfil = UsuarioFactory.GetUsuarioPerfilByNombreCta(usuario);
+                    if (objUsrPerfil != null)
+                    {
+                        SessionViewModel.Usuario.PerfilId = objUsrPerfil.PerfilId;
+                        SessionViewModel.Usuario.EsAdm = objUsrPerfil.EsAdm;
+                    }
+                    else
+                    {
+                        return RedirectToAction("IndexLogin", "Error", new { mensajeError = "Usuario no tiene asignado un Perfil. Favor contacte a soporte IT" });
+                    }
                     model.EstaAutenticado = true;
                     return RedirectToAction("HomeSysWeb", "Home");
                 }
@@ -195,7 +212,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 HomeSysWebFactory = new HomeSysWebFactory();                
                 var usuarioAd = HomeSysWebFactory.ObtenerUsuarioExistente(nombreUsuario.Trim());
                 bool chequear = usuarioAd != null;
-                decimal codigoLic = 0;
+                var codigoLic = string.Empty;
                 var claveCta = string.Empty;
 
                 if (chequear) {
@@ -252,17 +269,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         throw new ArgumentException("Seleccionar unidad organizativa");
                     }
                 }
-
-                //Validar que el código ingresado sea numerico                
-                try
-                {
-                    var codigoNum = Convert.ToDecimal(model.CodigoLicencia);
-                }
-                catch {
-                    throw new ArgumentException("El código licencia ingresado debe ser númerico.");
-                }
+                
                 //Validar que el código ingresado exista
-                if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia)) {
+                if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia.Trim())) {
                     throw new ArgumentException("El código licencia ingresado no existe en la base de datos.");
                 }
 
@@ -307,13 +316,13 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 if (exitoGuardar)
                 {
                     //Obtener Codigo Licencia                    
-                    var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia);
+                    var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia.Trim());
                     decimal licenciaId = mantLicObjVm.LicenciaId;
 
                     //Ingresa datos usuarios a base de datos
                     var estadoUsr = new EstadoCuentaUsuarioVm {
                         Apellidos = model.Apellidos,
-                        CodigoLicencia = !string.IsNullOrEmpty(model.CodigoLicencia) ? Convert.ToDecimal(model.CodigoLicencia) : 0,
+                        CodigoLicencia = !string.IsNullOrEmpty(model.CodigoLicencia.Trim()) ? model.CodigoLicencia.Trim() : string.Empty,
                         Correo = model.Correo,
                         CreadoAd = true,
                         CuentaAd = model.NombreUsuario,
@@ -395,18 +404,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                    throw new ArgumentException("Seleccionar unidad organizativa");                   
                 }
-
-                //Validar que el código ingresado sea numerico                
-                try
-                {
-                    var codigoNum = Convert.ToDecimal(model.CodigoLicencia);
-                }
-                catch
-                {
-                    throw new ArgumentException("El código licencia ingresado debe ser númerico.");
-                }
+                
                 //Validar que el código ingresado exista
-                if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia))
+                if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia.Trim()))
                 {
                     throw new ArgumentException("El código licencia ingresado no existe en la base de datos.");
                 }
@@ -417,7 +417,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 if (exitoProceso)
                 {
                     //Obtener Codigo Licencia                    
-                    var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia);
+                    var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia.Trim());
                     decimal licenciaId = mantLicObjVm.LicenciaId;
 
                     //Ingresa datos usuarios a base de datos
@@ -426,21 +426,27 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         try
                         {
+                            //Valida que usuario exista en Portal
+                            var ctaSync = HomeSysWebFactory.ExisteUsuarioPortal(model.Correo.Trim());
+                            var ctaLic = false;
+                            if (ctaSync)
+                            {
+                                ctaLic = HomeSysWebFactory.ExisteLicenciaUsuarioPortal(model.Correo.Trim());
+                            }
                             estadoUsr.Apellidos = model.Apellidos.Trim();
                             estadoUsr.Clave = model.Clave.Trim();
-                            estadoUsr.CodigoLicencia = Convert.ToDecimal(model.CodigoLicencia);
+                            estadoUsr.CodigoLicencia = model.CodigoLicencia.Trim();
                             estadoUsr.Correo = model.Correo.Trim();
                             estadoUsr.Descripcion = model.Descripcion.Trim();
-                            estadoUsr.Dominio = model.UpnPrefijo.Trim();
-                            estadoUsr.LicenciaAsignada = false;
+                            estadoUsr.Dominio = model.UpnPrefijo.Trim();                            
                             estadoUsr.LicenciaId = licenciaId;
-                            estadoUsr.Nombres = model.Nombres.Trim();
-                            estadoUsr.Sincronizado = false;
-                            estadoUsr.CreadoAd = true;
+                            estadoUsr.Nombres = model.Nombres.Trim();                            
                             estadoUsr.Eliminado = false;
                             estadoUsr.FechaBaja = null;
                             estadoUsr.Habilitado = true;
                             estadoUsr.Vigente = true;
+                            estadoUsr.Sincronizado = ctaSync;
+                            estadoUsr.LicenciaAsignada = ctaLic;
 
                             EstadoCuentaUsuarioFactory.ActualizaEstadoCuentaUsuario(estadoUsr);
                         }
@@ -449,13 +455,19 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             Utils.LogErrores(ex);
                         }
                     }
-                    else {                    
-
+                    else {
+                        //Valida que usuario exista en Portal
+                        var ctaSync = HomeSysWebFactory.ExisteUsuarioPortal(model.Correo.Trim());
+                        var ctaLic = false;
+                        if (ctaSync)
+                        {
+                            ctaLic = HomeSysWebFactory.ExisteLicenciaUsuarioPortal(model.Correo.Trim());
+                        }
                         //Ingresa datos usuarios a base de datos
                         estadoUsr = new EstadoCuentaUsuarioVm
                         {
                             Apellidos = model.Apellidos,
-                            CodigoLicencia = Convert.ToDecimal(model.CodigoLicencia),
+                            CodigoLicencia = model.CodigoLicencia.Trim(),
                             Correo = model.Correo,
                             CreadoAd = true,
                             CuentaAd = model.NombreUsuario.Trim(),
@@ -466,10 +478,10 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             Habilitado = true,
                             LicenciaId = licenciaId,
                             Nombres = model.Nombres,
-                            Sincronizado = false,
+                            Sincronizado = ctaSync,
                             Clave = model.Clave,
                             Vigente = true,
-                            LicenciaAsignada = false
+                            LicenciaAsignada = ctaLic
                         };
 
                         try
@@ -695,7 +707,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         estaCtaUsrUnico = new EstadoCuentaUsuarioVm
                         {
                             Apellidos = model.Apellidos,
-                            CodigoLicencia = Convert.ToDecimal(model.CodigoLicencia),
+                            CodigoLicencia = model.CodigoLicencia.Trim(),
                             Correo = model.Correo.Trim(),
                             CreadoAd = true,
                             CuentaAd = model.NombreUsuario.Trim(),

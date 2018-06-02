@@ -84,6 +84,7 @@
     <EntitySetMapping Name="PERFIL_USUARIO">
       <EntityTypeMapping TypeName="AdmSysWebModel.PERFIL_USUARIO">
         <MappingFragment StoreEntitySet="PERFIL_USUARIO">
+          <ScalarProperty Name="Vigente" ColumnName="Vigente" />
           <ScalarProperty Name="NombrePerfil" ColumnName="NombrePerfil" />
           <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
         </MappingFragment>
@@ -95,6 +96,17 @@
           <ScalarProperty Name="Vigente" ColumnName="Vigente" />
           <ScalarProperty Name="Nombre" ColumnName="Nombre" />
           <ScalarProperty Name="IdRolCargo" ColumnName="IdRolCargo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USUARIO">
+      <EntityTypeMapping TypeName="AdmSysWebModel.USUARIO">
+        <MappingFragment StoreEntitySet="USUARIO">
+          <ScalarProperty Name="EsAdm" ColumnName="EsAdm" />
+          <ScalarProperty Name="Visible" ColumnName="Visible" />
+          <ScalarProperty Name="PerfilId" ColumnName="PerfilId" />
+          <ScalarProperty Name="Usuario1" ColumnName="Usuario" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

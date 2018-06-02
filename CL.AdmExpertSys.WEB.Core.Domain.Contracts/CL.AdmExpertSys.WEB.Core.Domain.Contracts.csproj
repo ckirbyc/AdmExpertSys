@@ -50,6 +50,7 @@
     <Compile Include="Repository\IMantenedorLicenciaRepository.cs" />
     <Compile Include="Repository\IPerfilUsuarioRepository.cs" />
     <Compile Include="Repository\IRolCargoRepository.cs" />
+    <Compile Include="Repository\IUsuarioRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain\CL.AdmExpertSys.WEB.Core.Domain.csproj">

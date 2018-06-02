@@ -115,7 +115,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             Nombres = tipo.Nombres,
                             Sincronizado = tipo.Sincronizado,
                             Vigente = true,
-                            LicenciaAsignada = false,
+                            LicenciaAsignada = tipo.LicenciaAsignada,
                             Clave = tipo.Clave.Trim()
                         };
                         entityContext.ESTADO_CUENTA_USUARIO.Add(tip);
@@ -161,7 +161,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         {
             try
             {
-                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd);
+                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Habilitado);
                 var estadoBd = EstadoCuentaUsuarioService.AllMatching(espec);
 
                 if (estadoBd.Any())
@@ -184,7 +184,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         {
             try
             {
-                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Eliminado == false);
+                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Eliminado == false && x.Habilitado);
                 var estadoBd = EstadoCuentaUsuarioService.AllMatching(espec);
 
                 if (estadoBd.Any())
@@ -203,22 +203,22 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
-        public decimal GetCodigoLicenciaByUsuario(string cuentaAd) {
+        public string GetCodigoLicenciaByUsuario(string cuentaAd) {
             try
             {
-                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd);
+                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Habilitado);
                 var estadoBd = EstadoCuentaUsuarioService.AllMatching(espec);
 
                 if (estadoBd.Any()) {
                     var licId = estadoBd.FirstOrDefault().LicenciaId;
-                    decimal codLic = 0;
-                    if (estadoBd.FirstOrDefault().CodigoLicencia == 0)
+                    var codLic = string.Empty;
+                    if (string.IsNullOrEmpty(estadoBd.FirstOrDefault().CodigoLicencia))
                     {
                         var especMantLic = new DirectSpecification<MANTENEDOR_LICENCIA>(x => x.LicenciaId == licId);
                         var estadoMantLicBd = MantenedorLicenciaService.AllMatching(especMantLic);
                         if (estadoMantLicBd.Any())
                         {
-                            codLic = estadoMantLicBd.FirstOrDefault().Codigo;
+                            codLic = estadoMantLicBd.FirstOrDefault().Codigo.Trim();
                         }
                     }
                     else {
@@ -228,11 +228,11 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                     return codLic;
                 }
 
-                return 0;
+                return string.Empty;
             }
             catch (Exception ex) {
                 Utils.LogErrores(ex);
-                return 0;
+                return string.Empty;
             }
         }
 
@@ -240,7 +240,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         {
             try
             {
-                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd);
+                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Habilitado);
                 var estadoBd = EstadoCuentaUsuarioService.AllMatching(espec);
 
                 if (estadoBd.Any())

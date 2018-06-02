@@ -16,6 +16,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Mapping
             Mapper.CreateMap<LICENCIAS_O365, LicenciaO365Vm>().ReverseMap();
             Mapper.CreateMap<MANTENEDOR_LICENCIA, MantenedorLicenciaVm>().ReverseMap();
             Mapper.CreateMap<ESTADO_CUENTA_USUARIO, EstadoCuentaUsuarioVm>().ReverseMap();
+            Mapper.CreateMap<USUARIO, UsuarioPerfilVm>().ReverseMap();
         }
 
         public override string ProfileName

@@ -425,7 +425,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 var objListaGroup = AdFactory.GetListGroupByOu(sOu);
 
                 var i = 1;
-                foreach (GroupPrincipal objGroup in objListaGroup.FindAll())
+                foreach (GroupPrincipal objGroup in objListaGroup.ToList())
                 {                                        
                     var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];                    
 
@@ -440,11 +440,48 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                         TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value
                     };
                     listaGrupo.Add(grupoVm);
+                    objGroup.Dispose();
                     i++;                    
+                }                
+
+                return listaGrupo;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                throw new ArgumentException("Error al obtener grupo : " + ex.Message);
+            }
+        }
+
+        public List<GrupoAdVm> ObtenerListadoGrupoAdByOuMantGroup(string sOu)
+        {
+            try
+            {
+                var listaGrupo = new List<GrupoAdVm>();
+                AdFactory = new AdLib();
+
+                var objListaGroup = AdFactory.GetListGroupByOuMantGroup(sOu);
+
+                var i = 1;
+                foreach (GroupPrincipal objGroup in objListaGroup.FindAll())
+                {
+                    var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+
+                    var grupoVm = new GrupoAdVm
+                    {
+                        NumeroGrupo = i,
+                        NombreGrupo = objGroup.Name,
+                        UbicacionGrupo = objGroup.DistinguishedName,
+                        CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                        ExisteGrupo = true,
+                        DescripcionGrupo = objGroup.Description,
+                        TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value
+                    };
+                    listaGrupo.Add(grupoVm);
+                    objGroup.Dispose();
+                    i++;
                 }
-
                 objListaGroup.Dispose();
-
                 return listaGrupo;
             }
             catch (Exception ex)
@@ -466,7 +503,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 var objListaGroup = AdFactory.GetListGroupByOu(sOu);
 
                 var i = 1;                
-                foreach (GroupPrincipal objGroup in objListaGroup.FindAll())
+                foreach (GroupPrincipal objGroup in objListaGroup.ToList())
                 {
                     var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
                     var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);                                      
@@ -483,11 +520,11 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                         Asociado = asocUsrGrp
                     };
                     listaGrupo.Add(grupoVm);
+                    objGroup.Dispose();
                     i++;
                 }
 
-                userAd.Dispose();
-                objListaGroup.Dispose();
+                userAd.Dispose();                
 
                 return listaGrupo;
             }
@@ -744,8 +781,13 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             listaRepCtaUsr[0] = ctaUsr.Name;
                             listaRepCtaUsr[1] = ctaUsr.SamAccountName;
                             listaRepCtaUsr[2] = ctaUsr.Description;
-                            listaRepCtaUsr[3] = ctaUsr.UpnPrefijo;
-                            listaRepCtaUsr[4] = ctaUsr.DistinguishedName;
+                            listaRepCtaUsr[3] = ctaUsr.SamAccountName + ctaUsr.UpnPrefijo;
+
+                            int startIndexOu = ctaUsr.DistinguishedName.IndexOf("OU=");
+                            int lengthOu = ctaUsr.DistinguishedName.Length - startIndexOu;
+                            var dnNewOu = ctaUsr.DistinguishedName.Substring(startIndexOu, lengthOu);
+
+                            listaRepCtaUsr[4] = dnNewOu;
 
                             var dnCompleto = ctaUsr.DistinguishedName;
                             var listaOu = new List<OuExcelVm>();                                                       

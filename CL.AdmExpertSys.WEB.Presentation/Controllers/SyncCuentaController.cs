@@ -90,19 +90,32 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             HiloEstadoSincronizacion.ActualizarEstadoSync(true);
 
             HomeSysWebFactory = new HomeSysWebFactory();
-            HomeSysWebFactory.ForzarDirSync();            
+            try
+            {
+                HomeSysWebFactory.ForzarDirSync();
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+            }           
 
             var estadoCuentaLista = (List<EstadoCuentaUsuarioVm>)estadoCuentaHilo.CastTo<List<object>>()[0];
 
-            Task.Delay(TimeSpan.FromSeconds(60)).Wait();
+            Task.Delay(TimeSpan.FromSeconds(120)).Wait();
 
             foreach (var estUsr in estadoCuentaLista)
             {
-                if (HomeSysWebFactory.ExisteUsuarioPortal(estUsr.Correo))
+                if (HomeSysWebFactory.ExisteUsuarioPortal(estUsr.Correo.Trim()))
                 {
                     estUsr.Sincronizado = true;
-                    HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
-                    
+                    try
+                    {
+                        HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
+                    }
+                    catch(Exception ex)
+                    {
+                        Utils.LogErrores(ex);
+                    }                    
                 }
             }
 

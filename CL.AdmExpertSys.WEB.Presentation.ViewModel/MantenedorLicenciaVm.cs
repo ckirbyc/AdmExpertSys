@@ -12,10 +12,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         [DisplayName(@"Identificador")]
         public decimal IdMantenedorLicencia { get; set; }
         [DisplayName(@"Código")]
-        [Required(ErrorMessage = @"Código es requerido")]
-        [Range(1, double.MaxValue, ErrorMessage = @"La cantidad debe ser igual o mayor a uno")]
-        [DisplayFormat(DataFormatString = "{0:N0}", ApplyFormatInEditMode = true)]
-        public decimal Codigo { get; set; }
+        [Required(ErrorMessage = @"Código es requerido")]                
+        public string Codigo { get; set; }
         [DisplayName(@"Rol Cargo")]
         [Required(ErrorMessage = @"Rol Cargo es requerido")]
         public decimal RolCargoId { get; set; }

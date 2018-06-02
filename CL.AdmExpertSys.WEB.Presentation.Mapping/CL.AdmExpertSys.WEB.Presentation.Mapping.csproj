@@ -88,6 +88,7 @@
     <Compile Include="Factories\MantenedorLicenciaFactory.cs" />
     <Compile Include="Factories\PerfilUsuarioFactory.cs" />
     <Compile Include="Factories\RolCargoFactory.cs" />
+    <Compile Include="Factories\UsuarioFactory.cs" />
     <Compile Include="Mapping\ViewModelProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thread\HiloEstadoAsignacionLicencia.cs" />

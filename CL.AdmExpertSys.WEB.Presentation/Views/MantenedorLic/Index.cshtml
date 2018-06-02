@@ -43,11 +43,10 @@
         @foreach (var item in Model.OrderBy(x => x.IdMantenedorLicencia))
         {
             var item1 = item;
-            var idMantLic = Convert.ToInt64(item1.IdMantenedorLicencia);
-            var codigoMantLic = Convert.ToInt64(item1.Codigo);
+            var idMantLic = Convert.ToInt64(item1.IdMantenedorLicencia);            
             <tr>
                 <td class="textCenter">@idMantLic</td>
-                <td class="textCenter">@codigoMantLic</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Codigo)</td>
                 <td class="textCenter">@Html.DisplayFor(m => item1.ROL_CARGO.Nombre)</td>
                 <td class="textCenter">@Html.DisplayFor(m => item1.LICENCIAS_O365.Nombre)</td>                
                 <td class="columnaAcciones textCenter">

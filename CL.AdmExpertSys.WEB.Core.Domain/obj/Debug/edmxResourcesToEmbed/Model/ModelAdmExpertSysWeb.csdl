@@ -10,6 +10,7 @@
     <EntitySet Name="MANTENEDOR_LICENCIA" EntityType="AdmSysWebModel.MANTENEDOR_LICENCIA" />
     <EntitySet Name="PERFIL_USUARIO" EntityType="AdmSysWebModel.PERFIL_USUARIO" />
     <EntitySet Name="ROL_CARGO" EntityType="AdmSysWebModel.ROL_CARGO" />
+    <EntitySet Name="USUARIO" EntityType="AdmSysWebModel.USUARIO" />
     <AssociationSet Name="FK_LOG_INFO_ACCION_INFO" Association="AdmSysWebModel.FK_LOG_INFO_ACCION_INFO">
       <End Role="ACCION_INFO" EntitySet="ACCION_INFO" />
       <End Role="LOG_INFO" EntitySet="LOG_INFO" />
@@ -25,6 +26,10 @@
     <AssociationSet Name="FK_MANTENEDOR_LICENCIA_ROL_CARGO" Association="AdmSysWebModel.FK_MANTENEDOR_LICENCIA_ROL_CARGO">
       <End Role="ROL_CARGO" EntitySet="ROL_CARGO" />
       <End Role="MANTENEDOR_LICENCIA" EntitySet="MANTENEDOR_LICENCIA" />
+    </AssociationSet>
+    <AssociationSet Name="FK_USUARIO_PERFIL_USUARIO" Association="AdmSysWebModel.FK_USUARIO_PERFIL_USUARIO">
+      <End Role="PERFIL_USUARIO" EntitySet="PERFIL_USUARIO" />
+      <End Role="USUARIO" EntitySet="USUARIO" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="ACCION_INFO">
@@ -60,7 +65,7 @@
     <Property Name="Eliminado" Type="Boolean" Nullable="false" />
     <Property Name="FechaCreacion" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="FechaBaja" Type="DateTime" Precision="3" />
-    <Property Name="CodigoLicencia" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="CodigoLicencia" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Vigente" Type="Boolean" Nullable="false" />
     <Property Name="LicenciaAsignada" Type="Boolean" Nullable="false" />
     <Property Name="Clave" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -100,7 +105,7 @@
       <PropertyRef Name="IdMantenedorLicencia" />
     </Key>
     <Property Name="IdMantenedorLicencia" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Codigo" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+    <Property Name="Codigo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="RolCargoId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
     <Property Name="LicenciaId" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
     <Property Name="Vigente" Type="Boolean" Nullable="false" />
@@ -113,6 +118,8 @@
     </Key>
     <Property Name="IdPerfil" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="NombrePerfil" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Vigente" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="USUARIO" Relationship="AdmSysWebModel.FK_USUARIO_PERFIL_USUARIO" FromRole="PERFIL_USUARIO" ToRole="USUARIO" />
   </EntityType>
   <EntityType Name="ROL_CARGO">
     <Key>
@@ -122,6 +129,17 @@
     <Property Name="Nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Vigente" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="MANTENEDOR_LICENCIA" Relationship="AdmSysWebModel.FK_MANTENEDOR_LICENCIA_ROL_CARGO" FromRole="ROL_CARGO" ToRole="MANTENEDOR_LICENCIA" />
+  </EntityType>
+  <EntityType Name="USUARIO">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Usuario1" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PerfilId" Type="Int32" />
+    <Property Name="Visible" Type="Boolean" Nullable="false" />
+    <Property Name="EsAdm" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PERFIL_USUARIO" Relationship="AdmSysWebModel.FK_USUARIO_PERFIL_USUARIO" FromRole="USUARIO" ToRole="PERFIL_USUARIO" />
   </EntityType>
   <Association Name="FK_LOG_INFO_ACCION_INFO">
     <End Type="AdmSysWebModel.ACCION_INFO" Role="ACCION_INFO" Multiplicity="1" />
@@ -168,6 +186,18 @@
       </Principal>
       <Dependent Role="MANTENEDOR_LICENCIA">
         <PropertyRef Name="RolCargoId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_USUARIO_PERFIL_USUARIO">
+    <End Type="AdmSysWebModel.PERFIL_USUARIO" Role="PERFIL_USUARIO" Multiplicity="0..1" />
+    <End Type="AdmSysWebModel.USUARIO" Role="USUARIO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERFIL_USUARIO">
+        <PropertyRef Name="IdPerfil" />
+      </Principal>
+      <Dependent Role="USUARIO">
+        <PropertyRef Name="PerfilId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -48,13 +48,7 @@
                                 <span class="glyphicon glyphicon-search"></span>
                                 <input type="button" value="Buscar" class="btnInput" id="Buscar" />
                             </div>                            
-                        </td>
-                        <td>
-                            <div id="btnDesUsr" class="btn btn-primary pull-right btn-sm">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                <input type="button" value="Deshabilitar" class="btnInput" id="DeshabilitarUsr" />
-                            </div>
-                        </td>
+                        </td>                        
                     </tr>
                     <tr>
                         <th scope="row">@Html.DisplayName("Dominio")</th>
@@ -268,8 +262,7 @@
             $("#btnSubmit").attr("disabled", true);
             $("#btnLicE1").attr("disabled", true);
             $("#btnLicE3").attr("disabled", true);
-            $("#btnLicExO").attr("disabled", true);            
-            $("#btnDesUsr").attr("disabled", true);
+            $("#btnLicExO").attr("disabled", true);                        
             $("#UpnPrefijo").attr("disabled", false);
             $("#UpnPrefijo").prop('disabled', 'disabled');
 
@@ -364,8 +357,7 @@
                             $("#btnLicE3").attr("disabled", true);
                             $("#btnLicExO").attr("disabled", true);
                             $("#UpnPrefijo").attr("disabled", true);
-                            $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);
-                            $("#btnDesUsr").attr("disabled", false);
+                            $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);                            
                             $("#Nombres").attr("disabled", true);
                             $("#Nombres").val(data.DatosUsuario.GivenName);
                             $("#Apellidos").attr("disabled", true);
@@ -394,8 +386,7 @@
                             $("#btnLicE1").attr("disabled", true);
                             $("#btnLicE3").attr("disabled", true);
                             $("#btnLicExO").attr("disabled", true);                            
-                            $("#UpnPrefijo").attr("disabled", false);
-                            $("#btnDesUsr").attr("disabled", true);
+                            $("#UpnPrefijo").attr("disabled", false);                            
                             $("#Nombres").val("");
                             $("#Nombres").removeAttr("disabled");
                             $("#Apellidos").val("");
@@ -431,8 +422,7 @@
                         $("#btnLicE1").attr("disabled", true);
                         $("#btnLicE3").attr("disabled", true);
                         $("#btnLicExO").attr("disabled", true);
-                        $("#UpnPrefijo").attr("disabled", true);                        
-                        $("#btnDesUsr").attr("disabled", true);
+                        $("#UpnPrefijo").attr("disabled", true);                                                
                         $("#Nombres").attr("disabled", true);
                         $("#Nombres").val(data.DatosUsuario.GivenName);
                         $("#Apellidos").attr("disabled", true);
@@ -526,7 +516,7 @@
                                 
                                 BootstrapDialog.show({
                                     title: '¡Proceso Exitoso!',
-                                    message: '<strong>Usuario creado o modificado correctamente. Favor asignar Grupo(s) al usuario.</strong>',
+                                    message: '<strong>Usuario creado correctamente. Favor asignar Grupo(s) al usuario.</strong>',
                                     type: BootstrapDialog.TYPE_SUCCESS,
                                     buttons:
                                     [
@@ -783,103 +773,7 @@
                         });
                     }
                 });
-            }
-
-            $("#btnDesUsr").off('click').click(function () {
-                $("#loading-modal").show();
-                $("#SeccionAsociarGrupo").hide();
-                setTimeout(function () {
-                    deshabilitarUsuario();
-                }, 1000);
-            });
-
-            function deshabilitarUsuario() {
-                var objEnvio =
-                {
-                    model:
-                    {
-                        'Nombres': $('#Nombres').val(),
-                        'Apellidos': $('#Apellidos').val(),
-                        'NombreUsuario': $('#NombreUsuario').val(),
-                        'Clave': $('#Clave').val(),
-                        'Licencia': $('#LicenciaSel').val(),
-                        'UpnPrefijo': $('#UpnPrefijo').val(),
-                        'NombreCompleto': $('#NombreCompleto').val(),
-                        'Correo': $('#Correo').val(),
-                        'PatchOu': $('#PatchOu').val(),
-                        'ExisteUsuario': $("#ExisteUsuario").val(),
-                        'Descripcion': $("#Descripcion").val()
-                    }
-                };
-                $.ajax({
-                    url: '@Url.Action("DeshabilitarUsuario", "Home")',
-                    type: 'POST',
-                    contentType: "application/json; charset=utf-8",
-                    async: false,
-                    dataType: 'json',
-                    processData: false,
-                    data: JSON.stringify({ model: objEnvio.model }),
-                    success: function (data) {
-                        if (data.Error != '') {
-                            $("#btnSubmit").attr("disabled", true);
-                            $("#btnLicE1").attr("disabled", true);
-                            $("#btnLicE3").attr("disabled", true);
-                            $("#btnLicExO").attr("disabled", true);
-                            
-                            $("#btnDesUsr").attr("disabled", false);
-                            BootstrapDialog.alert({
-                                title: '¡Error al Deshabilitar Usuario!',
-                                message: '<strong>' + data.Error + '</strong>',
-                                type: BootstrapDialog.TYPE_DANGER
-                            });
-                        } else {
-                            if (data.Validar) {
-                                $("#btnSubmit").attr("disabled", true);
-                                $("#btnSubmit").attr("disabled", true);
-                                $("#btnLicE1").attr("disabled", true);
-                                $("#btnLicE3").attr("disabled", true);
-                                $("#btnLicExO").attr("disabled", true);                                
-                                $("#btnDesUsr").attr("disabled", true);
-                                BootstrapDialog.alert({
-                                    title: '¡Proceso Exitoso!',
-                                    message: '<strong>Usuario deshabilitado correctamente</strong>',
-                                    type: BootstrapDialog.TYPE_SUCCESS
-                                });
-                            } else {
-                                $("#btnSubmit").attr("disabled", true);
-                                $("#btnSubmit").attr("disabled", true);
-                                $("#btnLicE1").attr("disabled", true);
-                                $("#btnLicE3").attr("disabled", true);
-                                $("#btnLicExO").attr("disabled", true);                                
-                                $("#btnDesUsr").attr("disabled", false);
-                                BootstrapDialog.alert({
-                                    title: '¡Error al Deshabilitar Usuario!',
-                                    message: '<strong>No se pudo deshabilitar usuario, intente más tarde.</strong>',
-                                    type: BootstrapDialog.TYPE_DANGER
-                                });
-                            }
-                        }
-                    },
-                    complete: function () {
-                        $("#loading-modal").hide();
-                    },
-                    error: function (data) {
-                        $("#btnSubmit").attr("disabled", true);
-                        $("#btnSubmit").attr("disabled", true);
-                        $("#btnLicE1").attr("disabled", true);
-                        $("#btnLicE3").attr("disabled", true);
-                        $("#btnLicExO").attr("disabled", true);                        
-                        $("#btnDesUsr").attr("disabled", false);
-                        $("#loading-modal").hide();
-
-                        BootstrapDialog.alert({
-                            title: '¡Error al Deshabilitar Usuario!',
-                            message: '<strong>' + data.Error + '</strong>',
-                            type: BootstrapDialog.TYPE_DANGER
-                        });
-                    }
-                });
-            }
+            }            
 
             $("#btnAgregarGrupo").off('click').click(function () {
                 var nombreGrupo = $("#NombreGrupo").val();

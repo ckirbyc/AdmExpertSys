@@ -17,5 +17,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         public int Rut { get; set; }
         public string Dv { get; set; }
         public string Email { get; set; }
+        public int? PerfilId { get; set; }
+        public bool EsAdm { get; set; }
     }
 }

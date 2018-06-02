@@ -86,6 +86,7 @@
     <Compile Include="Services\IPerfilUsuarioService.cs" />
     <Compile Include="Services\IRolCargoService.cs" />
     <Compile Include="Services\ITransversalService.cs" />
+    <Compile Include="Services\IUsuarioService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Core.Domain.Contracts\CL.AdmExpertSys.WEB.Core.Domain.Contracts.csproj">

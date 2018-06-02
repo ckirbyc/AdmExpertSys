@@ -1,0 +1,58 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@model IEnumerable<UsuarioPerfilVm>
+    @{
+        ViewBag.Title = "Usuario Perfil";
+        Layout = "~/Views/_Main.cshtml";
+    }
+
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Usuario Perfil</h1>
+        <div class="form-inline col-md-3">
+            <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Create", "UsuarioPerfil")">
+                <span class="glyphicon glyphicon-plus"></span>
+                Nuevo
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Vista de todos los usuarios del sistema.</h2>
+    </div>
+    <div class="row">
+        <table class="table table-hover tablaMantenedores">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Usuario</th>
+                    <th>Perfil</th>
+                    <th>Es Adm.</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.OrderBy(x => x.Id))
+            {
+                var item1 = item;
+                var idUsr = Convert.ToInt64(item1.Id);
+                var perfil = item1.PerfilId != null ? item1.PERFIL_USUARIO.NombrePerfil : string.Empty;
+                string classUsrAdm = "glyphicon glyphicon-remove colorOrange";
+                if (item1.EsAdm)
+                {
+                    classUsrAdm = "glyphicon glyphicon-ok colorGreen";
+                }
+                <tr>
+                    <td class="textCenter">@idUsr</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Usuario1)</td>
+                    <td class="textCenter">@perfil</td>
+                    <td class="textCenter"><a class="@classUsrAdm" href="#" title=""></a></td>
+                    <td class="columnaAcciones textCenter">
+                        @Html.ActionLink(" ", "Edit", new { id = item1.Id }, new { @class = "glyphicon glyphicon-edit", title = "Editar" }) <label>|</label>
+                        @Html.ActionLink(" ", "Delete", new { id = item1.Id }, new { @class = "glyphicon glyphicon-remove colorOrange", title = "Eliminar" })
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+    <script src="~/Scripts/Menu/ActivaMenu2.js"></script>
+    <script>
+        $('#UsrPerfil').addClass('active');
+    </script>

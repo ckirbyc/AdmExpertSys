@@ -35,6 +35,7 @@ namespace CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot
             container.RegisterType<MantenedorLicenciaFactory>();
             container.RegisterType<PerfilUsuarioFactory>();
             container.RegisterType<RolCargoFactory>();
+            container.RegisterType<UsuarioFactory>();
             #endregion
 
             #region Repositories and services
@@ -46,6 +47,7 @@ namespace CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot
             container.RegisterType<IMantenedorLicenciaService, MantenedorLicenciaService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<IEstadoCuentaUsuarioService, EstadoCuentaUsuarioService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<ITransversalService, TransversalService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IUsuarioService, UsuarioService>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
 
             container.RegisterType<ILogInfoRepository, LogInfoRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<IAccionInfoRepository, AccionInfoRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
@@ -54,6 +56,7 @@ namespace CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot
             container.RegisterType<ILicenciaO365Repository, LicenciaO365Repository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<IMantenedorLicenciaRepository, MantenedorLicenciaRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             container.RegisterType<IEstadoCuentaUsuarioRepository, EstadoCuentaUsuarioRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
+            container.RegisterType<IUsuarioRepository, UsuarioRepository>(new HierarchicalLifetimeManager(), new InterceptionBehavior<PolicyInjectionBehavior>());
             #endregion
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

@@ -1,48 +1,74 @@
-﻿<div class="panel panel-primary">    
+﻿@using CL.AdmExpertSys.WEB.Presentation.Models
+@using CL.AdmExpertSys.WEB.Core.Domain.Enums
+<div class="panel panel-primary">
     <div class="">
-        <div class="handCursor" data-toggle="collapse" data-parent="#accordion" href="#menuCollapse">
-            <ul class="nav nav-sidebar">
-                <li><a href=""><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Perfil CAF</a></li>
-            </ul>
-        </div>
-        <div id="menuCollapse" class="panel-collapse collapse">
-            <div>
-                <div>
+        @if (SessionViewModel.Usuario != null)
+        {
+            if ((int)EnumPerfilUsuario.CAF == SessionViewModel.Usuario.PerfilId ||
+                (int)EnumPerfilUsuario.ADMP == SessionViewModel.Usuario.PerfilId)
+            {
+                <div class="handCursor" data-toggle="collapse" data-parent="#accordion" href="#menuCollapse">
                     <ul class="nav nav-sidebar">
-                        <ul class="nav nav-sidebar">
-                            <li id="EstadoCuenta"><a href="@Url.Action("Index","UsuarioCreado")" onclick="javascript:$('#loading-modal').show();" title="Estado Cuentas"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Estado Cuentas</a></li>
-                            <li id="CrearCuenta"><a href="@Url.Action("HomeSysWeb","Home")" onclick="javascript:$('#loading-modal').show();" title="Crear Cuentas Usuarios"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Crear Cuentas</a></li>
-                            <li id="EditarCuenta"><a href="@Url.Action("EditCuenta","Home")" onclick="javascript:$('#loading-modal').show();" title="Editar Cuentas Usuarios"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Editar Cuentas</a></li>
-                            <li id="Grupos"><a href="@Url.Action("Index","Grupos")" onclick="javascript:$('#loading-modal').show();" title="Grupos AD"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Grupos</a></li>                            
-                            <li id="Licencias"><a href="@Url.Action("Index","MantenedorLic")" onclick="javascript:$('#loading-modal').show();" title="Licencias"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Licencias</a></li>
-                            <li id="CtaDesh"><a href="@Url.Action("Index","BajaCuenta")" onclick="javascript:$('#loading-modal').show();" title="Cuentas Deshabilitadas"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Cuentas Deshabilitadas</a></li>
-                            <li id="SyncCta"><a href="@Url.Action("Index","SyncCuenta")" onclick="javascript:$('#loading-modal').show();" title="Sincronizar"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Sincronizar Cuentas</a></li>
-                            <li id="AsigLicencia"><a href="@Url.Action("Index","LicCuenta")" onclick="javascript:$('#loading-modal').show();" title="Asignar Licencias"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Asignar Licencias Cuentas</a></li>
-                        </ul>
+                        <li><a href=""><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Perfil CAF</a></li>
                     </ul>
                 </div>
-            </div>
-        </div>
-        <div class="handCursor" data-toggle="collapse" data-parent="#accordion" href="#menuCollapse1">
-            <ul class="nav nav-sidebar">
-                <li><a href=""><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Perfil Adm. Personal</a></li>
-            </ul>
-        </div>
-        <div id="menuCollapse1" class="panel-collapse collapse">
-            <div>
-                <div>
+                <div id="menuCollapse" class="panel-collapse collapse">
+                    <div>
+                        <div>
+                            <ul class="nav nav-sidebar">
+                                <ul class="nav nav-sidebar">
+                                    <li id="EstadoCuenta"><a href="@Url.Action("Index","UsuarioCreado")" onclick="javascript:$('#loading-modal').show();" title="Estado Cuentas"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Estado Cuentas</a></li>
+                                    <li id="CrearCuenta"><a href="@Url.Action("HomeSysWeb","Home")" onclick="javascript:$('#loading-modal').show();" title="Crear Cuentas Usuarios"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Crear Cuentas</a></li>
+                                    <li id="EditarCuenta"><a href="@Url.Action("EditCuenta","Home")" onclick="javascript:$('#loading-modal').show();" title="Editar Cuentas Usuarios"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Editar Cuentas</a></li>
+                                    <li id="Grupos"><a href="@Url.Action("Index","Grupos")" onclick="javascript:$('#loading-modal').show();" title="Grupos AD"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Grupos</a></li>
+                                    <li id="Licencias"><a href="@Url.Action("Index","MantenedorLic")" onclick="javascript:$('#loading-modal').show();" title="Licencias"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Licencias</a></li>
+                                    <li id="CtaDesh"><a href="@Url.Action("Index","BajaCuenta")" onclick="javascript:$('#loading-modal').show();" title="Cuentas Deshabilitadas"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Cuentas Deshabilitadas</a></li>
+                                    <li id="SyncCta"><a href="@Url.Action("Index","SyncCuenta")" onclick="javascript:$('#loading-modal').show();" title="Sincronizar"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Sincronizar Cuentas</a></li>
+                                    <li id="AsigLicencia"><a href="@Url.Action("Index","LicCuenta")" onclick="javascript:$('#loading-modal').show();" title="Asignar Licencias"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Asignar Licencias Cuentas</a></li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            if ((int)EnumPerfilUsuario.ADMP == SessionViewModel.Usuario.PerfilId)
+            {
+                <div class="handCursor" data-toggle="collapse" data-parent="#accordion" href="#menuCollapse1">
                     <ul class="nav nav-sidebar">
-                        <ul class="nav nav-sidebar">
-                            <li id="RepCtaUsr"><a href="@Url.Action("Index","Reportes")" onclick="javascript:$('#loading-modal').show();" title="Reporte Cuentas Usuario AD"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Reporte Cuenta Usuario</a></li>
-                            @*<li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Reportes Oper Fecha Eliminación</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Modificación Usuarios</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Creación Listas Distribución</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Modificación Listas Distribución</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Dar baja Cuentas</a></li>*@
-                        </ul>
+                        <li><a href=""><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Perfil Adm. Personal</a></li>
                     </ul>
                 </div>
-            </div>
-        </div>
+                <div id="menuCollapse1" class="panel-collapse collapse">
+                    <div>
+                        <div>
+                            <ul class="nav nav-sidebar">
+                                <ul class="nav nav-sidebar">
+                                    <li id="RepCtaUsr"><a href="@Url.Action("Index","Reportes")" onclick="javascript:$('#loading-modal').show();" title="Reporte Cuentas Usuario AD"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Reporte Cuenta Usuario</a></li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            if (SessionViewModel.Usuario.EsAdm)
+            {
+                <div class="handCursor" data-toggle="collapse" data-parent="#accordion" href="#menuCollapse2">
+                    <ul class="nav nav-sidebar">
+                        <li><a href=""><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Perfil Usuario</a></li>
+                    </ul>
+                </div>
+                <div id="menuCollapse2" class="panel-collapse collapse">
+                    <div>
+                        <div>
+                            <ul class="nav nav-sidebar">
+                                <ul class="nav nav-sidebar">
+                                    <li id="UsrPerfil"><a href="@Url.Action("Index","UsuarioPerfil")" onclick="javascript:$('#loading-modal').show();" title="Perfiles de Usuarios"><i class="glyphicon glyphicon-play bulletFirstLevelNav"></i>Usuario</a></li>
+                                </ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>

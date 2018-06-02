@@ -19,7 +19,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         public bool Eliminado { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaBaja { get; set; }
-        public decimal CodigoLicencia { get; set; }        
+        public string CodigoLicencia { get; set; }        
         public bool Vigente { get; set; }
         public bool LicenciaAsignada { get; set; }
         public string Clave { get; set; }

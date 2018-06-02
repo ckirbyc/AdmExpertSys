@@ -60,6 +60,7 @@
     <Compile Include="Dto\Ou.cs" />
     <Compile Include="Dto\UsuarioAd.cs" />
     <Compile Include="Enums\EnumAccionInfo.cs" />
+    <Compile Include="Enums\EnumPerfilUsuario.cs" />
     <Compile Include="Enums\EnumSeccionAd.cs" />
     <Compile Include="Model\AccionInfoEntity.cs" />
     <Compile Include="Model\ACCION_INFO.cs">
@@ -110,6 +111,10 @@
     <Compile Include="Model\ROL_CARGO.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\USUARIO.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UsuarioEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

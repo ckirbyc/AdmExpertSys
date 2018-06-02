@@ -190,15 +190,45 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         /// </summary>
         /// <param name="sOu">Ruta de la OU</param>
         /// <returns></returns>
-        public PrincipalSearcher GetListGroupByOu(string sOuCompleto)
+        public List<GroupPrincipal> GetListGroupByOu(string sOuCompleto)
         {
+            var listaGroup = new List<GroupPrincipal>();
+
+            var sOu = sOuCompleto.Replace(_sLdapServer, string.Empty);
+
+            PrincipalContext ctx = GetPrincipalContext(sOu);            
+            using (GroupPrincipal objGroup = new GroupPrincipal(ctx))
+            {
+                objGroup.IsSecurityGroup = false;
+
+                using (PrincipalSearcher pSearch = new PrincipalSearcher(objGroup))
+                {
+                    foreach (GroupPrincipal group in pSearch.FindAll())
+                    {
+                        var ubicGroup = group.DistinguishedName;
+                        int startIndex = ubicGroup.IndexOf(",") + 1;
+                        int length = ubicGroup.Length - startIndex;
+                        var ubicClear = ubicGroup.Substring(startIndex, length);
+                        if (sOu.Equals(ubicClear))
+                        {
+                            listaGroup.Add(group);
+                        }
+                    }                    
+                    return listaGroup;
+                }                       
+            }                    
+        }
+
+        public PrincipalSearcher GetListGroupByOuMantGroup(string sOuCompleto)
+        {           
             var sOu = sOuCompleto.Replace(_sLdapServer, string.Empty);
             PrincipalContext ctx = GetPrincipalContext(sOu);
-            GroupPrincipal objGroup = new GroupPrincipal(ctx);
-            objGroup.IsSecurityGroup = false;
-            PrincipalSearcher pSearch = new PrincipalSearcher(objGroup);
-
-            return pSearch;
+            using (GroupPrincipal objGroup = new GroupPrincipal(ctx))
+            {
+                objGroup.IsSecurityGroup = false;
+                PrincipalSearcher pSearch = new PrincipalSearcher(objGroup);                                    
+                return pSearch;                
+            }
         }
 
         #endregion
@@ -997,7 +1027,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         public List<UsuarioAd> GetListAccountUsers()
         {
             var listaUser = new List<UsuarioAd>();
-            using (PrincipalContext oPrincipalContext = GetPrincipalContext())
+            using (PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaOuDominio))
             {
                 using (UserPrincipal objUser = new UserPrincipal(oPrincipalContext))
                 {

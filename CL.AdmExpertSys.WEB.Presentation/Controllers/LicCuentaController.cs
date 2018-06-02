@@ -93,14 +93,21 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
             foreach (var estUsr in estadoCuentaLista)
             {
-                if (HomeSysWebFactory.ExisteUsuarioPortal(estUsr.Correo))
+                try
                 {
-                    if (HomeSysWebFactory.AsignarLicenciaUsuario(estUsr.Correo, estUsr.LICENCIAS_O365.Codigo))
+                    if (HomeSysWebFactory.ExisteUsuarioPortal(estUsr.Correo.Trim()))
                     {
-                        estUsr.LicenciaAsignada = true;
-                        HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
-                    }                    
+                        if (HomeSysWebFactory.AsignarLicenciaUsuario(estUsr.Correo.Trim(), estUsr.LICENCIAS_O365.Codigo))
+                        {
+                            estUsr.LicenciaAsignada = true;
+                            HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
+                        }
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Utils.LogErrores(ex);
+                }                
             }
 
             HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(false);

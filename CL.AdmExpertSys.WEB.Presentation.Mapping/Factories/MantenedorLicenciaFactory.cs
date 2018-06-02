@@ -93,10 +93,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         public bool ExisteCodigoLicencia(string codigo)
         {
             try
-            {
-                var codigoNum = Convert.ToDecimal(codigo);
-
-                var espec = new DirectSpecification<MANTENEDOR_LICENCIA>(x => x.Codigo == codigoNum);
+            {                
+                var espec = new DirectSpecification<MANTENEDOR_LICENCIA>(x => x.Codigo == codigo.Trim());
                 var mantLicBd = MantenedorLicenciaService.AllMatching(espec);
 
                 if (mantLicBd.Any()) {
@@ -115,10 +113,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         {
             var mantLic = new MantenedorLicenciaVm();
             try
-            {
-                var codigoNum = Convert.ToDecimal(codigo);
-
-                var espec = new DirectSpecification<MANTENEDOR_LICENCIA>(x => x.Codigo == codigoNum);
+            {                
+                var espec = new DirectSpecification<MANTENEDOR_LICENCIA>(x => x.Codigo == codigo.Trim());
                 var mantLicBd = MantenedorLicenciaService.AllMatching(espec);
 
                 if (mantLicBd.Any())
@@ -236,18 +232,6 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             foreach (var regFila in tabla.DataRange.Rows())
                             {
                                 var codigoLic = regFila.Field(0).GetString();
-                                decimal codigoLicDec = 0;
-                                try
-                                {
-                                    codigoLicDec = Convert.ToDecimal(codigoLic);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Utils.LogErrores(ex);
-                                    var sgError = $"Revisar en fila {numFila}, columna A, valor debe ser numérico";
-                                    throw new FormatException(sgError);
-                                }
-
                                 var rolCargoIdString = regFila.Field(1).GetString().Split('-')[0].Replace("[", "").Replace("]", "");
                                 var licenciaIdString = regFila.Field(2).GetString().Split('-')[0].Replace("[", "").Replace("]", "");
 
@@ -257,7 +241,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                                     //Procesar 
                                     var objVm = new MantenedorLicenciaVm
                                     {
-                                        Codigo = codigoLicDec,
+                                        Codigo = codigoLic.Trim(),
                                         RolCargoId = Convert.ToDecimal(rolCargoIdString),
                                         LicenciaId = Convert.ToDecimal(licenciaIdString),
                                         Vigente = true

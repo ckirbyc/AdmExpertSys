@@ -232,6 +232,7 @@
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\SyncCuentaController.cs" />
     <Compile Include="Controllers\UsuarioCreadoController.cs" />
+    <Compile Include="Controllers\UsuarioPerfilController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -423,6 +424,7 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\Menu\ActivaMenu.js" />
     <Content Include="Scripts\Menu\ActivaMenu1.js" />
+    <Content Include="Scripts\Menu\ActivaMenu2.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\printArea.js" />
     <Content Include="Scripts\printMedia.js" />
@@ -521,6 +523,10 @@
     <Content Include="Views\MantenedorLic\DescargarPlanilla.cshtml" />
     <Content Include="Views\MantenedorLic\CargarPlanilla.cshtml" />
     <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\UsuarioPerfil\Index.cshtml" />
+    <Content Include="Views\UsuarioPerfil\Create.cshtml" />
+    <Content Include="Views\UsuarioPerfil\Edit.cshtml" />
+    <Content Include="Views\UsuarioPerfil\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
