@@ -106,8 +106,14 @@
                     <tr>
                         <th scope="row">@Html.DisplayNameFor(m => m.CodigoLicencia)</th>
                         <td colspan="2">
-                            @Html.TextBoxFor(m => m.CodigoLicencia, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.DropDownListFor(m => m.CodigoLicencia, Model.CodigoLicenciaLista, "Seleccione", new { @class = "form-control", @style = "width: 100%" })
                             @Html.ValidationMessageFor(m => m.CodigoLicencia)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Info)</th>
+                        <td>
+                            @Html.CheckBoxFor(m => m.Info, new { @class = "form-control" })
                         </td>
                     </tr>
                     <tr>
@@ -168,8 +174,8 @@
         </div>
     </div>
     <div class="row" id="SeccionAsociarGrupo" style="display: none;">
-        <div class="col-md-12">
-            <h2 class="page-header colorSky col-md-12">Asociar Usuario a Grupos</h2>
+        <div class="col-md-12">            
+            <h2 class="sub-header">Asociar o Desasociar Usuario a Grupos</h2>
             <div class="form-horizontal">
                 <div class="panel-group">
                     <div class="form-group col-md-12">
@@ -205,6 +211,10 @@
     $("#btnLicE1").attr("disabled", true);
     $("#btnLicE3").attr("disabled", true);
     $("#btnLicExO").attr("disabled", true);
+    $("#CodigoLicencia").attr("disabled", false);
+    $("#CodigoLicencia").prop('disabled', 'disabled');
+    $("#Info").attr("disabled", false);
+    $("#Info").prop('disabled', 'disabled');
     $(document).ready(function () {
         $('#jstree').jstree();
         //Seleccionar OU desde el Arbol
@@ -276,6 +286,7 @@
                     $("#loading-modal").hide();
                     $("#SeccionAsociarGrupo").hide();
                     $("#SeccionAsociarGrupo tbody").html('');
+                    listaGruposAdByOu();
                 },
                 error: function (data) {
                     desHabilitarCampos(data);
@@ -291,6 +302,11 @@
 
         function habilitarCampos(data)
         {
+            var clave = data.Clave;
+            if (clave == '') {
+                clave = "***";
+            }
+
             $('#jstree').jstree("deselect_all");
             $("#btnSubmit").attr("disabled", false);  
             $("#btnDesUsr").attr("disabled", false);
@@ -301,7 +317,7 @@
             $("#Apellidos").removeAttr("disabled");
             $("#Apellidos").val(data.DatosUsuario.Surname);
             $("#Clave").removeAttr("disabled");
-            $("#Clave").val(data.Clave);
+            $("#Clave").val(clave);
             $("#Licencia").attr("disabled", "disabled");                  
             $("#NombreCompleto").attr("disabled", "disabled");
             $("#NombreCompleto").val(data.DatosUsuario.DisplayName);
@@ -312,9 +328,17 @@
             $("#ExisteUsuario").val(true);
             $("#CodigoLicencia").attr("disabled", false);
             $("#CodigoLicencia").val(data.CodigoLicencia);
-
+            $("#Info").attr("disabled", false);                  
+            if (data.DatosUsuario.Info == true) {                
+                $("#Info").prop("checked");
+                $("#Info").attr("checked", true);
+                $("#Info")[0].checked = true;
+            }
+            else {
+                $("#Info").attr("checked", false);
+            }
             //Seleccionar nodo existente
-            var ubicGrupo = data.DatosUsuario.DistinguishedName;            
+            var ubicGrupo = data.DatosUsuario.DistinguishedName;                        
             var myLiId = '#' + ubicGrupo;
             $("#jstree").jstree("select_node", myLiId);
             $("#PatchOu").val(ubicGrupo);
@@ -345,6 +369,8 @@
             $("#CodigoLicencia").val('');
             $("#PatchOu").val('');
             $("#CambioPatchOu").val(false);
+            $("#Info").attr("disabled", true);            
+            $("#Info").attr("checked", false);                        
         }
 
         function listaGruposAdByOu()
@@ -434,6 +460,10 @@
         });
 
         function actualizarCuentaUsuario() {
+            var infoBool = false;
+            if ($('#Info').is(":checked")) {
+                infoBool = true;
+            }
             var objEnvio =
             {
                 model:
@@ -450,7 +480,8 @@
                     'ExisteUsuario': $("#ExisteUsuario").val(),
                     'Descripcion': $("#Descripcion").val(),
                     'CodigoLicencia': $("#CodigoLicencia").val(),
-                    'CambioPatchOu': $("#CambioPatchOu").val()
+                    'CambioPatchOu': $("#CambioPatchOu").val(),
+                    'Info': infoBool
                 }
             };
 

@@ -36,6 +36,7 @@ namespace CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot
             container.RegisterType<PerfilUsuarioFactory>();
             container.RegisterType<RolCargoFactory>();
             container.RegisterType<UsuarioFactory>();
+            container.RegisterType<HomeSysWebFactory>();
             #endregion
 
             #region Repositories and services

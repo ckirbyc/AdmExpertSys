@@ -109,6 +109,18 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             var oUserPrincipal = GetUser(sUserName);
             if (oUserPrincipal != null)
             {
+                var info = ((DirectoryEntry)oUserPrincipal.GetUnderlyingObject()).Properties["info"];
+                var infoString = string.Empty;
+                var infoBool = false;
+                if (info.Value != null)
+                {
+                    infoString = info.Value.ToString();
+                    if (infoString.Equals("Cuenta Genérica"))
+                    {
+                        infoBool = true;
+                    }
+                }
+
                 var usuarioAd = new UsuarioAd
                 {
                     AccountExpirationDate = oUserPrincipal.AccountExpirationDate,
@@ -123,7 +135,8 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     SamAccountName = oUserPrincipal.SamAccountName,
                     Surname = oUserPrincipal.Surname,
                     Enabled = oUserPrincipal.Enabled,
-                    EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado"                    
+                    EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado",
+                    Info = infoBool
                 };
 
                 return usuarioAd;
@@ -378,7 +391,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         /// Retorna el objeto UserPrincipal
         /// </returns>
         public UserPrincipal CreateNewUser(string ldapOu,
-            string sUserName, string sPassword, string sGivenName, string sSurname, string prefijoUpn, string passWord, bool existeUsr, string descripcion)
+            string sUserName, string sPassword, string sGivenName, string sSurname, string prefijoUpn, string passWord, bool existeUsr, string descripcion, bool info)
         {
             string upn = sUserName + prefijoUpn;
 
@@ -428,6 +441,16 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
 
                 using (var ent = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
                 {
+                    var infoString = string.Empty;
+                    if (info)
+                    {
+                        infoString = @"Cuenta Genérica";
+                    }
+                    else
+                    {
+                        infoString = @"Cuenta Persona";
+                    }
+
                     ent.Invoke("SetPassword", passWord);
                     //Propiedades que son necesarias problar en AD para crear un usuario en Office 365
                     ent.Properties["proxyAddresses"].Add(proxyaddresses[0]);
@@ -436,6 +459,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     ent.Properties["mailnickname"].Value = sUserName;
                     ent.Properties["targetAddress"].Value = emailTransporte;
                     ent.Properties["pwdLastSet"].Value = 0;
+                    ent.Properties["info"].Value = infoString;
 
                     ent.CommitChanges();
                     ent.Close();
@@ -483,7 +507,11 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     var sSurname = CommonServices.UppercaseWords(usrData.Apellidos.Trim().ToLower());
                     string upn = usrData.NombreUsuario.Trim() + usrData.UpnPrefijo.Trim();
 
-                    eUserActual.Invoke("SetPassword", usrData.Clave.Trim());
+                    if (usrData.Clave != "***")
+                    {
+                        eUserActual.Invoke("SetPassword", usrData.Clave.Trim());
+                        //eUserActual.Properties["pwdLastSet"].Value = 0;
+                    }                   
 
                     eUserActual.Properties["userAccountControl"].Value = 0x200;
                     eUserActual.Properties["userPrincipalName"].Value = upn;
@@ -493,8 +521,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     eUserActual.Properties["displayName"].Value = sSurname + ", " + sGivenName;
                     eUserActual.Properties["mail"].Value = upn;
                     eUserActual.Properties["description"].Value = usrData.Descripcion.Trim();
-                    eUserActual.Properties["mailnickname"].Value = usrData.NombreUsuario.Trim().ToLower();                    
-                    eUserActual.Properties["pwdLastSet"].Value = 0;
+                    eUserActual.Properties["mailnickname"].Value = usrData.NombreUsuario.Trim().ToLower();                                        
 
                     //Proxy Addresses                
                     string emailOnmicrosoft = usrData.NombreUsuario.Trim().ToLower() + "@" + _sTenantDomain;                    
@@ -511,6 +538,17 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     eUserActual.Properties["proxyAddresses"].Add(proxyaddresses[2]);
 
                     eUserActual.Properties["targetAddress"].Value = emailTransporte;
+
+                    var infoString = string.Empty;
+                    if (usrData.Info)
+                    {
+                        infoString = @"Cuenta Genérica";
+                    }
+                    else
+                    {
+                        infoString = @"Cuenta Persona";
+                    }
+                    eUserActual.Properties["info"].Value = infoString;
 
                     eUserActual.CommitChanges();
                     eUserActual.Close();
@@ -1024,7 +1062,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             return _sUpnPrefijo.Split(';').ToDictionary(upnPref => upnPref);
         }
 
-        public List<UsuarioAd> GetListAccountUsers()
+        public List<UsuarioAd> GetListAccountUsers(string generarInfo)
         {
             var listaUser = new List<UsuarioAd>();
             using (PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaOuDominio))
@@ -1045,6 +1083,16 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                                     var startIndex = upnPrefijo.IndexOf("@");
                                     var length = upnPrefijo.Length - startIndex;
                                     upnPrefijoFinal = upnPrefijo.Substring(startIndex, length);
+                                }
+                                
+                                var infoString = string.Empty;
+                                if (generarInfo.Equals("S"))
+                                {
+                                    var info = ((DirectoryEntry)oUserPrincipal.GetUnderlyingObject()).Properties["info"];
+                                    if (info.Value != null)
+                                    {
+                                        infoString = info.Value.ToString();
+                                    }
                                 }                                
 
                                 var usuarioAd = new UsuarioAd
@@ -1062,7 +1110,8 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                                     Surname = oUserPrincipal.Surname,
                                     Enabled = oUserPrincipal.Enabled,
                                     EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado",                                    
-                                    UpnPrefijo = upnPrefijoFinal
+                                    UpnPrefijo = upnPrefijoFinal,
+                                    InfoString = infoString
                                 };
                                 listaUser.Add(usuarioAd);
                             }

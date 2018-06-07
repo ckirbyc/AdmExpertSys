@@ -34,11 +34,8 @@
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Tipo</th>
-                    <th>Descripción</th>
-                    @if ((int)EnumPerfilUsuario.ADMP == SessionViewModel.Usuario.PerfilId)
-                    {
-                        <th>Acción</th>
-                    }
+                    <th>Descripción</th>                                      
+                    <th>Acción</th>                    
                 </tr>
             </thead>
             @foreach (var item in Model.OrderBy(x => x.NumeroGrupo))
@@ -55,6 +52,12 @@
                         <td class="columnaAcciones textCenter">
                             @Html.ActionLink(" ", "Edit", new { nombreGrupo = item1.NombreGrupo }, new { @class = "glyphicon glyphicon-edit", title = "Editar" }) <label>|</label>
                             @Html.ActionLink(" ", "Delete", new { nombreGrupo = item1.NombreGrupo }, new { @class = "glyphicon glyphicon-remove colorOrange", title = "Eliminar" })
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="columnaAcciones textCenter">
+                            @Html.ActionLink(" ", "Edit", new { nombreGrupo = item1.NombreGrupo }, new { @class = "glyphicon glyphicon-edit", title = "Editar" })                        
                         </td>
                     }
                 </tr>

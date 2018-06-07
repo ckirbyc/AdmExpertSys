@@ -19,5 +19,8 @@ namespace CL.AdmExpertSys.WEB.Core.Domain.Dto
         public bool? Enabled { get; set; }
         public string EstadoCuenta { get; set; }
         public string UpnPrefijo { get; set; }        
+        public bool Info { get; set; }
+        public string InfoString { get; set; }
+        public string Licenses { get; set; }
     }
 }

@@ -6,33 +6,33 @@
 }
 
 <div class="row">
-    <h1 class="page-header colorOrange col-md-9">Listado cuentas de usuarios AD.</h1>    
+    <h1 class="page-header colorOrange col-md-9">Listado cuentas de usuarios AD.</h1>
     <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
         <span class="glyphicon glyphicon-download"></span>
         <input type="button" value="Descargar" class="btnInput" id="Descargar" />
     </div>
 </div>
 <div class="row">
-    <h2 class="sub-header">Vista de todos las cuentas de usuarios existentes en el AD.</h2>    
+    <h2 class="sub-header">Vista de todos las cuentas de usuarios existentes en el AD.</h2>
 </div>
 <div class="row">
     <table class="table table-hover tablaMantenedores">
         <thead>
-            <tr>                
+            <tr>
                 <th>Nombre</th>
                 <th>Cuenta</th>
                 <th>Descripción</th>
-                <th>Upn</th>                                
+                <th>Upn</th>
             </tr>
         </thead>
         @foreach (var item in Model.OrderBy(x => x.SamAccountName))
         {
             var item1 = item;
-            <tr>                
+            <tr>
                 <td class="textCenter">@Html.DisplayFor(m => item1.Name)</td>
                 <td class="textCenter" title="@Html.DisplayFor(m => item1.DistinguishedName)"><a href="#">@Html.DisplayFor(m => item1.SamAccountName)</a></td>
                 <td class="textCenter">@Html.DisplayFor(m => item1.Description)</td>
-                <td class="textCenter">@Html.DisplayFor(m => item1.UpnPrefijo)</td>                                
+                <td class="textCenter">@Html.DisplayFor(m => item1.UpnPrefijo)</td>
             </tr>
         }
     </table>
@@ -43,14 +43,22 @@
     $('#RepCtaUsr').addClass('active');
 </script>
 <script>
-    $(document).ready(function () {
-        $("#btnSubmit").off('click').click(function () {            
-            $("#loading-modal").show();
-            window.location = '@Url.Action("ExportarExcel", "Reportes")';
-            setTimeout(function () {
-                $("#loading-modal").hide();
-            }, 10000);
-        });
+$(document).ready(function () {
+    $("#btnSubmit").off('click').click(function () {
+        monitorDescargaExcel();
+        window.location = '@Url.Action("ExportarExcel", "Reportes")?licencia=N&processToken=' + @ViewBag.processToken;
     });
+    function monitorDescargaExcel() {
+        $("#loading-modal").show();
+        var interval = setInterval(function () {
+            var cookieValue = $.cookie('processToken');
+            if (cookieValue == '@ViewBag.processToken') {
+                $("#loading-modal").hide();
+                clearInterval(interval);
+                $.removeCookie('processToken', { path: '/' });
+            }
+        }, 1000);
+    }
+});
 </script>
 

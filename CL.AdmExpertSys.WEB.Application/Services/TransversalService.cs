@@ -10,7 +10,7 @@ namespace CL.AdmExpertSys.WEB.Application.Services
     {
         protected IRolCargoService RolCargoService;
         protected ILicenciaO365Service LicenciaO365Service;
-        protected IPerfilUsuarioService PerfilUsuarioService;
+        protected IPerfilUsuarioService PerfilUsuarioService;        
 
         public TransversalService(IRolCargoService rolCargoService,
             ILicenciaO365Service licenciaO365Service,
@@ -63,6 +63,6 @@ namespace CL.AdmExpertSys.WEB.Application.Services
                     }).ToList();
 
             return lista;
-        }        
+        }
     }
 }

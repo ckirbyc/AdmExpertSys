@@ -5,6 +5,7 @@ using CL.AdmExpertSys.WEB.Application.CommonLib;
 using CL.AdmExpertSys.WEB.Application.Contracts.Services;
 using CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
+using CL.AdmExpertSys.WEB.Core.Domain.Model;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using ClosedXML.Excel;
 using System;
@@ -22,11 +23,14 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         protected Common CommonFactory;
         protected AdLib AdFactory;
         protected Office365 O365Factory;
+        protected IMantenedorLicenciaService MantenedorLicenciaService;
 
         public HomeSysWebFactory(
-            IHomeSysWebService homeSysWebService)
+            IHomeSysWebService homeSysWebService,
+            IMantenedorLicenciaService mantenedorLicenciaService)
         {
             HomeSysWebService = homeSysWebService;
+            MantenedorLicenciaService = mantenedorLicenciaService;
         }
 
         public HomeSysWebFactory()
@@ -35,8 +39,39 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 
         public HomeSysWebVm ObtenerVistaHomeSysWeb()
         {
-            var homeSys = new HomeSysWebVm { Licencias = ObtenerTipoLicencias(), Ous = ObtenerTipoOus(), UpnPrefijoLista = ObtenerUpnPrefijo(), ListaAccountSkus = GetLicenciasDisponibles()};
+            var homeSys = new HomeSysWebVm {
+                Licencias = ObtenerTipoLicencias(),
+                Ous = ObtenerTipoOus(),
+                UpnPrefijoLista = ObtenerUpnPrefijo(),
+                ListaAccountSkus = GetLicenciasDisponibles(),
+                CodigoLicenciaLista = ObtenerSelectMantenedorLicencia()
+            };
             return homeSys;
+        }
+
+        private List<SelectListItem> ObtenerSelectMantenedorLicencia()
+        {
+            try
+            {
+                using (var entityContext = new AdmSysWebEntities())
+                {
+                    var lista = (from a in entityContext.MANTENEDOR_LICENCIA.Where(x => x.Vigente).ToList()
+                                 orderby a.ROL_CARGO.Nombre
+                                 select a).AsEnumerable()
+                    .Select(x => new SelectListItem
+                    {
+                        Value = x.Codigo,
+                        Text = x.ROL_CARGO.Nombre
+                    }).ToList();
+
+                    return lista;
+                }                
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return null;
+            }
         }
 
         private static List<SelectListItem> ObtenerTipoLicencias()
@@ -75,6 +110,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             var upn = adLib.GetUpnPrefijo();
             return upn.Select(item => new SelectListItem { Text = item.Value, Value = item.Key }).ToList();
         }
+
+
 
         public UsuarioAd ObtenerUsuarioExistente(string nombreUsuario)
         {
@@ -132,7 +169,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 }
                 using (
                     UserPrincipal sUserPrincipal = AdFactory.CreateNewUser(model.PatchOu, username, pwd, nombres,
-                        apellidos, model.UpnPrefijo, pwd, model.ExisteUsuario, descripcion))
+                        apellidos, model.UpnPrefijo, pwd, model.ExisteUsuario, descripcion, model.Info))
                 {
                     //Si el usuario se creó correctamente, continuo con DirSync y Asignacion de licencia
                     if (sUserPrincipal != null)
@@ -500,28 +537,53 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 
                 var userAd = AdFactory.GetUser(adUsr);
 
+                var j = 1;
+                foreach (GroupPrincipal objGroup in userAd.GetGroups())
+                {
+                    if (!(bool)objGroup.IsSecurityGroup)
+                    {
+                        var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+                        var grupoVm = new GrupoAdVm
+                        {
+                            NumeroGrupo = j,
+                            NombreGrupo = objGroup.Name,
+                            UbicacionGrupo = objGroup.DistinguishedName,
+                            CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                            ExisteGrupo = true,
+                            DescripcionGrupo = objGroup.Description,
+                            TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
+                            Asociado = true
+                        };
+                        listaGrupo.Add(grupoVm);
+                        j++;
+                    }
+                    objGroup.Dispose();
+                }
+
                 var objListaGroup = AdFactory.GetListGroupByOu(sOu);
 
-                var i = 1;                
+                var i = j;                
                 foreach (GroupPrincipal objGroup in objListaGroup.ToList())
-                {
-                    var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
-                    var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);                                      
-
-                    var grupoVm = new GrupoAdVm
+                {                                       
+                    var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);
+                    if (!asocUsrGrp)
                     {
-                        NumeroGrupo = i,
-                        NombreGrupo = objGroup.Name,
-                        UbicacionGrupo = objGroup.DistinguishedName,
-                        CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
-                        ExisteGrupo = true,
-                        DescripcionGrupo = objGroup.Description,
-                        TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
-                        Asociado = asocUsrGrp
-                    };
-                    listaGrupo.Add(grupoVm);
-                    objGroup.Dispose();
-                    i++;
+                        var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+                        var grupoVm = new GrupoAdVm
+                        {
+                            NumeroGrupo = i,
+                            NombreGrupo = objGroup.Name,
+                            UbicacionGrupo = objGroup.DistinguishedName,
+                            CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                            ExisteGrupo = true,
+                            DescripcionGrupo = objGroup.Description,
+                            TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
+                            Asociado = asocUsrGrp
+                        };
+                        listaGrupo.Add(grupoVm);
+                        i++;
+                    }                    
+                    objGroup.Dispose();                    
                 }
 
                 userAd.Dispose();                
@@ -660,14 +722,36 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 
         public GrupoAdVm GetGrupoDistribucion(string nombreGrupo)
         {
-            
+
             AdFactory = new AdLib();
             CommonFactory = new Common();
             var objAd = AdFactory.GetGroup(nombreGrupo);
 
+            //Obtener usuarios del grupo
+            var listaUsuario = new List<UsuarioAd>();
+            foreach (var userObj in objAd.GetMembers().ToList())
+            {
+                if (userObj.UserPrincipalName != null)
+                {
+                    var correoUsrObj = ((DirectoryEntry)userObj.GetUnderlyingObject()).Properties["mail"];
+                    var correoUsr = correoUsrObj.Value != null ? correoUsrObj.Value.ToString() : string.Empty;
+                    var objUsr = new UsuarioAd
+                    {
+                        DisplayName = userObj.DisplayName,
+                        Description = userObj.Description,
+                        DistinguishedName = userObj.DistinguishedName,
+                        SamAccountName = userObj.SamAccountName,
+                        Name = userObj.Name,
+                        EmailAddress = correoUsr
+                    };
+                    listaUsuario.Add(objUsr);
+                }                
+                userObj.Dispose();
+            }
+
             var correo = ((DirectoryEntry)objAd.GetUnderlyingObject()).Properties["mail"];
             var replaceUbicacion = @"CN=" + objAd.Name + ",";
-            var nuevaUbicacion = CommonFactory.GetAppSetting("LdapServidor") + objAd.DistinguishedName.Replace(replaceUbicacion,"");
+            var nuevaUbicacion = CommonFactory.GetAppSetting("LdapServidor") + objAd.DistinguishedName.Replace(replaceUbicacion, "");
 
             var objVm = new GrupoAdVm
             {
@@ -678,8 +762,11 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
                 ExisteGrupo = true,
                 DescripcionGrupo = objAd.Description,
-                TipoGrupo = (bool)objAd.IsSecurityGroup ? "Grupo Seguridad - " + objAd.GroupScope.Value : "Grupo Distribución - " + objAd.GroupScope.Value
+                TipoGrupo = (bool)objAd.IsSecurityGroup ? "Grupo Seguridad - " + objAd.GroupScope.Value : "Grupo Distribución - " + objAd.GroupScope.Value,
+                ListaUsuarioAd = listaUsuario
             };
+
+            objAd.Dispose();
 
             return objVm;
         }
@@ -706,13 +793,13 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
-        public List<UsuarioAd> ObtenerListaCuentaUsuario()
+        public List<UsuarioAd> ObtenerListaCuentaUsuario(string generarInfo)
         {
             var listaAccount = new List<UsuarioAd>();
             try
             {
-                AdFactory = new AdLib();
-                listaAccount = AdFactory.GetListAccountUsers();
+                AdFactory = new AdLib();                
+                listaAccount = AdFactory.GetListAccountUsers(generarInfo);              
                 return listaAccount;
             }
             catch (Exception ex)
@@ -722,7 +809,28 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
-        public XLWorkbook ExportarArchivoExcelReporteCuentaUsuario()
+        public List<UsuarioAd> ObtenerListaCuentaUsuarioLicense()
+        {
+            var listaAccount = new List<UsuarioAd>();
+            try
+            {
+                AdFactory = new AdLib();
+                O365Factory = new Office365();
+                listaAccount = AdFactory.GetListAccountUsers("S");
+
+                var sMess = string.Empty;
+                listaAccount = O365Factory.GetLicensedUserMassive(listaAccount, out sMess);
+
+                return listaAccount;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return listaAccount;
+            }
+        }
+
+        public XLWorkbook ExportarArchivoExcelReporteCuentaUsuario(string licencia)
         {
             try
             {
@@ -751,14 +859,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                         hojaRep.Cell(1, 4).Style.Fill.BackgroundColor = XLColor.Red;
                         hojaRep.Cell(1, 4).Style.Font.Bold = true;
 
-                        hojaRep.Cell(1, 5).Value = "Ubicación";
+                        hojaRep.Cell(1, 5).Value = "Info";
                         hojaRep.Cell(1, 5).Style.Font.FontColor = XLColor.White;
                         hojaRep.Cell(1, 5).Style.Fill.BackgroundColor = XLColor.Red;
                         hojaRep.Cell(1, 5).Style.Font.Bold = true;
 
+                        hojaRep.Cell(1, 6).Value = "Licencia";
+                        hojaRep.Cell(1, 6).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 6).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 6).Style.Font.Bold = true;
+
+                        hojaRep.Cell(1, 7).Value = "Ubicación";
+                        hojaRep.Cell(1, 7).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 7).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 7).Style.Font.Bold = true;
+
                         CommonFactory = new Common();
                         var cantNivel = Convert.ToInt64(CommonFactory.GetAppSetting("NivelesArbolAd"));
-                        var numColCabecera = 6;
+                        var numColCabecera = 8;
 
                         for (int i = 1; i <= cantNivel; i++)
                         {
@@ -771,10 +889,19 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             numColCabecera++;
                         }
 
-                        //Obtener los datos para poblar archivo
-                        var listCtaOrdenada = ObtenerListaCuentaUsuario().OrderBy(x => x.DistinguishedName);
+                        //Obtener los datos para poblar archivo                        
+                        var listCtaOrdenada = new List<UsuarioAd>();
+                        if (licencia.Equals("N"))
+                        {
+                            listCtaOrdenada = ObtenerListaCuentaUsuario("S").OrderBy(x => x.DistinguishedName).ToList();
+                        }
+                        else
+                        {
+                            listCtaOrdenada = ObtenerListaCuentaUsuarioLicense().OrderBy(x => x.DistinguishedName).ToList();
+                        }
+
                         var listaExcelRepCtaUsr = new List<string[]>(listCtaOrdenada.Count());
-                        var cantColArray = 5 + cantNivel;
+                        var cantColArray = 7 + cantNivel;
                         foreach (var ctaUsr in listCtaOrdenada)
                         {
                             var listaRepCtaUsr = new string[cantColArray];
@@ -782,12 +909,14 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             listaRepCtaUsr[1] = ctaUsr.SamAccountName;
                             listaRepCtaUsr[2] = ctaUsr.Description;
                             listaRepCtaUsr[3] = ctaUsr.SamAccountName + ctaUsr.UpnPrefijo;
+                            listaRepCtaUsr[4] = ctaUsr.InfoString;
+                            listaRepCtaUsr[5] = ctaUsr.Licenses;
 
                             int startIndexOu = ctaUsr.DistinguishedName.IndexOf("OU=");
                             int lengthOu = ctaUsr.DistinguishedName.Length - startIndexOu;
                             var dnNewOu = ctaUsr.DistinguishedName.Substring(startIndexOu, lengthOu);
 
-                            listaRepCtaUsr[4] = dnNewOu;
+                            listaRepCtaUsr[6] = dnNewOu;
 
                             var dnCompleto = ctaUsr.DistinguishedName;
                             var listaOu = new List<OuExcelVm>();                                                       
@@ -818,7 +947,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                                 }                                
                             }
 
-                            var colArray = 5;
+                            var colArray = 7;
                             foreach (var ouVm in listaOu.OrderByDescending(x => x.Numero))
                             {
                                 listaRepCtaUsr[colArray] = ouVm.Nombre;

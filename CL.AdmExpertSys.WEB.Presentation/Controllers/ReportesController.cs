@@ -2,6 +2,7 @@
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
 using System;
 using System.IO;
+using System.Web;
 using System.Web.Mvc;
 
 namespace CL.AdmExpertSys.WEB.Presentation.Controllers
@@ -16,7 +17,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             try
             {
                 HomeSysWebFactory = new HomeSysWebFactory();                               
-                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario();
+                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario("N");
+                ViewBag.processToken = Convert.ToInt64(DateTime.Now.Hour.ToString() + DateTime.Now.Minute + DateTime.Now.Second +
+                                       DateTime.Now.Millisecond);
                 return View(listaCuenta);
             }
             catch (Exception ex)
@@ -26,12 +29,31 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             }
         }
 
-        public FileStreamResult ExportarExcel()
+        public ActionResult Licencia()
         {
             try
             {
                 HomeSysWebFactory = new HomeSysWebFactory();
-                var libro = HomeSysWebFactory.ExportarArchivoExcelReporteCuentaUsuario();
+                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario("N");
+                ViewBag.processToken = Convert.ToInt64(DateTime.Now.Hour.ToString() + DateTime.Now.Minute + DateTime.Now.Second +
+                                       DateTime.Now.Millisecond);
+                return View(listaCuenta);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return RedirectToAction("Index", "Error", new { message = "Error al cargar página Reporte Cuenta Usuario AD con Licencia. Si el problema persiste contacte a soporte IT" });
+            }
+        }
+
+        public FileStreamResult ExportarExcel(string licencia, long processToken)
+        {
+            try
+            {
+                MakeProcessTokenCookie(processToken);
+
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var libro = HomeSysWebFactory.ExportarArchivoExcelReporteCuentaUsuario(licencia);
                 var memoryStream = new MemoryStream();
                 libro.SaveAs(memoryStream);
                 libro.Dispose();
@@ -43,7 +65,15 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 memoryStream.Flush();
                 memoryStream.Position = 0;
 
-                var nombreArchivo = string.Format("ReporteCuentaUsuario.xlsx");
+                var nombreArchivo = string.Empty;
+                if (licencia.Equals("N"))
+                {
+                    nombreArchivo = string.Format("ReporteCuentaUsuario.xlsx");
+                }
+                else
+                {
+                    nombreArchivo = string.Format("ReporteCuentaUsuarioLicencia.xlsx");
+                }
                 return File(memoryStream, "Reportes", nombreArchivo);
             }
             catch (Exception ex)
@@ -51,6 +81,15 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 Utils.LogErrores(ex);
                 return null;
             }
+        }
+
+        private void MakeProcessTokenCookie(long processToken)
+        {
+            var cookie = new HttpCookie("processToken")
+            {
+                Value = processToken.ToString()
+            };
+            ControllerContext.HttpContext.Response.Cookies.Add(cookie);
         }
     }
 }

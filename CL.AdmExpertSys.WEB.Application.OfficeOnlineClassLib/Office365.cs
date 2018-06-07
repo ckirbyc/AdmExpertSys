@@ -10,6 +10,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Security;
+using System.Text;
 
 namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
 {
@@ -37,7 +38,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
         /// <param name="sMess">Retorna condiciones de error</param>
         /// <returns>Retorna True en caso de que el usuario tiene licencia asignada</returns>
         public bool IsLicensedUser(string sUserName, out string sMess)
-        {
+        {            
             CommonServices = new Common();
             bool bReturn = false;
             sMess = string.Empty;
@@ -97,7 +98,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                                 {
                                     if (user.Properties["isLicensed"] != null && user.Properties["isLicensed"].Value != null)
                                     {
-                                        bReturn = user.Properties["isLicensed"].Value.ToString() == "True";
+                                        bReturn = user.Properties["isLicensed"].Value.ToString() == "True";                                        
                                     }
                                     else bReturn = false;
                                 }
@@ -106,7 +107,7 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                         }
                     }
                     // Close the runspace.
-                    psRunSpace.Close();
+                    psRunSpace.Close();                    
                     return bReturn;
                 }
             }
@@ -115,6 +116,108 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 Utils.LogErrores(ex);
                 return false;
             }
+        }
+
+        public List<UsuarioAd> GetLicensedUserMassive(List<UsuarioAd> listUser, out string sMess)
+        {
+            var listLicUser = new List<UsuarioAd>();
+            CommonServices = new Common();
+            sMess = string.Empty;
+            try
+            {
+                // Create Initial Session State for runspace.
+                InitialSessionState initialSession = InitialSessionState.CreateDefault();
+                initialSession.ImportPSModule(new[] { "MSOnline" });
+                
+                string sUser = CommonServices.GetAppSetting("usuarioO365");
+                string sPwd = CommonServices.GetAppSetting("passwordO365");
+
+                var securePass = new SecureString();
+                foreach (char secureChar in sPwd)
+                {
+                    securePass.AppendChar(secureChar);
+                }
+
+                // Create credential object.
+                var credential = new PSCredential(sUser, securePass);                
+
+                // Create command to connect office 365.
+                var connectCommand = new Command("Connect-MsolService");
+                connectCommand.Parameters.Add((new CommandParameter("Credential", credential)));              
+                
+
+                using (Runspace psRunSpace = RunspaceFactory.CreateRunspace(initialSession))
+                {
+                    // Open runspace.
+                    psRunSpace.Open();
+
+                    //Crear conexión a la nube
+                    using (var pipeConnect = psRunSpace.CreatePipeline())
+                    {
+                        pipeConnect.Commands.Add(connectCommand);
+                        Collection<PSObject> resultsConnect = pipeConnect.Invoke();
+                        var errorConnect = pipeConnect.Error.ReadToEnd();
+                        if (errorConnect.Count > 0)
+                        {
+                            sMess += " | Problema con el usuario y password del portal";
+                        }                        
+                    }
+
+                    if (string.IsNullOrEmpty(sMess))
+                    {
+                        foreach (var userAd in listUser)
+                        {
+                            try
+                            {
+                                if (!string.IsNullOrEmpty(userAd.EmailAddress.Trim()))
+                                {
+                                    using (var pipe = psRunSpace.CreatePipeline())
+                                    {
+                                        var scriptCommand = string.Format("(Get-MsolUser -UserPrincipalName \"{0}\").Licenses | % {{ $_.AccountSkuId }}", userAd.EmailAddress.Trim());
+                                        var getCommand = new Command(scriptCommand, true);
+
+                                        pipe.Commands.Add(getCommand);
+                                        // Execute command and generate results and errors (if any).
+                                        Collection<PSObject> results = pipe.Invoke();
+                                        var error = pipe.Error.ReadToEnd();
+
+                                        if (error.Count > 0)
+                                        {
+                                            sMess += " | Problema al obtener los datos";
+                                        }
+                                        else
+                                        {
+                                            var licenseString = new StringBuilder(string.Empty);
+                                            foreach (PSObject lic in results)
+                                            {
+                                                licenseString.Append(lic.ToString().Replace("agrosuper:", string.Empty) + ",");
+                                            }
+                                            userAd.Licenses = licenseString.ToString();
+                                            listLicUser.Add(userAd);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    listLicUser.Add(userAd);
+                                }
+                            }
+                            catch
+                            {
+                                listLicUser.Add(userAd);
+                            }                                                        
+                        }                                                
+                    }                    
+                    // Close the runspace.
+                    psRunSpace.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);                
+            }
+
+            return listLicUser;
         }
 
         /// <summary>Indica si un usuario existe en O365</summary>

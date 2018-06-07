@@ -40,15 +40,15 @@
                     <tr>
                         <th scope="row">@Html.DisplayName("Id Usuario")</th>
                         <td colspan="2">
-                            @Html.TextBoxFor(m => m.NombreUsuario, new { @maxlength = "20", @class = "form-control", @style="width: 75%" })
+                            @Html.TextBoxFor(m => m.NombreUsuario, new { @maxlength = "20", @class = "form-control", @style = "width: 75%" })
                             @Html.ValidationMessageFor(m => m.NombreUsuario)
                         </td>
                         <td colspan="2">
                             <div id="btnVerificar" class="btn btn-primary pull-right btn-sm">
                                 <span class="glyphicon glyphicon-search"></span>
                                 <input type="button" value="Buscar" class="btnInput" id="Buscar" />
-                            </div>                            
-                        </td>                        
+                            </div>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row">@Html.DisplayName("Dominio")</th>
@@ -91,7 +91,7 @@
                         <td colspan="2">
                             @Html.TextBoxFor(m => m.Correo, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
                             @Html.ValidationMessageFor(m => m.Correo)
-                        </td>                       
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row">@Html.DisplayNameFor(m => m.Descripcion)</th>
@@ -103,8 +103,14 @@
                     <tr>
                         <th scope="row">@Html.DisplayNameFor(m => m.CodigoLicencia)</th>
                         <td colspan="2">
-                            @Html.TextBoxFor(m => m.CodigoLicencia, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.DropDownListFor(m => m.CodigoLicencia, Model.CodigoLicenciaLista, "Seleccione", new { @class = "form-control", @style = "width: 100%" })
                             @Html.ValidationMessageFor(m => m.CodigoLicencia)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Info)</th>
+                        <td>
+                            @Html.CheckBoxFor(m => m.Info, new { @class = "form-control" })
                         </td>
                     </tr>
                     <tr>
@@ -131,9 +137,9 @@
                                 <input type="button" value="Guardar Usuario en AD" class="btnInput" id="Guardar" />
                             </div>
                             @*<div id="btnSync" class="btn btn-primary pull-right btn-sm">
-                                <span class="glyphicon glyphicon-save"></span>
-                                <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" />
-                            </div>*@
+                    <span class="glyphicon glyphicon-save"></span>
+                    <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" />
+                </div>*@
                         </td>
                     </tr>
                     <tr>
@@ -171,13 +177,13 @@
                         </td>
                     </tr>
                     @*<tr>
-                        <td>
-                            <div id="btnAsignarLic" class="btn btn-primary pull-right btn-sm">
-                                <span class="glyphicon glyphicon-save"></span>
-                                <input type="button" value="Asignar Licencia" class="btnInput" id="AsignarLic" />
-                            </div>
-                        </td>
-                    </tr>*@
+            <td>
+                <div id="btnAsignarLic" class="btn btn-primary pull-right btn-sm">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <input type="button" value="Asignar Licencia" class="btnInput" id="AsignarLic" />
+                </div>
+            </td>
+        </tr>*@
                 </tbody>
             </table>
         </div>
@@ -265,6 +271,10 @@
             $("#btnLicExO").attr("disabled", true);                        
             $("#UpnPrefijo").attr("disabled", false);
             $("#UpnPrefijo").prop('disabled', 'disabled');
+            $("#CodigoLicencia").attr("disabled", false);
+            $("#CodigoLicencia").prop('disabled', 'disabled');
+            $("#Info").attr("disabled", false);
+            $("#Info").prop('disabled', 'disabled');
 
             $('#jstree').jstree();
 
@@ -372,7 +382,16 @@
                             $("#Correo").val(data.DatosUsuario.EmailAddress);                            
                             $("#ExisteUsuario").val(true);
                             $("#CodigoLicencia").attr("disabled", true);
-                            $("#CodigoLicencia").val(data.CodigoLicencia);
+                            $("#CodigoLicencia").val(data.CodigoLicencia);                            
+                            if (data.DatosUsuario.Info == true) {
+                                $("#Info").prop("checked");
+                                $("#Info").attr("checked", true);
+                                $("#Info")[0].checked = true;
+                            }
+                            else {                                
+                                $("#Info").attr("checked", false);
+                            }            
+                            $("#Info").attr("disabled", true);
                             $("#SeccionGrupo").hide();
                             $("#SeccionAsociarGrupo").hide();                            
 
@@ -405,7 +424,9 @@
                             $("#Correo").attr("disabled", "disabled");
                             $("#ExisteUsuario").val(false);
                             $("#CodigoLicencia").attr("disabled", false);
-                            $("#CodigoLicencia").val(data.CodigoLicencia);
+                            $("#CodigoLicencia").val(data.CodigoLicencia);                                                        
+                            $("#Info").attr("checked", false);                            
+                            $("#Info").attr("disabled", false);
                             //$("#SeccionGrupo").show();
                             BootstrapDialog.alert({
                                 title: '¡Verificación Exitosa!',
@@ -435,7 +456,9 @@
                         $("#Correo").val(data.DatosUsuario.EmailAddress);                        
                         $("#ExisteUsuario").val(true);
                         $("#CodigoLicencia").val(true);
-                        $("#CodigoLicencia").val(data.CodigoLicencia);
+                        $("#CodigoLicencia").val(data.CodigoLicencia);                        
+                        $("#Info").attr("checked", false);                        
+                        $("#Info").attr("disabled", true);
                         $("#SeccionGrupo").hide();
                         $("#SeccionAsociarGrupo").hide();
                         BootstrapDialog.alert({
@@ -456,7 +479,12 @@
                 }, 1000);
             });
 
-            function guardarSincronizarUsuario() {
+            function guardarSincronizarUsuario() {                
+                var infoBool = false;
+                if ($('#Info').is(":checked"))
+                {
+                    infoBool = true;
+                }
                 var objEnvio =
                 {
                     model:
@@ -472,7 +500,8 @@
                         'PatchOu': $('#PatchOu').val(),
                         'ExisteUsuario': $("#ExisteUsuario").val(),
                         'Descripcion': $("#Descripcion").val(),
-                        'CodigoLicencia': $("#CodigoLicencia").val()
+                        'CodigoLicencia': $("#CodigoLicencia").val(),
+                        'Info': infoBool
                     }
                 };
 

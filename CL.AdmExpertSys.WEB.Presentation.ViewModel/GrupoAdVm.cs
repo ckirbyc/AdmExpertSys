@@ -1,6 +1,7 @@
 ﻿
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel.Validation;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -29,6 +30,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         [Required(ErrorMessage = @"Descripción es requerido")]
         public string DescripcionGrupo { get; set; }
         public EstructuraArbolAd EstructuraArbolAd { get; set; }
-        public bool Asociado { get; set; }
+        public bool Asociado { get; set; }        
+        public List<UsuarioAd> ListaUsuarioAd { get; set; }
     }
 }

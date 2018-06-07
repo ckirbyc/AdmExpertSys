@@ -181,5 +181,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     new { message = "Error al intentar eliminar Grupo del AD. Por favor reinténtelo más tarde." });
             }
         }
+
+        public ActionResult VerPopupAsignarUsuarioGrupo(string nombreGrupo)
+        {
+            HomeSysWebFactory = new HomeSysWebFactory();
+            var objVm = HomeSysWebFactory.GetGrupoDistribucion(nombreGrupo);
+
+            if (SessionViewModel.EstructuraArbolAd != null)
+            {
+                objVm.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
+            }
+            else
+            {
+                var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
+                SessionViewModel.EstructuraArbolAd = estructura;
+                objVm.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
+            }
+
+            return View(objVm);
+        }
     }
 }

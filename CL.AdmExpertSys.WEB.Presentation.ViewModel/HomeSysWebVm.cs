@@ -30,6 +30,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         public string Descripcion { get; set; }
         [DisplayName(@"Código Licencia")]        
         public string CodigoLicencia { get; set; }
+        public IList<SelectListItem> CodigoLicenciaLista { get; set; }
         public bool CambioPatchOu { get; set; }
+        [DisplayName(@"Cuenta Genérica")]
+        public bool Info { get; set; }
     }
 }

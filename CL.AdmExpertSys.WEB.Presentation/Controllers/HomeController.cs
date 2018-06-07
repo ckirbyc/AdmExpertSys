@@ -399,7 +399,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 if (string.IsNullOrEmpty(model.UpnPrefijo)) throw new ArgumentException("Ingresar Dominio");
                 if (string.IsNullOrEmpty(model.Descripcion)) throw new ArgumentException("Ingresar Descripción");
                 if (string.IsNullOrEmpty(model.CodigoLicencia)) throw new ArgumentException("Ingresar Código Licencia");
-                if (string.IsNullOrEmpty(model.Clave)) throw new ArgumentException("Ingresar clave del usuario");                                
+                //if (string.IsNullOrEmpty(model.Clave)) throw new ArgumentException("Ingresar clave del usuario");                                
+                if (string.IsNullOrEmpty(model.Clave)) model.Clave = @"***";
                 if (string.IsNullOrEmpty(model.PatchOu))
                 {
                    throw new ArgumentException("Seleccionar unidad organizativa");                   

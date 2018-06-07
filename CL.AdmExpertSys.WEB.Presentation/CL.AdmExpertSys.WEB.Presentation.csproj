@@ -410,6 +410,8 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.base64.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.cookie.min.js" />
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.dataTables.rowGrouping.js" />
     <Content Include="Scripts\jquery.form.js" />
@@ -527,6 +529,8 @@
     <Content Include="Views\UsuarioPerfil\Create.cshtml" />
     <Content Include="Views\UsuarioPerfil\Edit.cshtml" />
     <Content Include="Views\UsuarioPerfil\Delete.cshtml" />
+    <Content Include="Views\Grupos\VerPopupAsignarUsuarioGrupo.cshtml" />
+    <Content Include="Views\Reportes\Licencia.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

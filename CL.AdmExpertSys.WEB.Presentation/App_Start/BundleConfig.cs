@@ -15,7 +15,8 @@ namespace CL.AdmExpertSys.WEB.Presentation
                 "~/Scripts/jquery.dataTables.rowGrouping.js",
                 "~/Scripts/TableTools/js/dataTables.tableTools.js",
                 "~/Scripts/jquery.base64.js",
-                "~/Scripts/jstree/jstree.min.js"
+                "~/Scripts/jstree/jstree.min.js",
+                "~/Scripts/jquery.cookie.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
