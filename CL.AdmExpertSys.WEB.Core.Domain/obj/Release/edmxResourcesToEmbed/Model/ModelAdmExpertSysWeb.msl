@@ -41,6 +41,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ESTADO_REPORTE_LICENCIA">
+      <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_REPORTE_LICENCIA">
+        <MappingFragment StoreEntitySet="ESTADO_REPORTE_LICENCIA">
+          <ScalarProperty Name="Procesando" ColumnName="Procesando" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ESTADO_SINCRONIZACION">
       <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_SINCRONIZACION">
         <MappingFragment StoreEntitySet="ESTADO_SINCRONIZACION">
@@ -87,6 +95,20 @@
           <ScalarProperty Name="Vigente" ColumnName="Vigente" />
           <ScalarProperty Name="NombrePerfil" ColumnName="NombrePerfil" />
           <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="REPORTE_LICENCIA">
+      <EntityTypeMapping TypeName="AdmSysWebModel.REPORTE_LICENCIA">
+        <MappingFragment StoreEntitySet="REPORTE_LICENCIA">
+          <ScalarProperty Name="DistinguishedName" ColumnName="DistinguishedName" />
+          <ScalarProperty Name="Licenses" ColumnName="Licenses" />
+          <ScalarProperty Name="InfoString" ColumnName="InfoString" />
+          <ScalarProperty Name="UpnPrefijo" ColumnName="UpnPrefijo" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="SamAccountName" ColumnName="SamAccountName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

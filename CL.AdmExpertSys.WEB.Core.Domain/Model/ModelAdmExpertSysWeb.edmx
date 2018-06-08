@@ -42,6 +42,13 @@
           <Property Name="LicenciaAsignada" Type="bit" Nullable="false" />
           <Property Name="Clave" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="ESTADO_REPORTE_LICENCIA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Procesando" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="ESTADO_SINCRONIZACION">
           <Key>
             <PropertyRef Name="Id" />
@@ -85,6 +92,19 @@
           <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NombrePerfil" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Vigente" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REPORTE_LICENCIA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="SamAccountName" Type="nvarchar(max)" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="UpnPrefijo" Type="nvarchar(max)" />
+          <Property Name="InfoString" Type="nvarchar(max)" />
+          <Property Name="Licenses" Type="nvarchar(max)" />
+          <Property Name="DistinguishedName" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ROL_CARGO">
           <Key>
@@ -168,11 +188,13 @@
           <EntitySet Name="ACCION_INFO" EntityType="Self.ACCION_INFO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ESTADO_ASIGNACION_LICENCIA" EntityType="Self.ESTADO_ASIGNACION_LICENCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ESTADO_CUENTA_USUARIO" EntityType="Self.ESTADO_CUENTA_USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESTADO_REPORTE_LICENCIA" EntityType="Self.ESTADO_REPORTE_LICENCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ESTADO_SINCRONIZACION" EntityType="Self.ESTADO_SINCRONIZACION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LICENCIAS_O365" EntityType="Self.LICENCIAS_O365" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LOG_INFO" EntityType="Self.LOG_INFO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MANTENEDOR_LICENCIA" EntityType="Self.MANTENEDOR_LICENCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PERFIL_USUARIO" EntityType="Self.PERFIL_USUARIO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REPORTE_LICENCIA" EntityType="Self.REPORTE_LICENCIA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROL_CARGO" EntityType="Self.ROL_CARGO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365" Association="Self.FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365">
@@ -204,11 +226,13 @@
           <EntitySet Name="ACCION_INFO" EntityType="AdmSysWebModel.ACCION_INFO" />
           <EntitySet Name="ESTADO_ASIGNACION_LICENCIA" EntityType="AdmSysWebModel.ESTADO_ASIGNACION_LICENCIA" />
           <EntitySet Name="ESTADO_CUENTA_USUARIO" EntityType="AdmSysWebModel.ESTADO_CUENTA_USUARIO" />
+          <EntitySet Name="ESTADO_REPORTE_LICENCIA" EntityType="AdmSysWebModel.ESTADO_REPORTE_LICENCIA" />
           <EntitySet Name="ESTADO_SINCRONIZACION" EntityType="AdmSysWebModel.ESTADO_SINCRONIZACION" />
           <EntitySet Name="LICENCIAS_O365" EntityType="AdmSysWebModel.LICENCIAS_O365" />
           <EntitySet Name="LOG_INFO" EntityType="AdmSysWebModel.LOG_INFO" />
           <EntitySet Name="MANTENEDOR_LICENCIA" EntityType="AdmSysWebModel.MANTENEDOR_LICENCIA" />
           <EntitySet Name="PERFIL_USUARIO" EntityType="AdmSysWebModel.PERFIL_USUARIO" />
+          <EntitySet Name="REPORTE_LICENCIA" EntityType="AdmSysWebModel.REPORTE_LICENCIA" />
           <EntitySet Name="ROL_CARGO" EntityType="AdmSysWebModel.ROL_CARGO" />
           <EntitySet Name="USUARIO" EntityType="AdmSysWebModel.USUARIO" />
           <AssociationSet Name="FK_LOG_INFO_ACCION_INFO" Association="AdmSysWebModel.FK_LOG_INFO_ACCION_INFO">
@@ -271,6 +295,13 @@
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LICENCIAS_O365" Relationship="AdmSysWebModel.FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365" FromRole="ESTADO_CUENTA_USUARIO" ToRole="LICENCIAS_O365" />
         </EntityType>
+        <EntityType Name="ESTADO_REPORTE_LICENCIA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Procesando" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="ESTADO_SINCRONIZACION">
           <Key>
             <PropertyRef Name="Id" />
@@ -320,6 +351,19 @@
           <Property Name="NombrePerfil" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Vigente" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="USUARIO" Relationship="AdmSysWebModel.FK_USUARIO_PERFIL_USUARIO" FromRole="PERFIL_USUARIO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="REPORTE_LICENCIA">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SamAccountName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UpnPrefijo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InfoString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Licenses" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DistinguishedName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ROL_CARGO">
           <Key>
@@ -447,6 +491,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ESTADO_REPORTE_LICENCIA">
+            <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_REPORTE_LICENCIA">
+              <MappingFragment StoreEntitySet="ESTADO_REPORTE_LICENCIA">
+                <ScalarProperty Name="Procesando" ColumnName="Procesando" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="ESTADO_SINCRONIZACION">
             <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_SINCRONIZACION">
               <MappingFragment StoreEntitySet="ESTADO_SINCRONIZACION">
@@ -493,6 +545,20 @@
                 <ScalarProperty Name="Vigente" ColumnName="Vigente" />
                 <ScalarProperty Name="NombrePerfil" ColumnName="NombrePerfil" />
                 <ScalarProperty Name="IdPerfil" ColumnName="IdPerfil" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REPORTE_LICENCIA">
+            <EntityTypeMapping TypeName="AdmSysWebModel.REPORTE_LICENCIA">
+              <MappingFragment StoreEntitySet="REPORTE_LICENCIA">
+                <ScalarProperty Name="DistinguishedName" ColumnName="DistinguishedName" />
+                <ScalarProperty Name="Licenses" ColumnName="Licenses" />
+                <ScalarProperty Name="InfoString" ColumnName="InfoString" />
+                <ScalarProperty Name="UpnPrefijo" ColumnName="UpnPrefijo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SamAccountName" ColumnName="SamAccountName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

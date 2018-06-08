@@ -73,6 +73,9 @@
     <Compile Include="Model\ESTADO_CUENTA_USUARIO.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ESTADO_REPORTE_LICENCIA.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ESTADO_SINCRONIZACION.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
@@ -105,6 +108,9 @@
     </Compile>
     <Compile Include="Model\PerfilUsuarioEntity.cs" />
     <Compile Include="Model\PERFIL_USUARIO.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\REPORTE_LICENCIA.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RolCargoEntity.cs" />

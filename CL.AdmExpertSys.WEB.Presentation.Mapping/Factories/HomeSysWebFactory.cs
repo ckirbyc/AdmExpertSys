@@ -6,6 +6,7 @@ using CL.AdmExpertSys.WEB.Application.Contracts.Services;
 using CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Core.Domain.Model;
+using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using ClosedXML.Excel;
 using System;
@@ -897,7 +898,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                         }
                         else
                         {
-                            listCtaOrdenada = ObtenerListaCuentaUsuarioLicense().OrderBy(x => x.DistinguishedName).ToList();
+                            listCtaOrdenada = HiloReporteLicencia.GetListaReporteLicencia().OrderBy(x => x.DistinguishedName).ToList();
                         }
 
                         var listaExcelRepCtaUsr = new List<string[]>(listCtaOrdenada.Count());

@@ -28,11 +28,13 @@ namespace CL.AdmExpertSys.WEB.Core.Domain.Model
         public virtual DbSet<ACCION_INFO> ACCION_INFO { get; set; }
         public virtual DbSet<ESTADO_ASIGNACION_LICENCIA> ESTADO_ASIGNACION_LICENCIA { get; set; }
         public virtual DbSet<ESTADO_CUENTA_USUARIO> ESTADO_CUENTA_USUARIO { get; set; }
+        public virtual DbSet<ESTADO_REPORTE_LICENCIA> ESTADO_REPORTE_LICENCIA { get; set; }
         public virtual DbSet<ESTADO_SINCRONIZACION> ESTADO_SINCRONIZACION { get; set; }
         public virtual DbSet<LICENCIAS_O365> LICENCIAS_O365 { get; set; }
         public virtual DbSet<LOG_INFO> LOG_INFO { get; set; }
         public virtual DbSet<MANTENEDOR_LICENCIA> MANTENEDOR_LICENCIA { get; set; }
         public virtual DbSet<PERFIL_USUARIO> PERFIL_USUARIO { get; set; }
+        public virtual DbSet<REPORTE_LICENCIA> REPORTE_LICENCIA { get; set; }
         public virtual DbSet<ROL_CARGO> ROL_CARGO { get; set; }
         public virtual DbSet<USUARIO> USUARIO { get; set; }
     }

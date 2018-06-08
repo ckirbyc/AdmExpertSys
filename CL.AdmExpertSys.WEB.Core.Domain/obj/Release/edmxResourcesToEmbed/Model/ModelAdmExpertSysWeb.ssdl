@@ -37,6 +37,13 @@
     <Property Name="LicenciaAsignada" Type="bit" Nullable="false" />
     <Property Name="Clave" Type="nvarchar" MaxLength="100" Nullable="false" />
   </EntityType>
+  <EntityType Name="ESTADO_REPORTE_LICENCIA">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Procesando" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="ESTADO_SINCRONIZACION">
     <Key>
       <PropertyRef Name="Id" />
@@ -80,6 +87,19 @@
     <Property Name="IdPerfil" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="NombrePerfil" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Vigente" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="REPORTE_LICENCIA">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="SamAccountName" Type="nvarchar(max)" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="UpnPrefijo" Type="nvarchar(max)" />
+    <Property Name="InfoString" Type="nvarchar(max)" />
+    <Property Name="Licenses" Type="nvarchar(max)" />
+    <Property Name="DistinguishedName" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="ROL_CARGO">
     <Key>
@@ -163,11 +183,13 @@
     <EntitySet Name="ACCION_INFO" EntityType="Self.ACCION_INFO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ESTADO_ASIGNACION_LICENCIA" EntityType="Self.ESTADO_ASIGNACION_LICENCIA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ESTADO_CUENTA_USUARIO" EntityType="Self.ESTADO_CUENTA_USUARIO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ESTADO_REPORTE_LICENCIA" EntityType="Self.ESTADO_REPORTE_LICENCIA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ESTADO_SINCRONIZACION" EntityType="Self.ESTADO_SINCRONIZACION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LICENCIAS_O365" EntityType="Self.LICENCIAS_O365" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LOG_INFO" EntityType="Self.LOG_INFO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MANTENEDOR_LICENCIA" EntityType="Self.MANTENEDOR_LICENCIA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PERFIL_USUARIO" EntityType="Self.PERFIL_USUARIO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="REPORTE_LICENCIA" EntityType="Self.REPORTE_LICENCIA" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROL_CARGO" EntityType="Self.ROL_CARGO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365" Association="Self.FK_ESTADO_CUENTA_USUARIO_LICENCIAS_O365">

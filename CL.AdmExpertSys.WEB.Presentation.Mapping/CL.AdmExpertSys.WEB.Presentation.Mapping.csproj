@@ -93,7 +93,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Thread\HiloEstadoAsignacionLicencia.cs" />
     <Compile Include="Thread\HiloEstadoCuentaUsuario.cs" />
+    <Compile Include="Thread\HiloEstadoReporteLicencia.cs" />
     <Compile Include="Thread\HiloEstadoSincronizacion.cs" />
+    <Compile Include="Thread\HiloReporteLicencia.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CL.AdmExpertSys.WEB.Application.ADClassLib\CL.AdmExpertSys.WEB.Application.ADClassLib.csproj">
