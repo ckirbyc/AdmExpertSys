@@ -169,11 +169,12 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                         {
                             try
                             {
-                                if (!string.IsNullOrEmpty(userAd.EmailAddress.Trim()))
+                                if (!string.IsNullOrEmpty(userAd.SamAccountName) && !string.IsNullOrEmpty(userAd.UpnPrefijo))
                                 {
+                                    var userLic = userAd.SamAccountName.Trim() + userAd.UpnPrefijo.Trim();
                                     using (var pipe = psRunSpace.CreatePipeline())
                                     {
-                                        var scriptCommand = string.Format("(Get-MsolUser -UserPrincipalName \"{0}\").Licenses | % {{ $_.AccountSkuId }}", userAd.EmailAddress.Trim());
+                                        var scriptCommand = string.Format("(Get-MsolUser -UserPrincipalName \"{0}\").Licenses | % {{ $_.AccountSkuId }}", userLic);
                                         var getCommand = new Command(scriptCommand, true);
 
                                         pipe.Commands.Add(getCommand);
@@ -183,7 +184,9 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
 
                                         if (error.Count > 0)
                                         {
-                                            sMess += " | Problema al obtener los datos";
+                                            sMess = @"Problema al obtener los datos desde la nube";
+                                            userAd.Licenses = sMess;
+                                            listLicUser.Add(userAd);
                                         }
                                         else
                                         {
@@ -199,11 +202,13 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                                 }
                                 else
                                 {
+                                    userAd.Licenses = @"Cuenta no posee SamAccountName o UpnPrefijo";
                                     listLicUser.Add(userAd);
                                 }
                             }
                             catch
                             {
+                                userAd.Licenses = @"Error al tratar de obtener datos de licencia en la nube";
                                 listLicUser.Add(userAd);
                             }                                                        
                         }                                                

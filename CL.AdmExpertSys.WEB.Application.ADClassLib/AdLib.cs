@@ -35,7 +35,8 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         private readonly string _sTenantDomainSmtp = string.Empty;
         private readonly string _sTenantDomainSmtpSecundario = string.Empty;
         private readonly string _sOuDeshabilitarComp = string.Empty;
-        
+        private readonly string _sRutaAllDominio = string.Empty;
+
         #endregion
 
         public AdLib()
@@ -57,6 +58,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             _sTenantDomainSmtp = CommonServices.GetAppSetting("TenantDomainSmtp");
             _sTenantDomainSmtpSecundario = CommonServices.GetAppSetting("TenantDomainSmtpSecundario");
             _sOuDeshabilitarComp = CommonServices.GetAppSetting("OuDeshabilitarComp");
+            _sRutaAllDominio = CommonServices.GetAppSetting("RutaAllDominio");
         }
 
         #region Métodos de Validación
@@ -1074,7 +1076,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     {
                         foreach (UserPrincipal oUserPrincipal in pSearch.FindAll())
                         {
-                            if (oUserPrincipal != null)
+                            if (oUserPrincipal != null && !string.IsNullOrEmpty(oUserPrincipal.UserPrincipalName))
                             {
                                 var upnPrefijoFinal = string.Empty;
                                 if (oUserPrincipal.EmailAddress != null)
@@ -1121,6 +1123,67 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     }                                      
                 }                             
             }                                
+        }
+
+        public List<UsuarioAd> GetListAccountAllUsersAd(string generarInfo)
+        {
+            var listaUser = new List<UsuarioAd>();
+            using (PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaAllDominio))
+            {
+                using (UserPrincipal objUser = new UserPrincipal(oPrincipalContext))
+                {
+                    objUser.Enabled = true;                    
+                    using (PrincipalSearcher pSearch = new PrincipalSearcher(objUser))
+                    {
+                        foreach (UserPrincipal oUserPrincipal in pSearch.FindAll())
+                        {
+                            if (oUserPrincipal != null && !string.IsNullOrEmpty(oUserPrincipal.UserPrincipalName))
+                            {                             
+                                var upnPrefijoFinal = string.Empty;
+                                if (oUserPrincipal.EmailAddress != null)
+                                {
+                                    var upnPrefijo = oUserPrincipal.EmailAddress;
+                                    var startIndex = upnPrefijo.IndexOf("@");
+                                    var length = upnPrefijo.Length - startIndex;
+                                    upnPrefijoFinal = upnPrefijo.Substring(startIndex, length);
+                                }
+
+                                var infoString = string.Empty;
+                                if (generarInfo.Equals("S"))
+                                {
+                                    var info = ((DirectoryEntry)oUserPrincipal.GetUnderlyingObject()).Properties["info"];
+                                    if (info.Value != null)
+                                    {
+                                        infoString = info.Value.ToString();
+                                    }
+                                }
+
+                                var usuarioAd = new UsuarioAd
+                                {
+                                    AccountExpirationDate = oUserPrincipal.AccountExpirationDate,
+                                    Description = oUserPrincipal.Description,
+                                    DisplayName = oUserPrincipal.DisplayName,
+                                    DistinguishedName = oUserPrincipal.DistinguishedName,
+                                    EmailAddress = oUserPrincipal.EmailAddress,
+                                    GivenName = oUserPrincipal.GivenName,
+                                    Guid = oUserPrincipal.Guid,
+                                    MiddleName = oUserPrincipal.MiddleName,
+                                    Name = oUserPrincipal.Name,
+                                    SamAccountName = oUserPrincipal.SamAccountName,
+                                    Surname = oUserPrincipal.Surname,
+                                    Enabled = oUserPrincipal.Enabled,
+                                    EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado",
+                                    UpnPrefijo = upnPrefijoFinal,
+                                    InfoString = infoString
+                                };
+                                listaUser.Add(usuarioAd);
+                            }
+                        }
+
+                        return listaUser;
+                    }
+                }
+            }
         }
     }
 }

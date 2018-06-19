@@ -22,3 +22,4 @@ C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastruc
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.csproj.CoreCompileInputs.cache
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.csprojAssemblyReference.cache

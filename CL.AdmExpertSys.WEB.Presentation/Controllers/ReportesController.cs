@@ -54,6 +54,26 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             }
         }
 
+        public ActionResult Completo()
+        {
+            try
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuarioCompletoAd("N");
+
+                ViewBag.EstadoProceso = HiloEstadoReporteLicencia.EsProceso();
+                ViewBag.ExistenRegistro = HiloReporteLicencia.ExistenRegistros();
+                ViewBag.processToken = Convert.ToInt64(DateTime.Now.Hour.ToString() + DateTime.Now.Minute + DateTime.Now.Second +
+                                       DateTime.Now.Millisecond);
+                return View(listaCuenta);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return RedirectToAction("Index", "Error", new { message = "Error al cargar página Reporte Cuenta Usuario AD Completo con Licencia. Si el problema persiste contacte a soporte IT" });
+            }
+        }
+
         public FileStreamResult ExportarExcel(string licencia, long processToken)
         {
             try
@@ -83,6 +103,37 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     nombreArchivo = string.Format("ReporteCuentaUsuarioLicencia.xlsx");
                     HiloReporteLicencia.TruncateTablaReporteLicencia();
                 }
+                return File(memoryStream, "Reportes", nombreArchivo);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return null;
+            }
+        }
+
+        public FileStreamResult ExportarExcelCompleto(string licencia, long processToken)
+        {
+            try
+            {
+                MakeProcessTokenCookie(processToken);
+
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var libro = HomeSysWebFactory.ExportarArchivoExcelReporteCuentaUsuario(licencia);
+                var memoryStream = new MemoryStream();
+                libro.SaveAs(memoryStream);
+                libro.Dispose();
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+
+                memoryStream.Flush();
+                memoryStream.Position = 0;
+
+                var nombreArchivo = string.Format("ReporteCuentaUsuarioLicenciaCompleto.xlsx");                
+                HiloReporteLicencia.TruncateTablaReporteLicencia();
+                
                 return File(memoryStream, "Reportes", nombreArchivo);
             }
             catch (Exception ex)
@@ -122,6 +173,36 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult ProcesarDatosCompleto()
+        {
+            try
+            {
+                //Ejecuta Hilo para el proceso de sync de cuentas
+                _hiloEjecucion = new Thread(InciarProcesoHiloReporteLicenciaCompleto);
+                _hiloEjecucion.Start();
+
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = true
+                    }
+                };
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = false
+                    }
+                };
+            }
+        }
+
         [SoapDocumentMethod(OneWay = true)]
         public void InciarProcesoHiloReporteLicencia()
         {
@@ -143,6 +224,29 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 HiloEstadoReporteLicencia.ActualizarEstadoRptLicencia(false);
                 Utils.LogErrores(ex);
             }            
+        }
+
+        [SoapDocumentMethod(OneWay = true)]
+        public void InciarProcesoHiloReporteLicenciaCompleto()
+        {
+            try
+            {
+                HiloEstadoReporteLicencia.ActualizarEstadoRptLicencia(true);
+
+                HomeSysWebFactory = new HomeSysWebFactory();
+                var listaUsrAd = HomeSysWebFactory.ObtenerListaCuentaUsuarioLicenseCompletoAd();
+                if (listaUsrAd != null && listaUsrAd.Count > 0)
+                {
+                    HiloReporteLicencia.CrearReporteLicenciaMasivo(listaUsrAd);
+                }
+
+                HiloEstadoReporteLicencia.ActualizarEstadoRptLicencia(false);
+            }
+            catch (Exception ex)
+            {
+                HiloEstadoReporteLicencia.ActualizarEstadoRptLicencia(false);
+                Utils.LogErrores(ex);
+            }
         }
 
         private void MakeProcessTokenCookie(long processToken)

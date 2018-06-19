@@ -810,6 +810,22 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
+        public List<UsuarioAd> ObtenerListaCuentaUsuarioCompletoAd(string generarInfo)
+        {
+            var listaAccount = new List<UsuarioAd>();
+            try
+            {
+                AdFactory = new AdLib();
+                listaAccount = AdFactory.GetListAccountAllUsersAd(generarInfo);
+                return listaAccount;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return listaAccount;
+            }
+        }
+
         public List<UsuarioAd> ObtenerListaCuentaUsuarioLicense()
         {
             var listaAccount = new List<UsuarioAd>();
@@ -818,6 +834,27 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 AdFactory = new AdLib();
                 O365Factory = new Office365();
                 listaAccount = AdFactory.GetListAccountUsers("S");
+
+                var sMess = string.Empty;
+                listaAccount = O365Factory.GetLicensedUserMassive(listaAccount, out sMess);
+
+                return listaAccount;
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return listaAccount;
+            }
+        }
+
+        public List<UsuarioAd> ObtenerListaCuentaUsuarioLicenseCompletoAd()
+        {
+            var listaAccount = new List<UsuarioAd>();
+            try
+            {
+                AdFactory = new AdLib();
+                O365Factory = new Office365();
+                listaAccount = AdFactory.GetListAccountAllUsersAd("S");
 
                 var sMess = string.Empty;
                 listaAccount = O365Factory.GetLicensedUserMassive(listaAccount, out sMess);
@@ -913,39 +950,46 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             listaRepCtaUsr[4] = ctaUsr.InfoString;
                             listaRepCtaUsr[5] = ctaUsr.Licenses;
 
+                            var listaOu = new List<OuExcelVm>();
                             int startIndexOu = ctaUsr.DistinguishedName.IndexOf("OU=");
-                            int lengthOu = ctaUsr.DistinguishedName.Length - startIndexOu;
-                            var dnNewOu = ctaUsr.DistinguishedName.Substring(startIndexOu, lengthOu);
+                            if (startIndexOu > 0)
+                            {
+                                int lengthOu = ctaUsr.DistinguishedName.Length - startIndexOu;
+                                var dnNewOu = ctaUsr.DistinguishedName.Substring(startIndexOu, lengthOu);
 
-                            listaRepCtaUsr[6] = dnNewOu;
+                                listaRepCtaUsr[6] = dnNewOu;
 
-                            var dnCompleto = ctaUsr.DistinguishedName;
-                            var listaOu = new List<OuExcelVm>();                                                       
-                            
-                            for(int j=1; j<= cantNivel; j++)
-                            {                                
-                                int startIndex = dnCompleto.IndexOf("OU=");
-                                if (startIndex > 0)
+                                var dnCompleto = ctaUsr.DistinguishedName;
+
+                                for (int j = 1; j <= cantNivel; j++)
                                 {
-                                    int length = dnCompleto.Length - startIndex;
-                                    var dnNewAux = dnCompleto.Substring(startIndex, length);
-                                    int startlengthAux = dnNewAux.IndexOf(",");
-                                    if (startlengthAux > 0)
+                                    int startIndex = dnCompleto.IndexOf("OU=");
+                                    if (startIndex > 0)
                                     {
-                                        var dnNew = dnNewAux.Substring(0, startlengthAux);                                        
-                                        var ouVm = new OuExcelVm
+                                        int length = dnCompleto.Length - startIndex;
+                                        var dnNewAux = dnCompleto.Substring(startIndex, length);
+                                        int startlengthAux = dnNewAux.IndexOf(",");
+                                        if (startlengthAux > 0)
                                         {
-                                            Numero = j,
-                                            Nombre = dnNew.Replace("OU=", string.Empty)
-                                        };
-                                        listaOu.Add(ouVm);                                        
-                                        dnCompleto = dnCompleto.Replace(dnNew, string.Empty);
-                                    }                                    
+                                            var dnNew = dnNewAux.Substring(0, startlengthAux);
+                                            var ouVm = new OuExcelVm
+                                            {
+                                                Numero = j,
+                                                Nombre = dnNew.Replace("OU=", string.Empty)
+                                            };
+                                            listaOu.Add(ouVm);
+                                            dnCompleto = dnCompleto.Replace(dnNew, string.Empty);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
                                 }
-                                else
-                                {
-                                    break;
-                                }                                
+                            }
+                            else
+                            {
+                                listaRepCtaUsr[6] = ctaUsr.DistinguishedName;                                
                             }
 
                             var colArray = 7;

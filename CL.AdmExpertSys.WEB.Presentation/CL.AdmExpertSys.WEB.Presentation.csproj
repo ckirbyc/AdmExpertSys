@@ -531,6 +531,7 @@
     <Content Include="Views\UsuarioPerfil\Delete.cshtml" />
     <Content Include="Views\Grupos\VerPopupAsignarUsuarioGrupo.cshtml" />
     <Content Include="Views\Reportes\Licencia.cshtml" />
+    <Content Include="Views\Reportes\Completo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
