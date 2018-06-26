@@ -138,8 +138,16 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     Surname = oUserPrincipal.Surname,
                     Enabled = oUserPrincipal.Enabled,
                     EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado",
-                    Info = infoBool
+                    Info = infoBool                    
                 };
+
+                if (!string.IsNullOrEmpty(oUserPrincipal.UserPrincipalName))
+                {
+                    var upnPrefijo = oUserPrincipal.UserPrincipalName;
+                    var startIndex = upnPrefijo.IndexOf("@");
+                    var length = upnPrefijo.Length - startIndex;
+                    usuarioAd.UpnPrefijo = upnPrefijo.Substring(startIndex, length);
+                }
 
                 return usuarioAd;
             }
@@ -175,14 +183,14 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         /// </returns>
         public UserPrincipal GetUser(string sUserName)
         {
-            PrincipalContext oPrincipalContext = GetPrincipalContext();
+            PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaAllDominio);
             UserPrincipal oUserPrincipal = UserPrincipal.FindByIdentity(oPrincipalContext, IdentityType.SamAccountName, sUserName);
             return oUserPrincipal;
         }
 
         public ComputerPrincipal GetComputerUser(string sComputerName)
         {
-            PrincipalContext oPrincipalContext = GetPrincipalContext();
+            PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaAllDominio);
             ComputerPrincipal oComputerPrincipal = ComputerPrincipal.FindByIdentity(oPrincipalContext, IdentityType.Name, sComputerName);
             return oComputerPrincipal;                                 
         }
@@ -347,7 +355,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
-                return false;
+                return true;
             }
         }
 

@@ -679,7 +679,10 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 HomeSysWebFactory = new HomeSysWebFactory();
                 var username = model.NombreUsuario.ToLower().Trim();
                 var procExito = HomeSysWebFactory.DeshabilitarUsuarioAd(username);
-                procExito = HomeSysWebFactory.DeshabilitarComputadorAd(username);
+                //if (procExito)
+                //{
+                //    procExito = HomeSysWebFactory.DeshabilitarComputadorAd(username);
+                //}                
 
                 if (procExito)
                 {
@@ -768,12 +771,20 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [SoapDocumentMethod(OneWay = true)]
         public void InciarProcesoHiloSincronizarCuenta()
         {
-            HiloEstadoSincronizacion.ActualizarEstadoSync(true);
+            try
+            {
+                HiloEstadoSincronizacion.ActualizarEstadoSync(true);
 
-            HomeSysWebFactory = new HomeSysWebFactory();
-            HomeSysWebFactory.ForzarDirSync();                   
+                HomeSysWebFactory = new HomeSysWebFactory();
+                HomeSysWebFactory.ForzarDirSync();
 
-            HiloEstadoSincronizacion.ActualizarEstadoSync(false);
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false);
+            }
+            catch (Exception ex)
+            {
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false);
+                Utils.LogErrores(ex);
+            }            
         }
 
         /// <summary>

@@ -299,29 +299,29 @@
                 $("#Correo").val(correo);
             });
 
-            $("#ENTERPRISEPACK").off('click').click(function () {
-                $("#loading-modal").show();
-                $("#LicenciaSel").val("agrosuper:ENTERPRISEPACK");
-                setTimeout(function () {
-                    asignarLicenciaUsuario();
-                }, 1000);
-            });
+            //$("#ENTERPRISEPACK").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    $("#LicenciaSel").val("agrosuper:ENTERPRISEPACK");
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
 
-            $("#STANDARDPACK").off('click').click(function () {
-                $("#loading-modal").show();
-                $("#LicenciaSel").val("agrosuper:STANDARDPACK");
-                setTimeout(function () {
-                    asignarLicenciaUsuario();
-                }, 1000);
-            });
+            //$("#STANDARDPACK").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    $("#LicenciaSel").val("agrosuper:STANDARDPACK");
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
 
-            $("#EXCHANGESTANDARD").off('click').click(function () {
-                $("#loading-modal").show();
-                $("#LicenciaSel").val("agrosuper:EXCHANGESTANDARD");
-                setTimeout(function () {
-                    asignarLicenciaUsuario();
-                }, 1000);
-            });
+            //$("#EXCHANGESTANDARD").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    $("#LicenciaSel").val("agrosuper:EXCHANGESTANDARD");
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
 
             $("#btnVerificar").off('click').click(function () {
                 $("#loading-modal").show();
@@ -363,9 +363,9 @@
                             $("#PatchOu").val(ubicGrupo);
 
                             $("#btnSubmit").attr("disabled", true);
-                            $("#btnLicE1").attr("disabled", true);
-                            $("#btnLicE3").attr("disabled", true);
-                            $("#btnLicExO").attr("disabled", true);
+                            //$("#btnLicE1").attr("disabled", true);
+                            //$("#btnLicE3").attr("disabled", true);
+                            //$("#btnLicExO").attr("disabled", true);
                             $("#UpnPrefijo").attr("disabled", true);
                             $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);                            
                             $("#Nombres").attr("disabled", true);
@@ -402,9 +402,9 @@
                             });
                         } else {
                             $("#btnSubmit").attr("disabled", false);
-                            $("#btnLicE1").attr("disabled", true);
-                            $("#btnLicE3").attr("disabled", true);
-                            $("#btnLicExO").attr("disabled", true);                            
+                            //$("#btnLicE1").attr("disabled", true);
+                            //$("#btnLicE3").attr("disabled", true);
+                            //$("#btnLicExO").attr("disabled", true);                            
                             $("#UpnPrefijo").attr("disabled", false);                            
                             $("#Nombres").val("");
                             $("#Nombres").removeAttr("disabled");
@@ -440,9 +440,9 @@
                     },
                     error: function () {
                         $("#btnSubmit").attr("disabled", true);
-                        $("#btnLicE1").attr("disabled", true);
-                        $("#btnLicE3").attr("disabled", true);
-                        $("#btnLicExO").attr("disabled", true);
+                        //$("#btnLicE1").attr("disabled", true);
+                        //$("#btnLicE3").attr("disabled", true);
+                        //$("#btnLicExO").attr("disabled", true);
                         $("#UpnPrefijo").attr("disabled", true);                                                
                         $("#Nombres").attr("disabled", true);
                         $("#Nombres").val(data.DatosUsuario.GivenName);
@@ -516,9 +516,9 @@
                     success: function (data) {
                         if (data.Error != '') {
                             $("#btnSubmit").attr("disabled", false);
-                            $("#btnLicE1").attr("disabled", true);
-                            $("#btnLicE3").attr("disabled", true);
-                            $("#btnLicExO").attr("disabled", true);                                                        
+                            //$("#btnLicE1").attr("disabled", true);
+                            //$("#btnLicE3").attr("disabled", true);
+                            //$("#btnLicExO").attr("disabled", true);                                                        
 
                             BootstrapDialog.show({
                                 title: 'Error al Guardar Usuario en el AD',
@@ -538,9 +538,9 @@
                         } else {
                             if (data.Validar) {
                                 $("#btnSubmit").attr("disabled", true);
-                                $("#btnLicE1").attr("disabled", false);
-                                $("#btnLicE3").attr("disabled", false);
-                                $("#btnLicExO").attr("disabled", false);                                                                                               
+                                //$("#btnLicE1").attr("disabled", false);
+                                //$("#btnLicE3").attr("disabled", false);
+                                //$("#btnLicExO").attr("disabled", false);                                                                                               
                                 $("#SeccionAsociarGrupo").show();
                                 
                                 BootstrapDialog.show({
@@ -560,9 +560,9 @@
                                 });
                             } else {
                                 $("#btnSubmit").attr("disabled", false);
-                                $("#btnLicE1").attr("disabled", true);
-                                $("#btnLicE3").attr("disabled", true);
-                                $("#btnLicExO").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", true);
+                                //$("#btnLicE3").attr("disabled", true);
+                                //$("#btnLicExO").attr("disabled", true);
                                 
                                 BootstrapDialog.show({
                                     title: 'Error al Guardar Usuario en el AD',
@@ -587,9 +587,9 @@
                     },
                     error: function (data) {
                         $("#btnSubmit").attr("disabled", false);
-                        $("#btnLicE1").attr("disabled", true);
-                        $("#btnLicE3").attr("disabled", true);
-                        $("#btnLicExO").attr("disabled", true);                        
+                        //$("#btnLicE1").attr("disabled", true);
+                        //$("#btnLicE3").attr("disabled", true);
+                        //$("#btnLicExO").attr("disabled", true);                        
                         $("#loading-modal").hide();                        
 
                         BootstrapDialog.show({
@@ -652,9 +652,9 @@
                     success: function (data) {
                         if (data.Error != '') {
                             $("#btnSubmit").attr("disabled", true);
-                            $("#btnLicE1").attr("disabled", false);
-                            $("#btnLicE3").attr("disabled", false);
-                            $("#btnLicExO").attr("disabled", false);
+                            //$("#btnLicE1").attr("disabled", false);
+                            //$("#btnLicE3").attr("disabled", false);
+                            //$("#btnLicExO").attr("disabled", false);
                             
                             BootstrapDialog.alert({
                                 title: '¡Error al Sincronizar!',
@@ -664,9 +664,9 @@
                         } else {
                             if (data.Validar) {
                                 $("#btnSubmit").attr("disabled", true);
-                                $("#btnLicE1").attr("disabled", false);
-                                $("#btnLicE3").attr("disabled", false);
-                                $("#btnLicExO").attr("disabled", false);
+                                //$("#btnLicE1").attr("disabled", false);
+                                //$("#btnLicE3").attr("disabled", false);
+                                //$("#btnLicExO").attr("disabled", false);
                                 
                                 BootstrapDialog.alert({
                                     title: '¡Proceso Exitoso!',
@@ -740,9 +740,9 @@
                     success: function (data) {
                         if (data.Error != '') {
                             $("#btnSubmit").attr("disabled", false);
-                            $("#btnLicE1").attr("disabled", false);
-                            $("#btnLicE3").attr("disabled", false);
-                            $("#btnLicExO").attr("disabled", false);
+                            //$("#btnLicE1").attr("disabled", false);
+                            //$("#btnLicE3").attr("disabled", false);
+                            //$("#btnLicExO").attr("disabled", false);
                             
                             var msgError = data.Error.indexOf('Usuario consultado no existe en el portal Office 365');
                             if (msgError > -1) {
@@ -761,9 +761,9 @@
                         } else {
                             if (data.Validar) {
                                 $("#btnSubmit").attr("disabled", true);
-                                $("#btnLicE1").attr("disabled", true);
-                                $("#btnLicE3").attr("disabled", true);
-                                $("#btnLicExO").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", true);
+                                //$("#btnLicE3").attr("disabled", true);
+                                //$("#btnLicExO").attr("disabled", true);
                                 
                                 BootstrapDialog.alert({
                                     title: '¡Proceso Exitoso!',
@@ -772,9 +772,9 @@
                                 });
                             } else {
                                 $("#btnSubmit").attr("disabled", true);
-                                $("#btnLicE1").attr("disabled", true);
-                                $("#btnLicE3").attr("disabled", true);
-                                $("#btnLicExO").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", true);
+                                //$("#btnLicE3").attr("disabled", true);
+                                //$("#btnLicExO").attr("disabled", true);
                                 
                                 BootstrapDialog.alert({
                                     title: '¡Error al Asignar Licencia!',
@@ -789,9 +789,9 @@
                     },
                     error: function (data) {
                         $("#btnSubmit").attr("disabled", false);
-                        $("#btnLicE1").attr("disabled", false);
-                        $("#btnLicE3").attr("disabled", false);
-                        $("#btnLicExO").attr("disabled", false);
+                        //$("#btnLicE1").attr("disabled", false);
+                        //$("#btnLicE3").attr("disabled", false);
+                        //$("#btnLicExO").attr("disabled", false);
                         
                         $("#loading-modal").hide();
 

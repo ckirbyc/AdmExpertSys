@@ -128,12 +128,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                     int length = distinguishedName.Length - startIndex;
                     var dnNew = distinguishedName.Substring(startIndex, length);                    
                     var nuevaUbicacion = CommonFactory.GetAppSetting("LdapServidor") + dnNew;
-                    userPrincipal.DistinguishedName = nuevaUbicacion;
-
-                    var upnPrefijo = userPrincipal.EmailAddress;
-                    startIndex = upnPrefijo.IndexOf("@");
-                    length = upnPrefijo.Length - startIndex;
-                    userPrincipal.UpnPrefijo = upnPrefijo.Substring(startIndex, length);
+                    userPrincipal.DistinguishedName = nuevaUbicacion;                    
 
                     return userPrincipal;
                 }
@@ -390,7 +385,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
-                throw new ArgumentException("Error al deshabilitar computador : " + ex.Message);
+                return false;
             }
         }
 

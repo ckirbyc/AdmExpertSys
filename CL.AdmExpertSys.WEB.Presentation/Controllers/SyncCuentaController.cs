@@ -96,6 +96,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             }
             catch (Exception ex)
             {
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false);
                 Utils.LogErrores(ex);
             }           
 
@@ -105,7 +106,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
             foreach (var estUsr in estadoCuentaLista)
             {
-                if (HomeSysWebFactory.ExisteUsuarioPortal(estUsr.Correo.Trim()))
+                var upnPrefijo = estUsr.CuentaAd.Trim() + estUsr.Dominio.Trim();
+                if (HomeSysWebFactory.ExisteUsuarioPortal(upnPrefijo))
                 {
                     estUsr.Sincronizado = true;
                     try
