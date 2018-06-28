@@ -69,8 +69,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult EliminarCuentaAd(string[] idCuentaAdArray)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
                 var exito = false;
                 var msgProceso = string.Empty;
@@ -106,7 +122,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = exito,
-                        Error = msgProceso
+                        Error = msgProceso,
+                        Session = varSession
                     }
                 };
             }
@@ -118,7 +135,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = false,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }

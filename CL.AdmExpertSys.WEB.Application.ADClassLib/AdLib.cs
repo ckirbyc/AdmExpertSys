@@ -183,14 +183,14 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         /// </returns>
         public UserPrincipal GetUser(string sUserName)
         {
-            PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaAllDominio);
+            PrincipalContext oPrincipalContext = GetPrincipalContext();
             UserPrincipal oUserPrincipal = UserPrincipal.FindByIdentity(oPrincipalContext, IdentityType.SamAccountName, sUserName);
             return oUserPrincipal;
         }
 
         public ComputerPrincipal GetComputerUser(string sComputerName)
         {
-            PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaAllDominio);
+            PrincipalContext oPrincipalContext = GetPrincipalContext();
             ComputerPrincipal oComputerPrincipal = ComputerPrincipal.FindByIdentity(oPrincipalContext, IdentityType.Name, sComputerName);
             return oComputerPrincipal;                                 
         }
@@ -439,7 +439,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 oUserPrincipal.Description = descripcion;
                 oUserPrincipal.Save();
 
-                Task.Delay(TimeSpan.FromSeconds(10)).Wait();
+                Task.Delay(TimeSpan.FromSeconds(15)).Wait();
 
                 /*
                     *  Update Properties

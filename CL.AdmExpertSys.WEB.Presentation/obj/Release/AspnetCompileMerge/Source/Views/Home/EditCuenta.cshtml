@@ -392,6 +392,15 @@
                 processData: false,
                 data: JSON.stringify({ patchOu: sOu, usrAD: sUsrAd }),
                 success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
                     if (data.Error != '') {                        
                         BootstrapDialog.alert({
                             title: '¡Error al encontrar listado de Grupos en el AD!',
@@ -494,6 +503,15 @@
                 processData: false,
                 data: JSON.stringify({ model: objEnvio.model }),
                 success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
                     if (data.Error != '') {
                         $("#btnSubmit").attr("disabled", false);
 
@@ -635,6 +653,15 @@
                 processData: false,
                 data: JSON.stringify({ model: objEnvio.model }),
                 success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
                     if (data.Error != '') {
                         $("#btnSubmit").attr("disabled", true);                                                 
                         $("#btnDesUsr").attr("disabled", false);
@@ -705,6 +732,15 @@
                 processData: false,
                 data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
                 success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
                     if (data.Error != '') {
                         BootstrapDialog.alert({
                             title: '¡Error al asociar Grupo a Usuario en el AD!',
@@ -764,6 +800,15 @@
                 processData: false,
                 data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
                 success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
                     if (data.Error != '') {
                         BootstrapDialog.alert({
                             title: '¡Error al Desasociar Grupo a Usuario en el AD!',

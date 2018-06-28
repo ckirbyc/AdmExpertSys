@@ -185,9 +185,27 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult VerificarUsuario(string nombreUsuario)
         {
+            var varSession = true;
             try
             {
                 if (string.IsNullOrEmpty(nombreUsuario)) throw new ArgumentNullException("nombreUsuario");
+
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {                    
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            DatosUsuario = string.Empty,
+                            CodigoLicencia = string.Empty,
+                            Clave = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
 
                 //Seccion registra Log Transaccional
                 var log = new LogInfoVm
@@ -206,8 +224,6 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     Utils.LogErrores(ex);
                 }
-
-
                 
                 HomeSysWebFactory = new HomeSysWebFactory();                
                 var usuarioAd = HomeSysWebFactory.ObtenerUsuarioExistente(nombreUsuario.Trim());
@@ -227,14 +243,25 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         Validar = chequear,
                         DatosUsuario = usuarioAd,
                         CodigoLicencia = codigoLic.ToString(),
-                        Clave = claveCta
+                        Clave = claveCta,
+                        Session = varSession
                     }
                 };
             }
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
-                return RedirectToAction("Index", "Error", new { message = "Error al validar usuario. Si el problema persiste contacte a soporte IT" });
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = false,
+                        DatosUsuario = string.Empty,
+                        CodigoLicencia = string.Empty,
+                        Clave = string.Empty,
+                        Session = varSession
+                    }
+                };
             }
         }
         /// <summary>
@@ -245,8 +272,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult GuardarSincronizarUsuario(HomeSysWebVm model)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {                    
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 if (string.IsNullOrEmpty(model.Nombres)) throw new ArgumentException("Ingresar nombres del usuario");
                 if (string.IsNullOrEmpty(model.Apellidos)) throw new ArgumentException("Ingresar apellidos del usuario");
                 if (string.IsNullOrEmpty(model.NombreUsuario)) throw new ArgumentException("Ingresar ID del usuario");
@@ -347,15 +390,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     catch (Exception ex)
                     {
                         Utils.LogErrores(ex);
-                    }
-
-                    //Código para sincronizar usuario del AD con la Nube
-                    //Task.Delay(TimeSpan.FromSeconds(10)).Wait();
-                    //var ejecSync = HomeSysWebFactory.ForzarDirSync(model);
-                    //if (ejecSync)
-                    //{
-                    //    exitoProceso = true;
-                    //}
+                    }                    
                 }
 
                 return new JsonResult
@@ -363,7 +398,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = exitoProceso,
-                        Error = exitoProceso == false ? "Proceso de guardar y sincronizar terminado incorrectamente, favor intentar más tarde." : string.Empty
+                        Error = exitoProceso == false ? "Proceso de guardar y sincronizar terminado incorrectamente, favor intentar más tarde." : string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -375,23 +411,47 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = true,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
-                return RedirectToAction("Index", "Error",
-                    new {message = "Error al ingresar usuario. Si el problema persiste contacte a soporte IT"});
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = true,
+                        Error = ex.Message,
+                        Session = varSession
+                    }
+                };
             }
         }
 
         [HttpPost]
         public ActionResult ActualizarCuentaUsuario(HomeSysWebVm model)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {                    
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 if (string.IsNullOrEmpty(model.Nombres)) throw new ArgumentException("Ingresar nombres del usuario");
                 if (string.IsNullOrEmpty(model.Apellidos)) throw new ArgumentException("Ingresar apellidos del usuario");
                 if (string.IsNullOrEmpty(model.NombreUsuario)) throw new ArgumentException("Ingresar ID del usuario");
@@ -502,7 +562,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = exitoProceso,
-                        Error = exitoProceso == false ? "Proceso de actualizar cuenta usuario terminado incorrectamente, favor intentar más tarde." : string.Empty
+                        Error = exitoProceso == false ? "Proceso de actualizar cuenta usuario terminado incorrectamente, favor intentar más tarde." : string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -514,15 +575,23 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = true,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
             catch (Exception ex)
             {
                 Utils.LogErrores(ex);
-                return RedirectToAction("Index", "Error",
-                    new { message = "Error al actualizar cuenta de usuario. Si el problema persiste contacte a soporte IT" });
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        Validar = false,
+                        Error = ex.Message,
+                        Session = varSession
+                    }
+                };
             }
         }
 
@@ -654,8 +723,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult DeshabilitarUsuario(HomeSysWebVm model)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 if (string.IsNullOrEmpty(model.NombreUsuario)) throw new ArgumentException("Ingresar ID del usuario");
 
                 //Seccion registra Log Transaccional
@@ -750,7 +835,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = procExito,
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -762,7 +848,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = false,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
@@ -795,8 +882,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
         public JsonResult ObtenerGrupoAd(string nomGrupo)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Grupo = (List<GrupoAdVm>)null,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
 
                 //Seccion registra Log Transaccional
@@ -824,7 +927,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Grupo = listaGrupos,
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -836,7 +940,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Grupo = (List<GrupoAdVm>) null,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
@@ -845,8 +950,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public JsonResult ObtenerListaGruposAdOu(string patchOu)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Grupo = (List<GrupoAdVm>)null,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
                 var listaGrupos = HomeSysWebFactory.ObtenerListadoGrupoAdByOu(patchOu);
 
@@ -855,7 +976,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         GrupoOu = listaGrupos,
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -867,7 +989,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         GrupoOu = (List<GrupoAdVm>)null,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
@@ -876,8 +999,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public JsonResult ObtenerListaGruposAdOu2(string patchOu, string usrAD)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Grupo = (List<GrupoAdVm>)null,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
                 var listaGrupos = HomeSysWebFactory.ObtenerListadoGrupoAdByOu(patchOu, usrAD);
 
@@ -886,7 +1025,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         GrupoOu = listaGrupos,
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -898,7 +1038,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         GrupoOu = (List<GrupoAdVm>)null,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
@@ -907,8 +1048,25 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult GuardarGrupos(string nomGrupos, string userName, string upnPrefijo)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            TieneLicencia = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
 
                 //Seccion registra Log Transaccional
@@ -935,7 +1093,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         Validar = HomeSysWebFactory.GuardarGrupos(nomGrupos, userName),
                         TieneLicencia = HomeSysWebFactory.ExisteLicenciaUsuarioPortal(userName + upnPrefijo),
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -948,7 +1107,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         Validar = false,
                         TieneLicencia = false,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
@@ -957,8 +1117,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult AsociarGrupoUsuario(string nomGrupo, string userName)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
 
                 return new JsonResult
@@ -966,7 +1142,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = HomeSysWebFactory.AsociarGrupoUsuario(nomGrupo, userName),
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -978,7 +1155,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = false,                        
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
@@ -987,8 +1165,24 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult DesAsociarGrupoUsuario(string nomGrupo, string userName)
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 HomeSysWebFactory = new HomeSysWebFactory();
 
                 return new JsonResult
@@ -1008,7 +1202,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = false,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }

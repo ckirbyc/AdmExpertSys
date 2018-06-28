@@ -146,8 +146,22 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult ProcesarDatos()
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,                            
+                            Session = varSession
+                        }
+                    };
+                }
                 //Ejecuta Hilo para el proceso de sync de cuentas
                 _hiloEjecucion = new Thread(InciarProcesoHiloReporteLicencia);
                 _hiloEjecucion.Start();                
@@ -156,7 +170,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     Data = new
                     {
-                        Validar = true                        
+                        Validar = true,
+                        Session = varSession
                     }
                 };
             }
@@ -167,7 +182,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     Data = new
                     {
-                        Validar = false
+                        Validar = false,
+                        Session = varSession
                     }
                 };
             }
@@ -176,8 +192,23 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult ProcesarDatosCompleto()
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Session = varSession
+                        }
+                    };
+                }
+
                 //Ejecuta Hilo para el proceso de sync de cuentas
                 _hiloEjecucion = new Thread(InciarProcesoHiloReporteLicenciaCompleto);
                 _hiloEjecucion.Start();
@@ -186,7 +217,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     Data = new
                     {
-                        Validar = true
+                        Validar = true,
+                        Session = varSession
                     }
                 };
             }
@@ -197,7 +229,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     Data = new
                     {
-                        Validar = false
+                        Validar = false,
+                        Session = varSession
                     }
                 };
             }

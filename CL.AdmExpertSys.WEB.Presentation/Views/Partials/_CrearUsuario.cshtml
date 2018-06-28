@@ -355,6 +355,15 @@
                     processData: false,
                     data: JSON.stringify({ nombreUsuario: nombreUsuario }),
                     success: function (data) {
+                        if (data.Session == false)
+                        {
+                            BootstrapDialog.alert({
+                                title: '¡Validación Sesión!',
+                                message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+                                type: BootstrapDialog.TYPE_WARNING
+                            });
+                            return;
+                        }
                         if (data.Validar) {
                             //Seleccionar nodo existente                            
                             var ubicGrupo = data.DatosUsuario.DistinguishedName;
@@ -514,6 +523,15 @@
                     processData: false,
                     data: JSON.stringify({ model: objEnvio.model }),
                     success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }                        
+
                         if (data.Error != '') {
                             $("#btnSubmit").attr("disabled", false);
                             //$("#btnLicE1").attr("disabled", true);
@@ -854,6 +872,15 @@
                     processData: false,
                     data: JSON.stringify({ patchOu: sOu }),
                     success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
                         if (data.Error != '') {
                             $("#loading-modal").hide();
                             BootstrapDialog.alert({
@@ -918,6 +945,15 @@
                     processData: false,
                     data: JSON.stringify({ nomGrupo: nombreGrupo }),
                     success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
                         if (data.Error != '') {
                             BootstrapDialog.alert({
                                 title: '¡Error al buscar Grupo en el AD!',
@@ -1014,6 +1050,15 @@
                     processData: false,
                     data: JSON.stringify({ nomGrupos: $("#NombreGrupoSel").val(), userName: $("#NombreUsuario").val(), upnPrefijo: $("#UpnPrefijo").val() }),
                     success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
                         if (data.Error != '') {
                             BootstrapDialog.alert({
                                 title: '¡Error al guardar Grupo en el AD!',
@@ -1111,6 +1156,15 @@
                     processData: false,
                     data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
                     success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
                         if (data.Error != '') {
                             BootstrapDialog.alert({
                                 title: '¡Error al asociar Grupo a Usuario en el AD!',

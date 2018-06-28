@@ -114,6 +114,15 @@
                 dataType: 'json',
                 processData: false,
                 success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
                     if (data.Validar) {
                         BootstrapDialog.alert({
                             title: '¡Inicio Proceso Exitoso!',

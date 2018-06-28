@@ -48,8 +48,23 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [HttpPost]
         public ActionResult AsignarLicencia()
         {
+            var varSession = true;
             try
             {
+                //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
+                if (System.Web.HttpContext.Current.Session["UsuarioVM"] == null || System.Web.HttpContext.Current.Session["EstructuraArbol"] == null)
+                {
+                    varSession = false;
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            Validar = false,
+                            Error = string.Empty,
+                            Session = varSession
+                        }
+                    };
+                }
                 var listaEstUsr = EstadoCuentaUsuarioFactory.GetEstadoCuentaUsuarioNoLicencia();
                 var listaEstCuentaVmHilo = new List<object>
                 {
@@ -64,7 +79,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = true,
-                        Error = string.Empty
+                        Error = string.Empty,
+                        Session = varSession
                     }
                 };
             }
@@ -76,7 +92,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Data = new
                     {
                         Validar = false,
-                        Error = ex.Message
+                        Error = ex.Message,
+                        Session = varSession
                     }
                 };
             }
