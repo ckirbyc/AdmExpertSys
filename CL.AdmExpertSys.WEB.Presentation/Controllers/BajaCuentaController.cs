@@ -98,7 +98,15 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
                     if (estUsr != null)
                     {
-                        exito = HomeSysWebFactory.EliminarCuentaAd(estUsr.CuentaAd.Trim());
+                        var usuarioAd = HomeSysWebFactory.ObtenerUsuarioExistente(estUsr.CuentaAd.Trim());
+                        if (usuarioAd != null)
+                        {
+                            exito = HomeSysWebFactory.EliminarCuentaAd(estUsr.CuentaAd.Trim());                            
+                        }
+                        else {
+                            exito = true;
+                        }
+
                         if (exito == false)
                         {
                             msgProceso = @"La cuenta AD " + estUsr.CuentaAd + " no ha posido ser eliminado";
