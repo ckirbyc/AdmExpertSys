@@ -24,7 +24,7 @@
                 <th>Licencia O365</th>                
             </tr>
         </thead>
-        @foreach (var item in Model.OrderByDescending(x => x.Nombres))
+        @foreach (var item in Model.OrderByDescending(x => x.FechaCreacion))
         {
             var item1 = item;
             string classUsrCreado = "glyphicon glyphicon-remove colorOrange";

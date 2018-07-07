@@ -308,28 +308,15 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         }
 
         public bool AsignarLicenciaUsuario(string userNameOnline, string codigoLicencia)
-        {
-            try
-            {
-               O365Factory = new Office365();                                               
+        {            
+            O365Factory = new Office365();                                               
 
-                string sMessage;
-                if (O365Factory.AllocateLicense(userNameOnline, codigoLicencia, out sMessage))
-                {
-                    return true;
-                }
-                throw new ArgumentException(sMessage);
-            }
-            catch (ArgumentException ex)
+            string sMessage;
+            if (O365Factory.AllocateLicense(userNameOnline, codigoLicencia, out sMessage))
             {
-                Utils.LogErrores(ex);
-                return false;
+                return true;
             }
-            catch (Exception ex)
-            {
-                Utils.LogErrores(ex);
-                return false;
-            }
+            return false;            
         }
 
         /// <summary>
@@ -649,19 +636,11 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         }
 
         public bool ExisteLicenciaUsuarioPortal(string userName)
-        {
-            try
-            {
-                string msgError;
-                O365Factory = new Office365();
-                var existeLicencia = O365Factory.IsLicensedUser(userName, out msgError);
-                return existeLicencia;
-            }
-            catch (Exception ex)
-            {
-                Utils.LogErrores(ex);
-                return false;
-            }
+        {            
+            string msgError;
+            O365Factory = new Office365();
+            var existeLicencia = O365Factory.IsLicensedUser(userName, out msgError);
+            return existeLicencia;            
         }
 
         public bool ExisteUsuarioPortal(string userName)

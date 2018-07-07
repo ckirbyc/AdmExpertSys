@@ -112,13 +112,23 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             {
                 try
                 {
-                    if (HomeSysWebFactory.ExisteUsuarioPortal(estUsr.Correo.Trim()))
+                    var upnPrefijo = estUsr.CuentaAd.Trim() + estUsr.Dominio.Trim();
+                    if (HomeSysWebFactory.ExisteUsuarioPortal(upnPrefijo))
                     {
-                        if (HomeSysWebFactory.AsignarLicenciaUsuario(estUsr.Correo.Trim(), estUsr.LICENCIAS_O365.Codigo))
+                        var tieneLic = HomeSysWebFactory.ExisteLicenciaUsuarioPortal(upnPrefijo);
+                        if (tieneLic)
                         {
                             estUsr.LicenciaAsignada = true;
                             HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
                         }
+                        else
+                        {
+                            if (HomeSysWebFactory.AsignarLicenciaUsuario(upnPrefijo, estUsr.LICENCIAS_O365.Codigo))
+                            {
+                                estUsr.LicenciaAsignada = true;
+                                HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
+                            }
+                        }                       
                     }
                 }
                 catch (Exception ex)
