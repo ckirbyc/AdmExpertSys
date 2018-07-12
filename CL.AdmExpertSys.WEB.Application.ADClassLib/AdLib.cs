@@ -296,7 +296,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         /// Forzar deshabilitar una cuenta de usuario
         /// </summary>
         /// <param name="sUserName">El nombre de usuario a deshabilitar</param>
-        public void DisableUserAccount(string sUserName)
+        public bool DisableUserAccount(string sUserName)
         {
             try
             {
@@ -318,10 +318,14 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                         oLocation.Close();
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
-                Utils.LogErrores(ex);
+                var msgError = @"Error deshabilitar cuenta : " + sUserName + @", " + ex.Message;
+                var exNew = new Exception(msgError);                
+                Utils.LogErrores(exNew);
+                return false;
             }
         }
 
@@ -561,7 +565,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     eUserActual.Properties["info"].Value = infoString;
 
                     eUserActual.CommitChanges();
-                    eUserActual.Close();
+                    eUserActual.Close();                    
 
                     //Mueve cuenta de ubicacion
                     if (usrData.CambioPatchOu)
@@ -577,6 +581,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                                 }
                                 eLocation.Close();
                             }
+                            Task.Delay(TimeSpan.FromSeconds(15)).Wait();
                         }
                     }
                 }

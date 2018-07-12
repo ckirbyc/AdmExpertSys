@@ -1,6 +1,7 @@
 ﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
+using CL.AdmExpertSys.WEB.Presentation.Models;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using ClosedXML.Excel;
 using System;
@@ -66,9 +67,11 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     };
                 }
                 var listaEstUsr = EstadoCuentaUsuarioFactory.GetEstadoCuentaUsuarioNoLicencia();
+                var usuarioModificacion = SessionViewModel.Usuario.Nombre.Trim();
                 var listaEstCuentaVmHilo = new List<object>
                 {
-                    listaEstUsr
+                    listaEstUsr,
+                    usuarioModificacion
                 };
 
                 _hiloEjecucion = new Thread(InciarProcesoHiloAsignarLicencia);
@@ -86,6 +89,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             }
             catch (Exception ex)
             {
+                HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(false, SessionViewModel.Usuario.Nombre.Trim());
                 Utils.LogErrores(ex);
                 return new JsonResult
                 {
@@ -102,7 +106,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [SoapDocumentMethod(OneWay = true)]
         public void InciarProcesoHiloAsignarLicencia(object estadoCuentaHilo)
         {
-            HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(true);
+            var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
+
+            HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(true, usuarioModificacion);
 
             HomeSysWebFactory = new HomeSysWebFactory();            
 
@@ -133,11 +139,12 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 }
                 catch (Exception ex)
                 {
+                    HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(false, usuarioModificacion);
                     Utils.LogErrores(ex);
                 }                
             }
 
-            HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(false);
+            HiloEstadoAsignacionLicencia.ActualizarEstadoLicencia(false, usuarioModificacion);
         }
     }
 }

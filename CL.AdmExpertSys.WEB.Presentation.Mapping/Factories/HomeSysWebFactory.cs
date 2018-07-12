@@ -344,20 +344,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         /// <param name="usuario"></param>
         /// <returns></returns>
         public bool DeshabilitarUsuarioAd(string usuario)
-        {
-            try
-            {
-                AdFactory = new AdLib();                               
-                AdFactory.DisableUserAccount(usuario);
-                //O365Factory = new Office365();
-                //O365Factory.ForzarDirSync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Utils.LogErrores(ex);
-                throw new ArgumentException("Error al deshabilitar usuario : " + ex.Message);
-            }
+        {            
+            AdFactory = new AdLib();                                                       
+            return AdFactory.DisableUserAccount(usuario);            
         }
 
         public bool DeshabilitarComputadorAd(string computador)

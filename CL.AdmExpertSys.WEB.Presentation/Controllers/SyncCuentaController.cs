@@ -1,6 +1,7 @@
 ﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
+using CL.AdmExpertSys.WEB.Presentation.Models;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using ClosedXML.Excel;
 using System;
@@ -52,10 +53,11 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             try
             {
                 var listaEstUsr = EstadoCuentaUsuarioFactory.GetEstadoCuentaUsuarioNoSync();
-
+                var usuarioModificacion = SessionViewModel.Usuario.Nombre.Trim();
                 var listaEstCuentaVmHilo = new List<object>
                 {
-                    listaEstUsr
+                    listaEstUsr,
+                    usuarioModificacion
                 };
 
                 _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta);
@@ -87,41 +89,52 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [SoapDocumentMethod(OneWay = true)]
         public void InciarProcesoHiloSincronizarCuenta(object estadoCuentaHilo)
         {
-            HiloEstadoSincronizacion.ActualizarEstadoSync(true);
-
-            HomeSysWebFactory = new HomeSysWebFactory();
+            var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
             try
-            {
-                HomeSysWebFactory.ForzarDirSync();
+            {               
+                HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");
+
+                HomeSysWebFactory = new HomeSysWebFactory();
+                try
+                {
+                    HomeSysWebFactory.ForzarDirSync();
+                }
+                catch (Exception ex)
+                {
+                    HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                    Utils.LogErrores(ex);
+                }
+
+                var estadoCuentaLista = (List<EstadoCuentaUsuarioVm>)estadoCuentaHilo.CastTo<List<object>>()[0];
+
+                Task.Delay(TimeSpan.FromSeconds(120)).Wait();
+
+                foreach (var estUsr in estadoCuentaLista)
+                {
+                    var upnPrefijo = estUsr.CuentaAd.Trim() + estUsr.Dominio.Trim();
+                    if (HomeSysWebFactory.ExisteUsuarioPortal(upnPrefijo))
+                    {
+                        estUsr.Sincronizado = true;
+                        try
+                        {
+                            HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
+                        }
+                        catch (Exception ex)
+                        {
+                            HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                            Utils.LogErrores(ex);
+                        }
+                    }
+                }
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
             }
             catch (Exception ex)
             {
-                HiloEstadoSincronizacion.ActualizarEstadoSync(false);
-                Utils.LogErrores(ex);
-            }           
-
-            var estadoCuentaLista = (List<EstadoCuentaUsuarioVm>)estadoCuentaHilo.CastTo<List<object>>()[0];
-
-            Task.Delay(TimeSpan.FromSeconds(120)).Wait();
-
-            foreach (var estUsr in estadoCuentaLista)
-            {
-                var upnPrefijo = estUsr.CuentaAd.Trim() + estUsr.Dominio.Trim();
-                if (HomeSysWebFactory.ExisteUsuarioPortal(upnPrefijo))
-                {
-                    estUsr.Sincronizado = true;
-                    try
-                    {
-                        HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
-                    }
-                    catch(Exception ex)
-                    {
-                        Utils.LogErrores(ex);
-                    }                    
-                }
-            }
-
-            HiloEstadoSincronizacion.ActualizarEstadoSync(false);
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                var msgError = @"Error en proceso asincronico Syncronizar : " + ex.Message;
+                var exNew = new Exception(msgError);
+                Utils.LogErrores(exNew);                
+            }            
         }
     }
 }

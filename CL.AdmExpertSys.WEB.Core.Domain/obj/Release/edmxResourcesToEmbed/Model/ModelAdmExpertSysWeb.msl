@@ -12,6 +12,8 @@
     <EntitySetMapping Name="ESTADO_ASIGNACION_LICENCIA">
       <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_ASIGNACION_LICENCIA">
         <MappingFragment StoreEntitySet="ESTADO_ASIGNACION_LICENCIA">
+          <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+          <ScalarProperty Name="FechaMvto" ColumnName="FechaMvto" />
           <ScalarProperty Name="Asignando" ColumnName="Asignando" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
@@ -52,6 +54,9 @@
     <EntitySetMapping Name="ESTADO_SINCRONIZACION">
       <EntityTypeMapping TypeName="AdmSysWebModel.ESTADO_SINCRONIZACION">
         <MappingFragment StoreEntitySet="ESTADO_SINCRONIZACION">
+          <ScalarProperty Name="Modulo" ColumnName="Modulo" />
+          <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+          <ScalarProperty Name="FechaMvto" ColumnName="FechaMvto" />
           <ScalarProperty Name="Sincronizando" ColumnName="Sincronizando" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>

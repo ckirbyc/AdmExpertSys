@@ -6,29 +6,25 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Thread
 {
     public static class HiloEstadoSincronizacion
     {
-        public static void ActualizarEstadoSync(bool valor)
-        {
-            try
+        public static void ActualizarEstadoSync(bool valor, string userModifcacion, string modulo)
+        {            
+            using (var entityContext = new AdmSysWebEntities())
             {
-                using (var entityContext = new AdmSysWebEntities())
+                using (var dbContextTransaction = entityContext.Database.BeginTransaction())
                 {
-                    using (var dbContextTransaction = entityContext.Database.BeginTransaction())
+                    var objBd = entityContext.ESTADO_SINCRONIZACION.FirstOrDefault(x => x.Id == 1);
+                    if (objBd != null)
                     {
-                        var objBd = entityContext.ESTADO_SINCRONIZACION.FirstOrDefault(x => x.Id == 1);
-                        if (objBd != null)
-                        {
-                            objBd.Sincronizando = valor;
+                        objBd.Sincronizando = valor;
+                        objBd.FechaMvto = DateTime.Now;
+                        objBd.UsuarioModificacion = userModifcacion;
+                        objBd.Modulo = modulo;
 
-                            entityContext.SaveChanges();
-                            dbContextTransaction.Commit();
-                        }
+                        entityContext.SaveChanges();
+                        dbContextTransaction.Commit();
                     }
                 }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            }          
         }
 
         public static bool EsSincronizacion()

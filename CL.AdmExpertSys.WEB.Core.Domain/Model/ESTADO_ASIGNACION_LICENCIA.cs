@@ -16,5 +16,7 @@ namespace CL.AdmExpertSys.WEB.Core.Domain.Model
     {
         public decimal Id { get; set; }
         public bool Asignando { get; set; }
+        public Nullable<System.DateTime> FechaMvto { get; set; }
+        public string UsuarioModificacion { get; set; }
     }
 }

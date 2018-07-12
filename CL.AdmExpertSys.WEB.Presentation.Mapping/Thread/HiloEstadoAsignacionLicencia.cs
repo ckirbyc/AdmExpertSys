@@ -6,7 +6,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Thread
 {
     public static class HiloEstadoAsignacionLicencia
     {
-        public static void ActualizarEstadoLicencia(bool valor)
+        public static void ActualizarEstadoLicencia(bool valor, string userModificacion)
         {
             try
             {
@@ -18,6 +18,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Thread
                         if (objBd != null)
                         {
                             objBd.Asignando = valor;
+                            objBd.FechaMvto = DateTime.Now;
+                            objBd.UsuarioModificacion = userModificacion;
 
                             entityContext.SaveChanges();
                             dbContextTransaction.Commit();

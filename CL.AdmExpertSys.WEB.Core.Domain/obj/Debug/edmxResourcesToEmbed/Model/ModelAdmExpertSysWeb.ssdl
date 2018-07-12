@@ -13,6 +13,8 @@
     </Key>
     <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Asignando" Type="bit" Nullable="false" />
+    <Property Name="FechaMvto" Type="datetime" />
+    <Property Name="UsuarioModificacion" Type="nvarchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="ESTADO_CUENTA_USUARIO">
     <Key>
@@ -50,6 +52,9 @@
     </Key>
     <Property Name="Id" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Sincronizando" Type="bit" Nullable="false" />
+    <Property Name="FechaMvto" Type="datetime" />
+    <Property Name="UsuarioModificacion" Type="nvarchar" MaxLength="100" />
+    <Property Name="Modulo" Type="nvarchar" MaxLength="1" />
   </EntityType>
   <EntityType Name="LICENCIAS_O365">
     <Key>

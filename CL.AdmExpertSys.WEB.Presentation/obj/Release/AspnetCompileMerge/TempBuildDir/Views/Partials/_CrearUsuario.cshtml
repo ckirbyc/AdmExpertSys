@@ -284,9 +284,9 @@
                 $("#SeccionAsociarGrupo").show();
                 var ldap = data.selected[0];
                 $("#PatchOu").val(ldap);
-                if (ldap != null) {
-                    listaGruposAdByOu(ldap);
-                }                
+                //if (ldap != null) {
+                //    listaGruposAdByOu(ldap);
+                //}                
             });            
 
             $("#Apellidos").off('blur').blur(function () {
@@ -602,6 +602,8 @@
                     },
                     complete: function () {
                         $("#loading-modal").hide();
+                        var sOu = $("#PatchOu").val();
+                        listaGruposAdByOu(sOu);
                     },
                     error: function (data) {
                         $("#btnSubmit").attr("disabled", false);
