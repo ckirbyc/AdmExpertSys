@@ -203,7 +203,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             DatosUsuario = string.Empty,
                             CodigoLicencia = string.Empty,
                             Clave = string.Empty,
-                            Session = varSession
+                            Session = varSession,
+                            EstadoSync = false
                         }
                     };
                 }
@@ -231,10 +232,12 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 bool chequear = usuarioAd != null;
                 var codigoLic = string.Empty;
                 var claveCta = string.Empty;
+                var estadoSync = false;
 
                 if (chequear) {
                     codigoLic = EstadoCuentaUsuarioFactory.GetCodigoLicenciaByUsuario(nombreUsuario.Trim());
                     claveCta = EstadoCuentaUsuarioFactory.GetClaveCuentaByUsuario(nombreUsuario.Trim());
+                    estadoSync = HiloEstadoSincronizacion.EsSincronizacion();
                 }
 
                 return new JsonResult
@@ -245,7 +248,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         DatosUsuario = usuarioAd,
                         CodigoLicencia = codigoLic.ToString(),
                         Clave = claveCta,
-                        Session = varSession
+                        Session = varSession,
+                        EstadoSync = estadoSync
                     }
                 };
             }
@@ -260,7 +264,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         DatosUsuario = string.Empty,
                         CodigoLicencia = string.Empty,
                         Clave = string.Empty,
-                        Session = varSession
+                        Session = varSession,
+                        EstadoSync = false
                     }
                 };
             }
@@ -786,6 +791,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     else
                     {
                         decimal licenciaId = 1;
+                        var codigoLicencia = string.Empty;
                         if (!string.IsNullOrEmpty(model.CodigoLicencia))
                         {
                             var mantLicObjVm = MantenedorLicenciaFactory.ObtenerLicenciaCodigo(model.CodigoLicencia);
@@ -793,12 +799,20 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             {
                                 licenciaId = mantLicObjVm.LicenciaId;
                             }
-                        }                        
+                        }
+                        else
+                        {
+                            var objLic = MantenedorLicenciaFactory.GetMantenedorLicencia(licenciaId);
+                            if (objLic != null)
+                            {
+                                codigoLicencia = objLic.Codigo;
+                            }
+                        }
                         //Ingresa datos usuarios a base de datos
-                        estaCtaUsrUnico = new EstadoCuentaUsuarioVm
+                        var estaCtaUsrNew = new EstadoCuentaUsuarioVm
                         {
                             Apellidos = model.Apellidos,
-                            CodigoLicencia = model.CodigoLicencia.Trim(),
+                            CodigoLicencia = string.IsNullOrEmpty(model.CodigoLicencia) ? codigoLicencia : model.CodigoLicencia.Trim(),
                             Correo = model.Correo.Trim(),
                             CreadoAd = true,
                             CuentaAd = model.NombreUsuario.Trim(),
@@ -813,13 +827,13 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             Clave = string.IsNullOrEmpty(model.Clave) ? @"Inicio01" : model.Clave.Trim(),
                             Vigente = true,
                             FechaBaja = DateTime.Now,
-                            LicenciaAsignada = false
+                            LicenciaAsignada = false                            
                         };
 
                         try
                         {
                             EstadoCuentaUsuarioFactory = new EstadoCuentaUsuarioFactory();
-                            EstadoCuentaUsuarioFactory.CrearEstadoCuentaUsuarioDirecto(estaCtaUsrUnico);
+                            EstadoCuentaUsuarioFactory.CrearEstadoCuentaUsuarioDirecto(estaCtaUsrNew);
                         }
                         catch (Exception ex)
                         {

@@ -161,7 +161,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         {
             try
             {
-                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Habilitado);
+                var espec = new DirectSpecification<ESTADO_CUENTA_USUARIO>(x => x.CuentaAd == cuentaAd && x.Eliminado == false);
                 var estadoBd = EstadoCuentaUsuarioService.AllMatching(espec);
 
                 if (estadoBd.Any())

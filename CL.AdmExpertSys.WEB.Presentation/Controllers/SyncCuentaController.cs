@@ -1,4 +1,5 @@
 ﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
+using CL.AdmExpertSys.WEB.Application.CommonLib;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
 using CL.AdmExpertSys.WEB.Presentation.Models;
@@ -107,24 +108,31 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
 
                 var estadoCuentaLista = (List<EstadoCuentaUsuarioVm>)estadoCuentaHilo.CastTo<List<object>>()[0];
 
-                Task.Delay(TimeSpan.FromSeconds(120)).Wait();
+                //Task.Delay(TimeSpan.FromSeconds(120)).Wait();
+                var comm = new Common();
+                var intentoEstadoSync = Convert.ToInt64(comm.GetAppSetting("IntentoEstadoSync"));
 
                 foreach (var estUsr in estadoCuentaLista)
                 {
                     var upnPrefijo = estUsr.CuentaAd.Trim() + estUsr.Dominio.Trim();
-                    if (HomeSysWebFactory.ExisteUsuarioPortal(upnPrefijo))
+                    for (int i = 1; i <= intentoEstadoSync; i++)
                     {
-                        estUsr.Sincronizado = true;
-                        try
+                        if (HomeSysWebFactory.ExisteUsuarioPortal(upnPrefijo))
                         {
-                            HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
+                            estUsr.Sincronizado = true;
+                            try
+                            {
+                                HiloEstadoCuentaUsuario.ActualizarEstadoCuentaUsuario(estUsr);
+                                break;
+                            }
+                            catch (Exception ex)
+                            {
+                                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                                Utils.LogErrores(ex);
+                                break;
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
-                            Utils.LogErrores(ex);
-                        }
-                    }
+                    }                    
                 }
                 HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
             }

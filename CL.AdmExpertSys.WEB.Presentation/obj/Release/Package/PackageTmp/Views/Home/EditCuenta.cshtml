@@ -32,6 +32,7 @@
             @Html.HiddenFor(m => m.PatchOu)
             @Html.HiddenFor(m => m.ExisteUsuario)
             @Html.HiddenFor(m => m.CambioPatchOu)
+            <input type="hidden" id="EstadoSync" value="false" />
             <input type="hidden" id="NombreGrupoSel" value="" />
             <table class="table table-secondary">
                 <tbody>
@@ -266,7 +267,7 @@
                 success: function (data) {
                     if (data.Validar) {
                         habilitarCampos(data);
-
+                        $("#EstadoSync").val(data.EstadoSync);
                         BootstrapDialog.alert({
                             title: '¡Verificación Exitosa!',
                             message: '<strong>Usuario Existe y cuenta se encuentra en estado ' + data.DatosUsuario.EstadoCuenta + '</strong>',
@@ -274,7 +275,7 @@
                         });
                     } else {
                         desHabilitarCampos(data);
-
+                        $("#EstadoSync").val(data.EstadoSync);
                         BootstrapDialog.alert({
                             title: '¡Verificación Exitosa!',
                             message: '<strong>Usuario No Existe</strong>',
@@ -290,7 +291,7 @@
                 },
                 error: function (data) {
                     desHabilitarCampos(data);
-
+                    $("#EstadoSync").val(data.EstadoSync);
                     BootstrapDialog.alert({
                         title: '¡Verificación Erronea!',
                         message: '<strong>Error en la verificación.</strong>',
@@ -619,11 +620,22 @@
         }
 
         $("#btnDesUsr").off('click').click(function () {
-            $("#loading-modal").show();
-            $("#SeccionAsociarGrupo").hide();
-            setTimeout(function () {
-                deshabilitarUsuario();
-            }, 1000);
+            var estadoSync = $("#EstadoSync").val();
+            if (estadoSync == 'false') {
+                $("#loading-modal").show();
+                $("#SeccionAsociarGrupo").hide();
+                setTimeout(function () {
+                    deshabilitarUsuario();
+                }, 1000);
+            }
+            else
+            {
+                BootstrapDialog.alert({
+			                    title: '¡Validación Sincronización!',
+			                    message: '<strong>No se puede deshabilitar cuenta ya que existe un proceso de sincronización en ejecución. Vuelva a buscar cuenta para actualizar estado.</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+            }            
         });
 
         function deshabilitarUsuario() {

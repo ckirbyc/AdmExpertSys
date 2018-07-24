@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2147467261</HResult>
+  <Message>Object reference not set to an instance of an object.</Message>
+  <Source>CL.AdmExpertSys.WEB.Presentation</Source>
+  <StackTrace>   at CL.AdmExpertSys.WEB.Presentation.Controllers.HomeController.DeshabilitarUsuario(HomeSysWebVm model) in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation\Controllers\HomeController.cs:line 798</StackTrace>
+  <Source>CL.AdmExpertSys.WEB.Presentation</Source>
+  <Message>Object reference not set to an instance of an object.</Message>
+</ExceptionSerialize>
