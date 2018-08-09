@@ -15,10 +15,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>05/17/2018 16:49:58</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/24/2018 13:45:59</publishTime>
+      <publishTime>08/09/2018 10:33:42</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/24/2018 13:45:59</publishTime>
+      <publishTime>08/09/2018 10:33:42</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>05/17/2018 16:50:03</publishTime>
@@ -27,10 +27,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>05/17/2018 16:50:03</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.ADClassLib.dll">
-      <publishTime>07/12/2018 10:23:40</publishTime>
+      <publishTime>08/09/2018 10:33:21</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.ADClassLib.pdb">
-      <publishTime>07/12/2018 10:23:40</publishTime>
+      <publishTime>08/09/2018 10:33:21</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.CommonLib.dll">
       <publishTime>05/29/2018 14:48:13</publishTime>
@@ -72,13 +72,13 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>07/12/2018 10:23:39</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.dll">
-      <publishTime>07/12/2018 13:38:51</publishTime>
+      <publishTime>08/09/2018 10:33:23</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.dll.config">
       <publishTime>05/17/2018 16:49:58</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.pdb">
-      <publishTime>07/12/2018 13:38:51</publishTime>
+      <publishTime>08/09/2018 10:33:23</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.Data.dll">
       <publishTime>07/12/2018 10:23:41</publishTime>
@@ -99,19 +99,19 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>05/29/2018 14:48:13</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.dll">
-      <publishTime>07/24/2018 13:45:43</publishTime>
+      <publishTime>08/09/2018 10:33:28</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.dll">
-      <publishTime>07/12/2018 13:38:50</publishTime>
+      <publishTime>08/09/2018 10:33:22</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.dll.config">
       <publishTime>05/17/2018 16:50:05</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.pdb">
-      <publishTime>07/12/2018 13:38:50</publishTime>
+      <publishTime>08/09/2018 10:33:22</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.pdb">
-      <publishTime>07/24/2018 13:45:43</publishTime>
+      <publishTime>08/09/2018 10:33:28</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.ViewModel.dll">
       <publishTime>07/12/2018 10:23:40</publishTime>
@@ -858,7 +858,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>05/17/2018 16:50:07</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/24/2018 13:45:48</publishTime>
+      <publishTime>08/09/2018 10:33:33</publishTime>
     </File>
     <File Include="Scripts/autoNumeric.js">
       <publishTime>05/17/2018 16:50:09</publishTime>
@@ -1212,7 +1212,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>05/17/2018 16:50:08</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/24/2018 13:45:46</publishTime>
+      <publishTime>08/09/2018 10:33:31</publishTime>
     </File>
   </ItemGroup>
 </Project>

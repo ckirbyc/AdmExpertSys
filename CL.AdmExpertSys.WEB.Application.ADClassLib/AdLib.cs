@@ -36,6 +36,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
         private readonly string _sTenantDomainSmtpSecundario = string.Empty;
         private readonly string _sOuDeshabilitarComp = string.Empty;
         private readonly string _sRutaAllDominio = string.Empty;
+        private readonly string _sIntentoCrearAd = string.Empty;
 
         #endregion
 
@@ -59,6 +60,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             _sTenantDomainSmtpSecundario = CommonServices.GetAppSetting("TenantDomainSmtpSecundario");
             _sOuDeshabilitarComp = CommonServices.GetAppSetting("OuDeshabilitarComp");
             _sRutaAllDominio = CommonServices.GetAppSetting("RutaAllDominio");
+            _sIntentoCrearAd = CommonServices.GetAppSetting("IntentoCrearAd");
         }
 
         #region Métodos de Validación
@@ -443,41 +445,51 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 oUserPrincipal.Description = descripcion;
                 oUserPrincipal.Save();
 
-                Task.Delay(TimeSpan.FromSeconds(15)).Wait();
+                //Task.Delay(TimeSpan.FromSeconds(15)).Wait();
 
                 /*
                     *  Update Properties
-                */               
+                */
 
-                
-                string dn = oUserPrincipal.DistinguishedName;
-                var sLdapAsAux = _sLdapServer + dn;
+                var intentoCrearAd = Convert.ToInt32(_sIntentoCrearAd);
 
-                using (var ent = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                for (int i = 1; i <= intentoCrearAd; i++)
                 {
-                    var infoString = string.Empty;
-                    if (info)
+                    var userAd = IsUserExisting(sUserName);
+                    if (userAd != null)
                     {
-                        infoString = @"Cuenta Genérica";
-                    }
-                    else
-                    {
-                        infoString = @"Cuenta Persona";
-                    }
+                        string dn = oUserPrincipal.DistinguishedName;
+                        var sLdapAsAux = _sLdapServer + dn;
 
-                    ent.Invoke("SetPassword", passWord);
-                    //Propiedades que son necesarias problar en AD para crear un usuario en Office 365
-                    ent.Properties["proxyAddresses"].Add(proxyaddresses[0]);
-                    ent.Properties["proxyAddresses"].Add(proxyaddresses[1]);
-                    ent.Properties["proxyAddresses"].Add(proxyaddresses[2]);
-                    ent.Properties["mailnickname"].Value = sUserName;
-                    ent.Properties["targetAddress"].Value = emailTransporte;
-                    ent.Properties["pwdLastSet"].Value = 0;
-                    ent.Properties["info"].Value = infoString;
+                        using (var ent = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                        {
+                            var infoString = string.Empty;
+                            if (info)
+                            {
+                                infoString = @"Cuenta Genérica";
+                            }
+                            else
+                            {
+                                infoString = @"Cuenta Persona";
+                            }
 
-                    ent.CommitChanges();
-                    ent.Close();
-                }
+                            ent.Invoke("SetPassword", passWord);
+                            //Propiedades que son necesarias problar en AD para crear un usuario en Office 365
+                            ent.Properties["proxyAddresses"].Add(proxyaddresses[0]);
+                            ent.Properties["proxyAddresses"].Add(proxyaddresses[1]);
+                            ent.Properties["proxyAddresses"].Add(proxyaddresses[2]);
+                            ent.Properties["mailnickname"].Value = sUserName;
+                            ent.Properties["targetAddress"].Value = emailTransporte;
+                            ent.Properties["pwdLastSet"].Value = 0;
+                            ent.Properties["info"].Value = infoString;
+
+                            ent.CommitChanges();
+                            ent.Close();
+                        }
+
+                        break;
+                    }
+                }                
 
                 return oUserPrincipal;
             }
