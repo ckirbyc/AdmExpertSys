@@ -70,3 +70,4 @@ C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domai
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.csproj.CopyComplete
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.dll
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.pdb
+C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\obj\Debug\CL.AdmExpertSys.WEB.Core.Domain.csprojAssemblyReference.cache

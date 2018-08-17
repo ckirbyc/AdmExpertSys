@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2146233088</HResult>
+  <Message>Problema en el getting licenses : You must call the Connect-MsolService cmdlet before calling any other cmdlets.</Message>
+  <Source>CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib</Source>
+  <StackTrace>   at CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib.Office365.ObtenerMsolAccountSku() in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\Office365.cs:line 946</StackTrace>
+  <Source>CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib</Source>
+  <Message>Problema en el getting licenses : You must call the Connect-MsolService cmdlet before calling any other cmdlets.</Message>
+</ExceptionSerialize>

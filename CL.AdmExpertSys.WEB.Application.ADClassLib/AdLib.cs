@@ -1,5 +1,4 @@
-﻿
-using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
+﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Application.CommonLib;
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
@@ -416,8 +415,9 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 var sOu = ldapOu.Replace(_sLdapServer, string.Empty);
                 PrincipalContext oPrincipalContext = GetPrincipalContext(sOu);
 
-                var oUserPrincipal = new UserPrincipal  
-                   (oPrincipalContext, sUserName, sPassword, true){Enabled = true, PasswordNeverExpires = false};
+                var oUserPrincipal = new UserPrincipal
+                   (oPrincipalContext, sUserName, sPassword, true)
+                { Enabled = true, PasswordNeverExpires = false };
 
                 //Proxy Addresses                
                 string emailOnmicrosoft = sUserName + "@" + _sTenantDomain;
@@ -435,9 +435,9 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 oUserPrincipal.SamAccountName = sUserName;
                 oUserPrincipal.UserPrincipalName = upn;
                 oUserPrincipal.GivenName = sGivenName;
-                oUserPrincipal.Surname = sSurname;                
+                oUserPrincipal.Surname = sSurname;
                 oUserPrincipal.Name = sSurname + ", " + sGivenName;
-                oUserPrincipal.MiddleName = sSurname;                
+                oUserPrincipal.MiddleName = sSurname;
                 oUserPrincipal.DisplayName = sSurname + ", " + sGivenName;
                 oUserPrincipal.EmailAddress = upn;
                 oUserPrincipal.ExpirePasswordNow();
@@ -445,53 +445,34 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 oUserPrincipal.Description = descripcion;
                 oUserPrincipal.Save();
 
-                //Task.Delay(TimeSpan.FromSeconds(15)).Wait();
-
-                /*
-                    *  Update Properties
-                */
-
-                var intentoCrearAd = Convert.ToInt32(_sIntentoCrearAd);
-
-                for (int i = 1; i <= intentoCrearAd; i++)
+                using (DirectoryEntry ent = (DirectoryEntry)oUserPrincipal.GetUnderlyingObject())
                 {
-                    var userAd = IsUserExisting(sUserName);
-                    if (userAd != null)
+                    var infoString = string.Empty;
+                    if (info)
                     {
-                        string dn = oUserPrincipal.DistinguishedName;
-                        var sLdapAsAux = _sLdapServer + dn;
-
-                        using (var ent = new DirectoryEntry(sLdapAsAux, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
-                        {
-                            var infoString = string.Empty;
-                            if (info)
-                            {
-                                infoString = @"Cuenta Genérica";
-                            }
-                            else
-                            {
-                                infoString = @"Cuenta Persona";
-                            }
-
-                            ent.Invoke("SetPassword", passWord);
-                            //Propiedades que son necesarias problar en AD para crear un usuario en Office 365
-                            ent.Properties["proxyAddresses"].Add(proxyaddresses[0]);
-                            ent.Properties["proxyAddresses"].Add(proxyaddresses[1]);
-                            ent.Properties["proxyAddresses"].Add(proxyaddresses[2]);
-                            ent.Properties["mailnickname"].Value = sUserName;
-                            ent.Properties["targetAddress"].Value = emailTransporte;
-                            ent.Properties["pwdLastSet"].Value = 0;
-                            ent.Properties["info"].Value = infoString;
-
-                            ent.CommitChanges();
-                            ent.Close();
-                        }
-
-                        break;
+                        infoString = @"Cuenta Genérica";
                     }
-                }                
+                    else
+                    {
+                        infoString = @"Cuenta Persona";
+                    }                  
 
-                return oUserPrincipal;
+                    //Datos principales de la cuenta                    
+                    ent.Invoke("SetPassword", passWord);
+                    //Propiedades que son necesarias problar en AD para crear un usuario en Office 365
+                    ent.Properties["proxyAddresses"].Add(proxyaddresses[0]);
+                    ent.Properties["proxyAddresses"].Add(proxyaddresses[1]);
+                    ent.Properties["proxyAddresses"].Add(proxyaddresses[2]);
+                    ent.Properties["mailnickname"].Value = sUserName;
+                    ent.Properties["targetAddress"].Value = emailTransporte;
+                    ent.Properties["pwdLastSet"].Value = 0;
+                    ent.Properties["info"].Value = infoString;
+
+                    ent.CommitChanges();
+                    ent.Close();
+                };
+
+                return oUserPrincipal;                
             }
 
             return GetUser(sUserName);
