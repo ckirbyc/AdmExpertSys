@@ -22,5 +22,6 @@ namespace CL.AdmExpertSys.WEB.Core.Domain.Model
         public string InfoString { get; set; }
         public string Licenses { get; set; }
         public string DistinguishedName { get; set; }
+        public string AttrOu { get; set; }
     }
 }

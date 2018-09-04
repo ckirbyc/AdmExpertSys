@@ -22,7 +22,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             try
             {
                 HomeSysWebFactory = new HomeSysWebFactory();
-                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario("N");
+                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario("N", "N");
                 ViewBag.processToken = Convert.ToInt64(DateTime.Now.Hour.ToString() + DateTime.Now.Minute + DateTime.Now.Second +
                                        DateTime.Now.Millisecond);
                 return View(listaCuenta);
@@ -39,7 +39,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             try
             {
                 HomeSysWebFactory = new HomeSysWebFactory();
-                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario("N");
+                var listaCuenta = HomeSysWebFactory.ObtenerListaCuentaUsuario("N", "N");
 
                 ViewBag.EstadoProceso = HiloEstadoReporteLicencia.EsProceso();
                 ViewBag.ExistenRegistro = HiloReporteLicencia.ExistenRegistros();

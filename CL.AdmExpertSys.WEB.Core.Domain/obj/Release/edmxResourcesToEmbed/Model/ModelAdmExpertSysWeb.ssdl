@@ -105,6 +105,7 @@
     <Property Name="InfoString" Type="nvarchar(max)" />
     <Property Name="Licenses" Type="nvarchar(max)" />
     <Property Name="DistinguishedName" Type="nvarchar(max)" />
+    <Property Name="AttrOu" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="ROL_CARGO">
     <Key>

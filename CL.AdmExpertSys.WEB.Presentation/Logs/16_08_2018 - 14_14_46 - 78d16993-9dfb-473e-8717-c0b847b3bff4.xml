@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <HResult>-2147024809</HResult>
-  <Message>Error al crear usuario en AD, intente más tarde.</Message>
-  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
-  <StackTrace>   at CL.AdmExpertSys.WEB.Presentation.Mapping.Factories.HomeSysWebFactory.CrearUsuario(HomeSysWebVm model) in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation.Mapping\Factories\HomeSysWebFactory.cs:line 175</StackTrace>
-  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
-  <Message>Error al crear usuario en AD, intente más tarde.</Message>
-</ExceptionSerialize>

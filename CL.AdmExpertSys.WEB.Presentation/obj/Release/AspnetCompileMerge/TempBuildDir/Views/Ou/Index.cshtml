@@ -1,0 +1,43 @@
+﻿@using CL.AdmExpertSys.WEB.Core.Domain.Dto
+@model IEnumerable<Ou>
+@{
+    ViewBag.Title = "Unidades Organizativas";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-12">Unidades Organizativas</h1>    
+</div>
+<div class="row">
+    <h2 class="sub-header">Vista de todas las Unidades Organizativas en Mantenedor de OU.</h2>
+</div>
+<div class="row">
+    <table class="table table-hover tablaMantenedores">
+        <thead>
+            <tr>
+                <th>Nivel</th>
+                <th>Nombre</th>                
+                <th>Acción</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.OrderBy(x => x.Nivel))
+        {
+            var item1 = item;
+            var nivel = Convert.ToInt64(item1.Nivel);
+            var nombreOu = Convert.ToString(item1.Nombre).Replace("OU=", "");
+            <tr>
+                <td class="textCenter">@nivel</td>
+                <td class="textCenter"><a href="#" title="@item1.Ldap">@nombreOu</a></td>
+                <td class="columnaAcciones textCenter">
+                    @Html.ActionLink(" ", "Edit", new { nombreOu = nombreOu, ldap = item1.Ldap }, new { @class = "glyphicon glyphicon-edit", title = "Editar" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#ModOu').addClass('active');
+</script>
+

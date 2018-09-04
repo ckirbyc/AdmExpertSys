@@ -229,6 +229,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LicCuentaController.cs" />
     <Compile Include="Controllers\MantenedorLicController.cs" />
+    <Compile Include="Controllers\OuController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\SyncCuentaController.cs" />
     <Compile Include="Controllers\UsuarioCreadoController.cs" />
@@ -532,6 +533,8 @@
     <Content Include="Views\Grupos\VerPopupAsignarUsuarioGrupo.cshtml" />
     <Content Include="Views\Reportes\Licencia.cshtml" />
     <Content Include="Views\Reportes\Completo.cshtml" />
+    <Content Include="Views\Ou\Index.cshtml" />
+    <Content Include="Views\Ou\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

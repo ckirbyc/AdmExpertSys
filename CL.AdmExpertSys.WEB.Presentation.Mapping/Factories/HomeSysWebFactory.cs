@@ -193,13 +193,25 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             return AdFactory.ObtenerPropiedadesUsuariosAd();
         }
 
-        public static EstructuraArbolAd GetArquitecturaArbolAd()
+        public static EstructuraArbolAd GetArquitecturaArbolAd(List<Ou> listaOuAd)
+        {
+            try
+            {                                
+                return HelpFactory.GenerarArbolAdOu(listaOuAd);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return null;
+            }
+        }
+
+        public List<Ou> GetListaOu()
         {
             try
             {
                 var adFactory = new AdLib();
-                var listaUser = adFactory.EnumerateOu();
-                return HelpFactory.GenerarArbolAdOu(listaUser);
+                return adFactory.EnumerateOu();
             }
             catch (Exception ex)
             {
@@ -757,13 +769,13 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             }
         }
 
-        public List<UsuarioAd> ObtenerListaCuentaUsuario(string generarInfo)
+        public List<UsuarioAd> ObtenerListaCuentaUsuario(string generarInfo, string generarAttr)
         {
             var listaAccount = new List<UsuarioAd>();
             try
             {
                 AdFactory = new AdLib();                
-                listaAccount = AdFactory.GetListAccountUsers(generarInfo);              
+                listaAccount = AdFactory.GetListAccountUsers(generarInfo, generarAttr);              
                 return listaAccount;
             }
             catch (Exception ex)
@@ -796,7 +808,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
             {
                 AdFactory = new AdLib();
                 O365Factory = new Office365();
-                listaAccount = AdFactory.GetListAccountUsers("S");
+                listaAccount = AdFactory.GetListAccountUsers("S", "S");
 
                 var sMess = string.Empty;
                 listaAccount = O365Factory.GetLicensedUserMassive(listaAccount, out sMess);
@@ -870,14 +882,19 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                         hojaRep.Cell(1, 6).Style.Fill.BackgroundColor = XLColor.Red;
                         hojaRep.Cell(1, 6).Style.Font.Bold = true;
 
-                        hojaRep.Cell(1, 7).Value = "Ubicación";
+                        hojaRep.Cell(1, 7).Value = "Atributo OU";
                         hojaRep.Cell(1, 7).Style.Font.FontColor = XLColor.White;
                         hojaRep.Cell(1, 7).Style.Fill.BackgroundColor = XLColor.Red;
                         hojaRep.Cell(1, 7).Style.Font.Bold = true;
 
+                        hojaRep.Cell(1, 8).Value = "Ubicación";
+                        hojaRep.Cell(1, 8).Style.Font.FontColor = XLColor.White;
+                        hojaRep.Cell(1, 8).Style.Fill.BackgroundColor = XLColor.Red;
+                        hojaRep.Cell(1, 8).Style.Font.Bold = true;
+
                         CommonFactory = new Common();
                         var cantNivel = Convert.ToInt64(CommonFactory.GetAppSetting("NivelesArbolAd"));
-                        var numColCabecera = 8;
+                        var numColCabecera = 9;
 
                         for (int i = 1; i <= cantNivel; i++)
                         {
@@ -894,7 +911,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                         var listCtaOrdenada = new List<UsuarioAd>();
                         if (licencia.Equals("N"))
                         {
-                            listCtaOrdenada = ObtenerListaCuentaUsuario("S").OrderBy(x => x.DistinguishedName).ToList();
+                            listCtaOrdenada = ObtenerListaCuentaUsuario("S", "S").OrderBy(x => x.DistinguishedName).ToList();
                         }
                         else
                         {
@@ -912,6 +929,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             listaRepCtaUsr[3] = ctaUsr.SamAccountName + ctaUsr.UpnPrefijo;
                             listaRepCtaUsr[4] = ctaUsr.InfoString;
                             listaRepCtaUsr[5] = ctaUsr.Licenses;
+                            listaRepCtaUsr[6] = ctaUsr.AttrOu;
 
                             var listaOu = new List<OuExcelVm>();
                             int startIndexOu = ctaUsr.DistinguishedName.IndexOf("OU=");
@@ -920,7 +938,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                                 int lengthOu = ctaUsr.DistinguishedName.Length - startIndexOu;
                                 var dnNewOu = ctaUsr.DistinguishedName.Substring(startIndexOu, lengthOu);
 
-                                listaRepCtaUsr[6] = dnNewOu;
+                                listaRepCtaUsr[7] = dnNewOu;
 
                                 var dnCompleto = ctaUsr.DistinguishedName;
 
@@ -952,10 +970,10 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                             }
                             else
                             {
-                                listaRepCtaUsr[6] = ctaUsr.DistinguishedName;                                
+                                listaRepCtaUsr[7] = ctaUsr.DistinguishedName;                                
                             }
 
-                            var colArray = 7;
+                            var colArray = 8;
                             foreach (var ouVm in listaOu.OrderByDescending(x => x.Numero))
                             {
                                 listaRepCtaUsr[colArray] = ouVm.Nombre;
@@ -976,6 +994,34 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 Utils.LogErrores(ex);
                 throw;
             }            
+        }
+
+        public string ObtenerAtributoOu(string ldap)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                return AdFactory.GetAttrOu(ldap);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return string.Empty;
+            }
+        }
+
+        public bool ActualizarAttrOu(string ldap, string attr)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                return AdFactory.UpdateAttrOu(ldap, attr);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return false;
+            }
         }
     }
 }

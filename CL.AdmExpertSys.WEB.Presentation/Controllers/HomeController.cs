@@ -69,7 +69,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 }
                 else
                 {
-                    var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
+                    var listaOuAd = HomeSysWebFactory.GetListaOu();
+                    var estructura = HomeSysWebFactory.GetArquitecturaArbolAd(listaOuAd);
                     SessionViewModel.EstructuraArbolAd = estructura;
                     ViewBag.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
                 }                
@@ -94,7 +95,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 }
                 else
                 {
-                    var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
+                    var listaOuAd = HomeSysWebFactory.GetListaOu();
+                    var estructura = HomeSysWebFactory.GetArquitecturaArbolAd(listaOuAd);
                     SessionViewModel.EstructuraArbolAd = estructura;
                     ViewBag.EstructuraArbolAd = SessionViewModel.EstructuraArbolAd;
                 }

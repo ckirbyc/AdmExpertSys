@@ -28,7 +28,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Thread
                                 Licenses = usrAd.Licenses,
                                 Name = usrAd.Name,
                                 SamAccountName = usrAd.SamAccountName,
-                                UpnPrefijo = usrAd.UpnPrefijo
+                                UpnPrefijo = usrAd.UpnPrefijo,
+                                AttrOu = usrAd.AttrOu
                             };
                             listaRptLic.Add(tip);
                         }
@@ -99,7 +100,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Thread
                             Licenses = usrAdBd.Licenses,
                             Name = usrAdBd.Name,
                             SamAccountName = usrAdBd.SamAccountName,
-                            UpnPrefijo = usrAdBd.UpnPrefijo
+                            UpnPrefijo = usrAdBd.UpnPrefijo,
+                            AttrOu = usrAdBd.AttrOu
                         };
                         listaUsrAd.Add(usrVm);
                     }

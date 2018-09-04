@@ -55,6 +55,7 @@
     <Compile Include="LoginVm.cs" />
     <Compile Include="MantenedorLicenciaFileVm.cs" />
     <Compile Include="MantenedorLicenciaVm.cs" />
+    <Compile Include="OuAdVm.cs" />
     <Compile Include="OuExcelVm.cs" />
     <Compile Include="PerfilUsuarioVm.cs" />
     <Compile Include="Resource\AesMensajes.Designer.cs">

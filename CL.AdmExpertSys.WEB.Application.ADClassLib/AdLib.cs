@@ -1070,7 +1070,7 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
             return _sUpnPrefijo.Split(';').ToDictionary(upnPref => upnPref);
         }
 
-        public List<UsuarioAd> GetListAccountUsers(string generarInfo)
+        public List<UsuarioAd> GetListAccountUsers(string generarInfo, string generarAttr)
         {
             var listaUser = new List<UsuarioAd>();
             using (PrincipalContext oPrincipalContext = GetPrincipalContext(_sRutaOuDominio))
@@ -1101,6 +1101,19 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                                     {
                                         infoString = info.Value.ToString();
                                     }
+                                }
+
+                                var attrOu = string.Empty;
+                                if (generarAttr.Equals("S"))
+                                {
+                                    var rutaPadreOu = ((DirectoryEntry)oUserPrincipal.GetUnderlyingObject()).Parent.Path;
+                                    using (var eRutaPadre = new DirectoryEntry(rutaPadreOu, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+                                    {
+                                        if (eRutaPadre.Properties["businessCategory"].Value != null)
+                                        {
+                                            attrOu = Convert.ToString(eRutaPadre.Properties["businessCategory"].Value);
+                                        }
+                                    };
                                 }                                
 
                                 var usuarioAd = new UsuarioAd
@@ -1119,7 +1132,8 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                                     Enabled = oUserPrincipal.Enabled,
                                     EstadoCuenta = oUserPrincipal.Enabled != null && oUserPrincipal.Enabled == true ? "Habilitado" : "No habilitado",                                    
                                     UpnPrefijo = upnPrefijoFinal,
-                                    InfoString = infoString
+                                    InfoString = infoString,
+                                    AttrOu = attrOu
                                 };
                                 listaUser.Add(usuarioAd);
                             }
@@ -1190,6 +1204,34 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                     }
                 }
             }
+        }
+
+        public string GetAttrOu(string ldap)
+        {
+            using (var directOu = new DirectoryEntry(ldap, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+            {
+                var attrOu = string.Empty;
+                if(directOu.Properties["businessCategory"].Value != null)
+                {
+                    attrOu = Convert.ToString(directOu.Properties["businessCategory"].Value);
+                }
+
+                return attrOu;
+            };            
+        }
+
+        public bool UpdateAttrOu(string ldap, string attr)
+        {
+            var exito = false;
+
+            using (var directOu = new DirectoryEntry(ldap, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+            {
+                directOu.Properties["businessCategory"].Value = attr;
+                directOu.CommitChanges();
+                directOu.Close();
+                exito = true;
+                return exito;
+            };            
         }
     }
 }

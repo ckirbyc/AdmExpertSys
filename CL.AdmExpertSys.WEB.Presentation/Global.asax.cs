@@ -35,8 +35,13 @@ namespace CL.AdmExpertSys.WEB.Presentation
         {
             try
             {
-                HttpContext.Current.Session["AdmExpertSys"] = "AdmExpertSys";                
-                var estructura = HomeSysWebFactory.GetArquitecturaArbolAd();
+                HttpContext.Current.Session["AdmExpertSys"] = "AdmExpertSys";
+
+                var homeSysWebFactory = new HomeSysWebFactory();
+                var listaOuAd = homeSysWebFactory.GetListaOu();
+                SessionViewModel.ListaOuAd = listaOuAd;
+
+                var estructura = HomeSysWebFactory.GetArquitecturaArbolAd(listaOuAd);
                 SessionViewModel.EstructuraArbolAd = estructura;                
             }
             catch (Exception ex)

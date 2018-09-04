@@ -2,6 +2,7 @@
 using CL.AdmExpertSys.WEB.Core.Domain.Dto;
 using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Web;
 
 namespace CL.AdmExpertSys.WEB.Presentation.Models
@@ -33,6 +34,18 @@ namespace CL.AdmExpertSys.WEB.Presentation.Models
             set
             {
                 HttpContext.Current.Session["EstructuraArbol"] = value;
+            }
+        }
+
+        public static List<Ou> ListaOuAd
+        {
+            get
+            {
+                return (List<Ou>)HttpContext.Current.Session["OuAd"];
+            }
+            set
+            {
+                HttpContext.Current.Session["OuAd"] = value;
             }
         }
     }

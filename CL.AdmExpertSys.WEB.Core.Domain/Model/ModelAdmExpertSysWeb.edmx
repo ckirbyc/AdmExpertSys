@@ -110,6 +110,7 @@
           <Property Name="InfoString" Type="nvarchar(max)" />
           <Property Name="Licenses" Type="nvarchar(max)" />
           <Property Name="DistinguishedName" Type="nvarchar(max)" />
+          <Property Name="AttrOu" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="ROL_CARGO">
           <Key>
@@ -374,6 +375,7 @@
           <Property Name="InfoString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Licenses" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DistinguishedName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AttrOu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ROL_CARGO">
           <Key>
@@ -566,6 +568,7 @@
           <EntitySetMapping Name="REPORTE_LICENCIA">
             <EntityTypeMapping TypeName="AdmSysWebModel.REPORTE_LICENCIA">
               <MappingFragment StoreEntitySet="REPORTE_LICENCIA">
+                <ScalarProperty Name="AttrOu" ColumnName="AttrOu" />
                 <ScalarProperty Name="DistinguishedName" ColumnName="DistinguishedName" />
                 <ScalarProperty Name="Licenses" ColumnName="Licenses" />
                 <ScalarProperty Name="InfoString" ColumnName="InfoString" />

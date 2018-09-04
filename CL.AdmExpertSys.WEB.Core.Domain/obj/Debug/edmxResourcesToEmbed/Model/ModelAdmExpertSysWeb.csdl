@@ -147,6 +147,7 @@
     <Property Name="InfoString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Licenses" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="DistinguishedName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="AttrOu" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="ROL_CARGO">
     <Key>

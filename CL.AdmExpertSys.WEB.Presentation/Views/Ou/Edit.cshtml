@@ -1,0 +1,67 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.OuAdVm
+@{
+    ViewBag.Title = "Editar OU";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Editar</h1>
+        <div class="form-inline col-md-3">
+            <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-save"></span>
+                <input type="submit" value="Guardar" class="btnInput" id="Guardar" data-loading-text="Guardando..." />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Unidades Organizativas</h2>
+        <div class="col-md-12">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.Nombre)
+            @Html.HiddenFor(m => m.Ldap)
+            <table class="table table-secondary">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Nombre)</th>
+                        <td>
+                            @Html.DisplayFor(m => m.Nombre, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Ldap)</th>
+                        <td>
+                            @Html.DisplayFor(m => m.Ldap, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Atributo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Atributo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Atributo)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<div class="row">
+    <a href="@Url.Action("Index")" onclick="javascript:$('#loading-modal').show();" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#ModOu').addClass('active');
+</script>
+<script>
+    $("#btnSubmit").on("click", function () {
+        $('#loading-modal').show();
+        var form = document.getElementsByTagName("form");
+        $(form).submit();
+        var $btn = $("#Guardar");
+        $btn.button('loading');
+    });
+</script>
+

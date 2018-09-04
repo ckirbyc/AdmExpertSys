@@ -22,5 +22,6 @@ namespace CL.AdmExpertSys.WEB.Core.Domain.Dto
         public bool Info { get; set; }
         public string InfoString { get; set; }
         public string Licenses { get; set; }
+        public string AttrOu { get; set; }
     }
 }

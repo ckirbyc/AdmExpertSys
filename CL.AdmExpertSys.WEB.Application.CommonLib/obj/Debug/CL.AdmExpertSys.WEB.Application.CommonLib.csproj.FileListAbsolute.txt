@@ -22,3 +22,4 @@ C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Applicatio
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.csproj.CoreCompileInputs.cache
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.dll
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Debug\CL.AdmExpertSys.WEB.Application.CommonLib.csprojAssemblyReference.cache
