@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2147024809</HResult>
+  <Message>An invalid dn syntax has been specified.
+</Message>
+  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
+  <StackTrace>   at CL.AdmExpertSys.WEB.Presentation.Mapping.Factories.HomeSysWebFactory.CrearUsuario(HomeSysWebVm model) in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation.Mapping\Factories\HomeSysWebFactory.cs:line 186
+   at CL.AdmExpertSys.WEB.Presentation.Controllers.HomeController.GuardarSincronizarUsuario(HomeSysWebVm model) in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation\Controllers\HomeController.cs:line 392</StackTrace>
+  <Source>CL.AdmExpertSys.WEB.Presentation.Mapping</Source>
+  <Message>An invalid dn syntax has been specified.
+</Message>
+</ExceptionSerialize>

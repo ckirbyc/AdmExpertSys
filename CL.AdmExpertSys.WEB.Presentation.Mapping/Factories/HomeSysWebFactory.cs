@@ -1023,5 +1023,19 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
                 return false;
             }
         }
+
+        public string ValidarCodigoRutaOuAd(string codigoRuta)
+        {
+            try
+            {
+                AdFactory = new AdLib();
+                return AdFactory.ValidateCodeRouteAd(codigoRuta);
+            }
+            catch (Exception ex)
+            {
+                Utils.LogErrores(ex);
+                return string.Empty;
+            }
+        }
     }
 }

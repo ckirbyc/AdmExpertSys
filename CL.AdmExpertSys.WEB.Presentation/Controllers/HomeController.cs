@@ -281,6 +281,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         public ActionResult GuardarSincronizarUsuario(HomeSysWebVm model)
         {
             var varSession = true;
+            var codRuta = string.Empty;
             try
             {
                 //Verifica que sesiones no sean nulas, si lo es redirecciona a página login                
@@ -293,7 +294,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         {
                             Validar = false,
                             Error = string.Empty,
-                            Session = varSession
+                            Session = varSession,
+                            CodigoRuta = codRuta
                         }
                     };
                 }
@@ -313,13 +315,37 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     model.Clave = @"$aaa123";
                 }
-                if (string.IsNullOrEmpty(model.PatchOu))
+
+                if (string.IsNullOrEmpty(model.PatchOu) && string.IsNullOrEmpty(model.CodigoRutaAd))
                 {
-                    if (model.ExisteUsuario == false)
+                    throw new ArgumentException("Seleccionar unidad organizativa o código ruta AD.");
+                }
+                else if (!string.IsNullOrEmpty(model.PatchOu) && !string.IsNullOrEmpty(model.CodigoRutaAd))
+                {
+                    throw new ArgumentException("Solo seleccionar unidad organizativa o código ruta AD. No pueden ser ambas.");
+                }
+                else if (string.IsNullOrEmpty(model.PatchOu) && !string.IsNullOrEmpty(model.CodigoRutaAd))
+                {
+                    //Validar que el código de la ruta ingresa exista en el AD.
+                    HomeSysWebFactory = new HomeSysWebFactory();
+                    codRuta = HomeSysWebFactory.ValidarCodigoRutaOuAd(model.CodigoRutaAd.Trim());
+                    if (string.IsNullOrEmpty(codRuta))
                     {
-                        throw new ArgumentException("Seleccionar unidad organizativa");
+                        throw new ArgumentException("El código ruta OU ingresado no existe en el AD.");
+                    }
+                    else
+                    {
+                        model.PatchOu = codRuta;
                     }
                 }
+
+                //if (string.IsNullOrEmpty(model.PatchOu))
+                //{
+                //    if (model.ExisteUsuario == false)
+                //    {
+                //        throw new ArgumentException("Seleccionar unidad organizativa");
+                //    }
+                //}
                 
                 //Validar que el código ingresado exista
                 if (!MantenedorLicenciaFactory.ExisteCodigoLicencia(model.CodigoLicencia.Trim())) {
@@ -407,7 +433,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         Validar = exitoProceso,
                         Error = exitoProceso == false ? "Proceso de guardar y sincronizar terminado incorrectamente, favor intentar más tarde." : string.Empty,
-                        Session = varSession
+                        Session = varSession,
+                        CodigoRuta = codRuta
                     }
                 };
             }
@@ -420,7 +447,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         Validar = true,
                         Error = ex.Message,
-                        Session = varSession
+                        Session = varSession,
+                        CodigoRuta = codRuta
                     }
                 };
             }
@@ -433,7 +461,8 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     {
                         Validar = true,
                         Error = ex.Message,
-                        Session = varSession
+                        Session = varSession,
+                        CodigoRuta = codRuta
                     }
                 };
             }

@@ -34,5 +34,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.ViewModel
         public bool CambioPatchOu { get; set; }
         [DisplayName(@"Cuenta Genérica")]
         public bool Info { get; set; }
+        [DisplayName(@"Código Ruta AD")]
+        public string CodigoRutaAd { get; set; }
     }
 }

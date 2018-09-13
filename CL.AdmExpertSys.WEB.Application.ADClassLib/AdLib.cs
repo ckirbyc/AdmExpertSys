@@ -1233,5 +1233,38 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 return exito;
             };            
         }
+
+        public string ValidateCodeRouteAd(string codigoRuta)
+        {
+            using (var directOu = new DirectoryEntry(_sLdapAs, _sUserAdDomain, _sPassAdDomain, AuthenticationTypes.Secure))
+            {
+                using (var searcher = new DirectorySearcher(directOu))
+                {                    
+                    searcher.Filter = "(&(objectClass=organizationalUnit)(businessCategory=" + codigoRuta.Trim() + "))";
+                    searcher.SearchScope = SearchScope.Subtree;
+                    searcher.PropertiesToLoad.Add("distinguishedName");
+                    searcher.PropertiesToLoad.Add("businessCategory");
+
+                    using (var result = searcher.FindAll())
+                    {
+                        foreach (SearchResult entry in result)
+                        {
+                            var distinguishedName = entry.GetDirectoryEntry().Properties["distinguishedName"].Value.ToString();
+                            var businessCategory = string.Empty;
+                            if (entry.GetDirectoryEntry().Properties["businessCategory"].Value != null)
+                            {
+                                businessCategory = entry.GetDirectoryEntry().Properties["businessCategory"].Value.ToString();
+                                if (businessCategory.Equals(codigoRuta))
+                                {
+                                    return distinguishedName;
+                                }
+                            }
+                        }
+                        return string.Empty;
+                    };                        
+                };
+                
+            };            
+        }
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <HResult>-2147024809</HResult>
+  <Message>El código ruta OU ingresado no existe en el AD.</Message>
+  <Source>CL.AdmExpertSys.WEB.Presentation</Source>
+  <StackTrace>   at CL.AdmExpertSys.WEB.Presentation.Controllers.HomeController.GuardarSincronizarUsuario(HomeSysWebVm model) in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation\Controllers\HomeController.cs:line 332</StackTrace>
+  <Source>CL.AdmExpertSys.WEB.Presentation</Source>
+  <Message>El código ruta OU ingresado no existe en el AD.</Message>
+</ExceptionSerialize>

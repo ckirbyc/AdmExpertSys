@@ -114,6 +114,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.CodigoRutaAd)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.CodigoRutaAd, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })                            
+                        </td>
+                    </tr>
+                    <tr>
                         <th scope="row">@Html.DisplayName("Empresas")</th>
                         <td>
                             <div id="jstree">
@@ -275,6 +281,7 @@
             $("#CodigoLicencia").prop('disabled', 'disabled');
             $("#Info").attr("disabled", false);
             $("#Info").prop('disabled', 'disabled');
+            $("#CodigoRutaAd").attr("disabled", true);
 
             $('#jstree').jstree();
 
@@ -401,6 +408,7 @@
                                 $("#Info").attr("checked", false);
                             }            
                             $("#Info").attr("disabled", true);
+                            $("#CodigoRutaAd").attr("disabled", true);
                             $("#SeccionGrupo").hide();
                             $("#SeccionAsociarGrupo").hide();                            
 
@@ -436,6 +444,7 @@
                             $("#CodigoLicencia").val(data.CodigoLicencia);                                                        
                             $("#Info").attr("checked", false);                            
                             $("#Info").attr("disabled", false);
+                            $("#CodigoRutaAd").attr("disabled", false);
                             //$("#SeccionGrupo").show();
                             BootstrapDialog.alert({
                                 title: '¡Verificación Exitosa!',
@@ -468,6 +477,7 @@
                         $("#CodigoLicencia").val(data.CodigoLicencia);                        
                         $("#Info").attr("checked", false);                        
                         $("#Info").attr("disabled", true);
+                        $("#CodigoRutaAd").attr("disabled", true);
                         $("#SeccionGrupo").hide();
                         $("#SeccionAsociarGrupo").hide();
                         BootstrapDialog.alert({
@@ -489,6 +499,8 @@
             });
 
             function guardarSincronizarUsuario() {                
+                var msgError = '';
+                var codRuta = '';
                 var infoBool = false;
                 if ($('#Info').is(":checked"))
                 {
@@ -510,7 +522,8 @@
                         'ExisteUsuario': $("#ExisteUsuario").val(),
                         'Descripcion': $("#Descripcion").val(),
                         'CodigoLicencia': $("#CodigoLicencia").val(),
-                        'Info': infoBool
+                        'Info': infoBool,
+                        'CodigoRutaAd': $("#CodigoRutaAd").val()
                     }
                 };
 
@@ -533,6 +546,7 @@
                         }                        
 
                         if (data.Error != '') {
+                            msgError = data.Error;
                             $("#btnSubmit").attr("disabled", false);
                             //$("#btnLicE1").attr("disabled", true);
                             //$("#btnLicE3").attr("disabled", true);
@@ -555,6 +569,7 @@
                             });
                         } else {
                             if (data.Validar) {
+                                codRuta = data.CodigoRuta;
                                 $("#btnSubmit").attr("disabled", true);
                                 //$("#btnLicE1").attr("disabled", false);
                                 //$("#btnLicE3").attr("disabled", false);
@@ -600,10 +615,23 @@
                             }
                         }
                     },
-                    complete: function () {
-                        $("#loading-modal").hide();
-                        var sOu = $("#PatchOu").val();
-                        listaGruposAdByOu(sOu);
+                    complete: function () {                        
+                        $("#loading-modal").hide();                        
+                        if (msgError == '')
+                        {
+                            if (codRuta == '') {
+                                var sOu = $("#PatchOu").val();
+                                listaGruposAdByOu(sOu);
+                            }
+                            else
+                            {
+                                var codRutaNew = 'LDAP://DC1ASPCORTES/' + codRuta;                                
+                                listaGruposAdByOu(codRutaNew);
+                                //var ubicGrupo = codRuta;
+                                //var myLiId = '#' + ubicGrupo;
+                                //$("#jstree").jstree("select_node", myLiId);
+                            }
+                        }                   
                     },
                     error: function (data) {
                         $("#btnSubmit").attr("disabled", false);
