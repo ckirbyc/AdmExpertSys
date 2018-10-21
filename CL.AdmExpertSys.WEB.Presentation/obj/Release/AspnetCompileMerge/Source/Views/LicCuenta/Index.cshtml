@@ -67,21 +67,51 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         $("#btnLicencia").off('click').click(function () {
+            var $btn = $("#AsignarLicencia");
+            $btn.button('loading');
+
             if ('@Model.Count()' == 0 || '@esLicencia' == 'True') {
                 BootstrapDialog.alert({
                     title: '¡Validación Inicio Proceso!',
                     message: '<strong>No se puede iniciar el proceso de asignación de licencia, se puede deber a:</br>1.- Proceso en ejecución</br>2.- No existen datos asignar</strong>',
                     type: BootstrapDialog.TYPE_WARNING
                 });
+                $btn.button('reset');
                 return;
             }
 
-            $("#loading-modal").show();
+            BootstrapDialog.show({
+                title: 'Confirmación Asignar Licencias.',
+                message: '<strong>¿Está seguro de asignar licencias de todas las cuentas que aparecen en la tabla?</strong>',
+                type: BootstrapDialog.TYPE_INFO,
+                buttons:
+                    [
+                        {
+                            label: 'Si',
+                            cssClass: 'btn-success',
+                            action: function (dialog) {
+                                dialog.close();
+                                $("#loading-modal").show();
+                                $("#btnLicencia").attr("disabled", true);
+                                setTimeout(function () {
+                                    asignarLicencias();
+                                }, 500);
+                            }
+                        },
+                        {
+                            label: 'No',
+                            cssClass: 'btn-danger',
+                            action: function (dialog) {
+                                dialog.close();
+                                $btn.button('reset');
+                            }
+                        }
+                    ]
+            });            
+        });
 
-            var $btn = $("#AsignarLicencia");
-            $btn.button('loading');
-            $("#btnLicencia").attr("disabled", true);           
-
+        function asignarLicencias()
+        {
             $.ajax({
                 url: '@Url.Action("AsignarLicencia", "LicCuenta")',
                 type: 'POST',
@@ -125,6 +155,6 @@
                     });
                 }
             });
-        });
+        }
     });
 </script>

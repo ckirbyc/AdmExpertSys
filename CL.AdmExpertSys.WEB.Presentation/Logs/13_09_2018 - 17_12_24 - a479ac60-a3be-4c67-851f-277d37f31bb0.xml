@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ExceptionSerialize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <HResult>-2147024809</HResult>
-  <Message>Solo seleccionar unidad organizativa o código ruta AD. No pueden ser ambas.</Message>
-  <Source>CL.AdmExpertSys.WEB.Presentation</Source>
-  <StackTrace>   at CL.AdmExpertSys.WEB.Presentation.Controllers.HomeController.GuardarSincronizarUsuario(HomeSysWebVm model) in C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Presentation\Controllers\HomeController.cs:line 325</StackTrace>
-  <Source>CL.AdmExpertSys.WEB.Presentation</Source>
-  <Message>Solo seleccionar unidad organizativa o código ruta AD. No pueden ser ambas.</Message>
-</ExceptionSerialize>

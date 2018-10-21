@@ -35,3 +35,12 @@ C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastruc
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj.CopyComplete
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csprojAssemblyReference.cache
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj.CoreCompileInputs.cache
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj.CopyComplete
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb

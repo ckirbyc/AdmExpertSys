@@ -60,6 +60,19 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     usuarioModificacion
                 };
 
+                HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");
+
+                HomeSysWebFactory = new HomeSysWebFactory();
+                try
+                {
+                    HomeSysWebFactory.ForzarDirSync();
+                }
+                catch (Exception ex)
+                {
+                    HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                    Utils.LogErrores(ex);
+                }
+
                 _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta);
                 _hiloEjecucion.Start(listaEstCuentaVmHilo);
 
@@ -91,23 +104,9 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         {
             var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
             try
-            {               
-                HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");
-
-                HomeSysWebFactory = new HomeSysWebFactory();
-                try
-                {
-                    HomeSysWebFactory.ForzarDirSync();
-                }
-                catch (Exception ex)
-                {
-                    HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
-                    Utils.LogErrores(ex);
-                }
-
+            {                               
                 var estadoCuentaLista = (List<EstadoCuentaUsuarioVm>)estadoCuentaHilo.CastTo<List<object>>()[0];
-
-                //Task.Delay(TimeSpan.FromSeconds(120)).Wait();
+                
                 var comm = new Common();
                 var intentoEstadoSync = Convert.ToInt64(comm.GetAppSetting("IntentoEstadoSync"));
 

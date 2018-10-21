@@ -63,24 +63,50 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         $("#btnSync").off('click').click(function () {
+            var $btn = $("#Sincronizar");
+            $btn.button('loading');
+
             if ('@Model.Count()' == 0 || '@esSync' == 'True') {
                 BootstrapDialog.alert({
                     title: '¡Validación Inicio Proceso!',
                     message: '<strong>No se puede iniciar el proceso de sincronización, se puede deber a:</br>1.- Proceso en ejecución</br>2.- No existen datos a sincronizar</strong>',
                     type: BootstrapDialog.TYPE_WARNING
                 });
+                $btn.button('reset');
                 return;
             }
 
-            $("#loading-modal").show();
+            BootstrapDialog.show({
+                title: 'Confirmación Sincronización.',
+                message: '<strong>¿Está seguro de sincronizar todas las cuentas que aparecen en la tabla?</strong>',
+                type: BootstrapDialog.TYPE_INFO,
+                buttons:
+                    [
+                        {
+                            label: 'Si',
+                            cssClass: 'btn-success',
+                            action: function (dialog) {
+                                dialog.close();
+                                $("#loading-modal").show();
+                                setTimeout(function () {
+                                    sincronizarCuentas();
+                                }, 500);
+                            }
+                        },
+                        {
+                            label: 'No',
+                            cssClass: 'btn-danger',
+                            action: function (dialog) {
+                                dialog.close();
+                                $btn.button('reset');
+                            }
+                        }
+                    ]
+            });
+        });
 
-            var $btn = $("#Sincronizar");
-            $btn.button('loading');
-            $("#btnSync").attr("disabled", true);
-            //$("input").focus(function () {
-            //    $btn.button('reset');
-            //});            
-
+        function sincronizarCuentas()
+        {
             $.ajax({
                 url: '@Url.Action("SincronizarCuentas", "SyncCuenta")',
                 type: 'POST',
@@ -116,7 +142,6 @@
                     });
                 }
             });
-
-        });
+        }
     });
 </script>

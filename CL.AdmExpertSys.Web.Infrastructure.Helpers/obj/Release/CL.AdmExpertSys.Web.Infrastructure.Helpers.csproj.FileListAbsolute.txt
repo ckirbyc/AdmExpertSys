@@ -13,3 +13,8 @@ C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastruc
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.csproj.CoreCompileInputs.cache
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.csproj.CoreCompileInputs.cache
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb

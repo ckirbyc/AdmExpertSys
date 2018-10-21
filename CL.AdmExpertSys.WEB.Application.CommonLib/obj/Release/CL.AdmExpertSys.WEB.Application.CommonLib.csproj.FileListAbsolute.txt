@@ -13,3 +13,9 @@ C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Applicatio
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.csproj.CoreCompileInputs.cache
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.dll
 C:\Users\mauricio.gonzalez\Documents\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Release\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\bin\Release\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.csprojAssemblyReference.cache
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.csproj.CoreCompileInputs.cache
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.dll
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.CommonLib\obj\Release\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
