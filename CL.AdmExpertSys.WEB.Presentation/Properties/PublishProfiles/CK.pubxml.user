@@ -15,10 +15,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:47</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/21/2018 12:23:01</publishTime>
+      <publishTime>10/23/2018 13:03:28</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/21/2018 12:23:01</publishTime>
+      <publishTime>10/23/2018 13:03:28</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>06/01/2018 20:28:46</publishTime>
@@ -99,7 +99,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>10/21/2018 12:17:19</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.dll">
-      <publishTime>10/21/2018 12:21:59</publishTime>
+      <publishTime>10/23/2018 13:02:56</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.dll">
       <publishTime>10/21/2018 12:17:32</publishTime>
@@ -111,7 +111,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>10/21/2018 12:17:32</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.pdb">
-      <publishTime>10/21/2018 12:21:59</publishTime>
+      <publishTime>10/23/2018 13:02:56</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.ViewModel.dll">
       <publishTime>10/21/2018 12:17:24</publishTime>
@@ -858,7 +858,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:46</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/21/2018 12:22:53</publishTime>
+      <publishTime>10/23/2018 13:03:15</publishTime>
     </File>
     <File Include="Scripts/autoNumeric.js">
       <publishTime>06/01/2018 20:28:32</publishTime>
@@ -1218,7 +1218,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:32</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/21/2018 12:22:13</publishTime>
+      <publishTime>10/23/2018 13:03:00</publishTime>
     </File>
   </ItemGroup>
 </Project>

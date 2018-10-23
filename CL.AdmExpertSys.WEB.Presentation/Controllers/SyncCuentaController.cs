@@ -73,7 +73,15 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     Utils.LogErrores(ex);
                 }
 
-                _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+
+                _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta)
+                {
+                    IsBackground = true,
+                    Priority = ThreadPriority.Highest
+                };
                 _hiloEjecucion.Start(listaEstCuentaVmHilo);
 
                 return new JsonResult
@@ -132,10 +140,10 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                         }
                     }                    
                 }
-                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");                
             }
             catch (Exception ex)
-            {
+            {               
                 HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                 var msgError = @"Error en proceso asincronico Syncronizar : " + ex.Message;
                 var exNew = new Exception(msgError);
