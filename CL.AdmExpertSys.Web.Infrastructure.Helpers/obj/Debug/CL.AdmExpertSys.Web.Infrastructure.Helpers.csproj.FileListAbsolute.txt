@@ -28,3 +28,4 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.We
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.csproj.CoreCompileInputs.cache
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.Helpers\obj\Debug\CL.AdmExpertSys.Web.Infrastructure.Helpers.csprojAssemblyReference.cache

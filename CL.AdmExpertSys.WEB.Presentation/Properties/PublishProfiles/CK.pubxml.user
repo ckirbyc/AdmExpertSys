@@ -15,10 +15,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:47</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/23/2018 13:03:28</publishTime>
+      <publishTime>10/26/2018 13:59:56</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/23/2018 13:03:28</publishTime>
+      <publishTime>10/26/2018 13:59:54</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>06/01/2018 20:28:46</publishTime>
@@ -27,97 +27,97 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:46</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.ADClassLib.dll">
-      <publishTime>10/21/2018 12:17:28</publishTime>
+      <publishTime>10/25/2018 11:55:44</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.ADClassLib.pdb">
-      <publishTime>10/21/2018 12:17:28</publishTime>
+      <publishTime>10/25/2018 11:55:44</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.CommonLib.dll">
-      <publishTime>10/21/2018 12:17:18</publishTime>
+      <publishTime>10/25/2018 11:55:39</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.CommonLib.pdb">
-      <publishTime>10/21/2018 12:17:18</publishTime>
+      <publishTime>10/25/2018 11:55:39</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.Contracts.dll">
-      <publishTime>10/21/2018 12:17:24</publishTime>
+      <publishTime>10/25/2018 11:55:43</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.Contracts.pdb">
-      <publishTime>10/21/2018 12:17:25</publishTime>
+      <publishTime>10/25/2018 11:55:43</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.dll">
-      <publishTime>10/21/2018 12:17:27</publishTime>
+      <publishTime>10/25/2018 11:55:44</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib.dll">
-      <publishTime>10/21/2018 12:17:23</publishTime>
+      <publishTime>10/25/2018 11:55:45</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib.pdb">
-      <publishTime>10/21/2018 12:17:23</publishTime>
+      <publishTime>10/25/2018 11:55:45</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Application.pdb">
-      <publishTime>10/21/2018 12:17:28</publishTime>
+      <publishTime>10/25/2018 11:55:44</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Core.Domain.Contracts.dll">
-      <publishTime>10/21/2018 12:17:22</publishTime>
+      <publishTime>10/25/2018 11:55:41</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Core.Domain.Contracts.pdb">
-      <publishTime>10/21/2018 12:17:22</publishTime>
+      <publishTime>10/25/2018 11:55:41</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Core.Domain.dll">
-      <publishTime>10/21/2018 12:17:20</publishTime>
+      <publishTime>10/25/2018 11:55:40</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Core.Domain.dll.config">
       <publishTime>06/19/2018 11:12:22</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Core.Domain.pdb">
-      <publishTime>10/21/2018 12:17:20</publishTime>
+      <publishTime>10/25/2018 11:55:40</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.dll">
-      <publishTime>10/21/2018 12:17:36</publishTime>
+      <publishTime>10/25/2018 11:55:48</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.dll.config">
       <publishTime>06/01/2018 20:28:25</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot.pdb">
-      <publishTime>10/21/2018 12:17:36</publishTime>
+      <publishTime>10/25/2018 11:55:48</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.Data.dll">
-      <publishTime>10/21/2018 12:17:28</publishTime>
+      <publishTime>10/25/2018 11:55:44</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Infrastructure.Data.pdb">
-      <publishTime>10/21/2018 12:17:28</publishTime>
+      <publishTime>10/25/2018 11:55:44</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.Web.Infrastructure.Helpers.dll">
-      <publishTime>10/21/2018 12:17:18</publishTime>
+      <publishTime>10/25/2018 11:55:39</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb">
-      <publishTime>10/21/2018 12:17:18</publishTime>
+      <publishTime>10/25/2018 11:55:39</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll">
-      <publishTime>10/21/2018 12:17:19</publishTime>
+      <publishTime>10/25/2018 11:55:40</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb">
-      <publishTime>10/21/2018 12:17:19</publishTime>
+      <publishTime>10/25/2018 11:55:41</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.dll">
-      <publishTime>10/23/2018 13:02:56</publishTime>
+      <publishTime>10/26/2018 13:57:25</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.dll">
-      <publishTime>10/21/2018 12:17:32</publishTime>
+      <publishTime>10/25/2018 11:55:46</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.dll.config">
       <publishTime>06/01/2018 20:28:28</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.Mapping.pdb">
-      <publishTime>10/21/2018 12:17:32</publishTime>
+      <publishTime>10/25/2018 11:55:46</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.pdb">
-      <publishTime>10/23/2018 13:02:56</publishTime>
+      <publishTime>10/26/2018 13:57:25</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.ViewModel.dll">
-      <publishTime>10/21/2018 12:17:24</publishTime>
+      <publishTime>10/25/2018 11:55:42</publishTime>
     </File>
     <File Include="bin/CL.AdmExpertSys.WEB.Presentation.ViewModel.pdb">
-      <publishTime>10/21/2018 12:17:24</publishTime>
+      <publishTime>10/25/2018 11:55:42</publishTime>
     </File>
     <File Include="bin/ClosedXML.dll">
       <publishTime>06/01/2018 20:28:47</publishTime>
@@ -858,7 +858,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:46</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/23/2018 13:03:15</publishTime>
+      <publishTime>10/26/2018 13:59:45</publishTime>
     </File>
     <File Include="Scripts/autoNumeric.js">
       <publishTime>06/01/2018 20:28:32</publishTime>
@@ -1137,7 +1137,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:32</publishTime>
     </File>
     <File Include="Views/LicCuenta/Index.cshtml">
-      <publishTime>10/21/2018 11:56:51</publishTime>
+      <publishTime>10/26/2018 13:57:03</publishTime>
     </File>
     <File Include="Views/MantenedorLic/CargarPlanilla.cshtml">
       <publishTime>06/01/2018 20:28:32</publishTime>
@@ -1188,7 +1188,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:32</publishTime>
     </File>
     <File Include="Views/SyncCuenta/Index.cshtml">
-      <publishTime>10/21/2018 11:14:22</publishTime>
+      <publishTime>10/26/2018 13:34:01</publishTime>
     </File>
     <File Include="Views/UsuarioCreado/Index.cshtml">
       <publishTime>08/07/2018 16:49:23</publishTime>
@@ -1218,7 +1218,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:32</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/23/2018 13:03:00</publishTime>
+      <publishTime>10/26/2018 13:27:36</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -77,12 +77,14 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
 
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                 _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta)
                 {
                     IsBackground = true,
                     Priority = ThreadPriority.Highest
                 };
                 _hiloEjecucion.Start(listaEstCuentaVmHilo);
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
 
                 return new JsonResult
                 {
