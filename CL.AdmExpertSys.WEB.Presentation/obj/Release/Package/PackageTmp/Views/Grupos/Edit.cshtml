@@ -1,0 +1,280 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.Models
+@using CL.AdmExpertSys.WEB.Core.Domain.Enums
+@model CL.AdmExpertSys.WEB.Presentation.ViewModel.GrupoAdVm
+@{
+    ViewBag.Title = "Grupos AD";
+    Layout = "~/Views/_Main.cshtml";
+    int i = 0;
+    var nombreGrupo = Model.NombreGrupo;
+    var perfilCafId = SessionViewModel.Usuario.PerfilId;
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Editar</h1>
+        <div class="form-inline col-md-3">
+            @if ((int)EnumPerfilUsuario.ADMP == SessionViewModel.Usuario.PerfilId)
+            {
+                <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <input type="submit" value="Guardar" class="btnInput" id="Guardar" data-loading-text="Guardando..." />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Grupos de Distribución</h2>
+        <div class="col-md-8">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.NombreGrupoAnterior)
+            <table class="table table-secondary">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.NombreGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.NombreGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.NombreGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.DescripcionGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.DescripcionGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.DescripcionGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.CorreoGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.CorreoGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.CorreoGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.UbicacionGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.UbicacionGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.UbicacionGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Empresas")</th>
+                        <td>
+                            <div id="jstree">
+                                <!-- in this example the tree is populated from inline HTML -->
+                                <ul>
+                                    @if (Model.EstructuraArbolAd != null)
+                                    {
+                                        <li>
+                                            @Model.EstructuraArbolAd.Cabecera
+                                            <ul>
+                                                @Html.Raw(Model.EstructuraArbolAd.CodArbolHtml)
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header col-md-10">Asignar Usuario al Grupo</h2>
+        <div class="form-inline col-md-2">
+            <div id="btnVerAddUsrGroup" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-plus"></span>
+                <input type="button" value="Asignar Usuario" class="btnInput" id="AsignarUsuario" />
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SeccionDesasociarUsuario">
+        <div class="col-md-12">
+            <h2 class="sub-header">Desasociar Usuarios del Grupo</h2>
+            <div class="form-horizontal">
+                <div class="panel-group">
+                    <div class="form-group col-md-12">
+                        <table class="table table-hover tablaMantenedores" id="tbDesasociarUsuario">
+                            <thead>
+                                <tr>
+                                    <th>Cuenta</th>
+                                    <th>Correo</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th class="acciones text-center">Desasignar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ListaUsuarioAd)
+                                {
+                                    var item1 = item;
+                                    var claseUsrTr = @"trUsrOu" + i;
+                                    <tr class="@claseUsrTr">
+                                        <td><a href="#" title="@item1.DistinguishedName">@item1.SamAccountName</a></td>
+                                        <td>@item1.EmailAddress</td>
+                                        <td>@item1.Name</td>
+                                        <td>@item1.Description</td>
+                                        <td class="columnaAcciones textCenter">
+                                            <a style="cursor: pointer;" class="glyphicon glyphicon-remove colorOrange" title="Desasignar Usuario del Grupo" onclick="desAsignarUsuarioGrupo('@i','@item1.SamAccountName','@nombreGrupo')"></a>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title" id="myModalLabel">Asignar Usuario a Grupo</h2>
+                </div>
+                <div class="modal-body">
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm" id="btnCerrar" data-dismiss="modal"><strong>Cerrar</strong></button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Grupos').addClass('active');
+</script>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+<script>
+    $('#jstree').jstree();
+
+    if (@perfilCafId == 1)
+    {
+        $("#NombreGrupo").attr("disabled", true);
+        $("#DescripcionGrupo").attr("disabled", true);
+        $("#CorreoGrupo").attr("disabled", true);        
+        $("#jstree").attr("disabled", true);
+    }
+
+    $(document).ready(function () {
+        //Seleccionar OU desde el Arbol
+        $('#jstree').on("changed.jstree", function (e, data) {
+                var ldap = data.selected[0];
+            $("#UbicacionGrupo").val(ldap);
+            });
+
+            //Seleccionar nodo existente
+            var ubicGrupo = $("#UbicacionGrupo").val();
+            var myLiId = '#' + ubicGrupo;
+        $("#jstree").jstree("select_node", myLiId);
+        $("#UbicacionGrupo").attr("disabled", true);
+
+        $("#btnSubmit").on("click", function () {
+            $("#loading-modal").show();
+            $("#UbicacionGrupo").attr("disabled", false);
+                var form = document.getElementsByTagName("form");
+            $(form).submit();
+                var $btn = $("#Guardar");
+            $btn.button('loading');
+            });
+
+        $('#btnVerAddUsrGroup').off('click').click(function () {
+                VerPopupAsignarUsuarioGrupo();
+            });
+
+            function VerPopupAsignarUsuarioGrupo()
+            {
+            $("#loading-modal").show();
+            $.ajax({
+                    type: "POST",
+                url: '@Url.Action("VerPopupAsignarUsuarioGrupo", "Grupos", new { nombreGrupo = Model.NombreGrupo })',
+                success: function (data) {
+                    $('.modal-body').empty();
+                    $('.modal-body').append(data);
+                    $('#myModal').find('.modal').css('width', '90%');
+                    $('#myModal').find('.modal-dialog').css('width', '90%');
+                    $('#myModal').modal('show');
+                    $("#loading-modal").hide();
+                    },
+                error: function (jqXHR, textStatus, errorThown) {
+                    $("#loading-modal").hide();
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThown);
+                    }
+                });
+        }
+    });
+</script>
+<script>
+    function desAsignarUsuarioGrupo(idTrUsuario, cuentaUsuario, nombreGrupo) {
+        $.ajax({
+            url: '@Url.Action("DesAsociarGrupoUsuario", "Home")',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            dataType: 'json',
+            processData: false,
+            data: JSON.stringify({ nomGrupo: nombreGrupo, userName: cuentaUsuario }),
+            success: function (data) {
+                if (data.Session == false) {
+                    BootstrapDialog.alert({
+			                title: '¡Validación Sesión!',
+			                message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                type: BootstrapDialog.TYPE_WARNING
+		                });
+                    return;
+                }
+
+                if (data.Error != '') {
+                    BootstrapDialog.alert({
+                        title: '¡Error al Desasociar Usuario del Grupo en el AD!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                } else {
+                    if (data.Validar) {
+                        eliminarGrupo(idTrUsuario);
+                        BootstrapDialog.alert({
+                            title: '¡Proceso Exitoso!',
+                            message: '<strong>Usuario desasociado exitosamente del Grupo.</strong>',
+                            type: BootstrapDialog.TYPE_SUCCESS
+                        });
+                    } else {
+                        BootstrapDialog.alert({
+                            title: '¡Error al desasociar Usuario del Grupo en el AD!',
+                            message: '<strong>No se pudo desasignar el Usuario del Grupo, intente más tarde.</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                }
+            },
+            complete: function () {
+            },
+            error: function (data) {
+                BootstrapDialog.alert({
+                    title: '¡Error al desasociar Usuario del Grupo en el AD!',
+                    message: '<strong>' + data.Error + '</strong>',
+                    type: BootstrapDialog.TYPE_DANGER
+                });
+            }
+        });
+    }
+
+    function eliminarGrupo(idTrUsuario) {
+        var nombreClase = ".trUsrOu" + idTrUsuario;
+        $(nombreClase).remove();
+    }
+</script>
+

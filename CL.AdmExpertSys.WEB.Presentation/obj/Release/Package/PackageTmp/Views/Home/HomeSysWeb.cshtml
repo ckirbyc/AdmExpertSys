@@ -1,0 +1,67 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.HomeSysWebVm
+
+@{
+    ViewBag.Title = "Home SysWeb";
+    Layout = "~/Views/_Main.cshtml";
+}
+<!-- Nav tabs -->
+<div class="row">
+    <ul class="nav nav-tabs homeTabs" role="tablist" id="myTab">
+        <li class="active" id="liGeneracion">
+            <a role="tab" data-toggle="tab" id="Generación">
+                <div class="icons_ppal graph"></div>
+                <h3>Crear Usuario</h3>
+            </a>
+        </li>
+        <li id="liEstruturacion">
+            <a role="tab" data-toggle="tab" id="Estructuración">
+                <div class="icons_ppal graph"></div>
+                <h3>Crear Buzón Compartido</h3>
+            </a>
+        </li>
+        <li id="liAdministracion">            
+        </li>
+    </ul>
+</div>
+<br />
+
+<!-- Tab panes -->
+<div class="tab-content">
+    <div class="tab-pane active" id="grillaNegocio">
+        @Html.Partial("~/Views/Partials/_CrearUsuario.cshtml", Model)
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#Generación").off('click').click(function () {
+            $("#loading-modal").show();
+            $("#loading-modal").hide();
+        });
+        $("#Estructuración").off('click').click(function () {
+            $("#loading-modal").show();
+            $("#loading-modal").hide();
+        });
+        $("#Administración").off('click').click(function () {
+            $("#loading-modal").show();
+            $("#loading-modal").hide();
+        });
+
+        var etapa = $('a[data-toggle="tab"]')[0].id;
+
+        if (etapa == "Generación") {
+            $("#liGeneracion").addClass("active");
+        } else {
+
+            if (etapa == "Estructuración") {
+                $("#liEstruturacion").addClass("active");
+            } else {
+                $("#liAdministracion").addClass("active");
+            }
+        }
+    });    
+</script>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#CrearCuenta').addClass('active');
+</script>

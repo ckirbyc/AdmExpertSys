@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Descargar Planilla Formato";
+    Layout = "~/Views/_Main.cshtml";    
+}
+
+<form id="form-exportar-excel">
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-8">Descargar Planilla Formato</h1>
+        <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+            <span class="glyphicon glyphicon-download"></span>
+            <input type="button" value="Descargar" class="btnInput" id="Descargar" data-loading-text="Descargando espere por favor..." />
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="sub-header">Formato planilla para descarga</h2>        
+    </div>
+</form>
+
+<div class="row">
+    <a href="@Url.Action("Index", "MantenedorLic")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").off('click').click(function (){                       
+            $("#loading-modal").show();
+            window.location = '@Url.Action("ExportarExcel", "MantenedorLic")';
+            setTimeout(function () {
+                $("#loading-modal").hide();
+            }, 2000);
+        });
+    });
+</script>

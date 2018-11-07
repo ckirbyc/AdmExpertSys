@@ -1,0 +1,269 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@model IEnumerable<EstadoCuentaUsuarioVm>
+@{
+    ViewBag.Title = "Dar Baja Cuentas";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Dar de bajas cuentas de usuario en el AD</h1>
+    <div class="form-inline col-md-3">
+        <div id="btnEliminar" class="btn btn-primary pull-right btn-sm">
+            <span class="glyphicon glyphicon-remove"></span>
+            <input type="button" value="Eliminar" class="btnInput" id="EliminarCuenta" data-loading-text="Eliminando..." />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="form-inline col-md-10">
+        <h2 class="sub-header">Vista de todas las cuentas deshabilitadas que puedan ser eliminadas del AD.</h2>
+    </div>
+    <div class="form-inline col-md-2">
+        <div id="btnBuscar" class="btn btn-primary pull-right btn-sm">
+            <span class="glyphicon glyphicon-search"></span>
+            <input type="button" value="Buscar" class="btnInput" id="BuscarCuenta" data-loading-text="Buscando..." />
+        </div>
+    </div>    
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-secondary">
+            <tody>
+                <tr>
+                    <th scope="row">Fecha Desde</th>
+                    <td>
+                        <div class="fechaContainer">
+                            <div class="input-group date">
+                                <input type="text" id="FechaDesde" class="form-control fecha" maxlength="10" />
+                            </div>
+                        </div>
+                    </td>
+                    <th scope="row">Fecha Hasta</th>
+                    <td>
+                        <div class="fechaContainer">
+                            <div class="input-group date">
+                                <input type="text" id="FechaHasta" class="form-control fecha" maxlength="10" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tody>
+        </table>        
+    </div>            
+</div>
+<div id="GrillaIndex">
+    @{
+        Html.RenderAction("GrillaIndex", "BajaCuenta", new { model = Model });
+    }
+</div>
+<script src="~/Scripts/Fechas/ConfiguracionFecha.js"></script>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#CtaDesh').addClass('active');
+</script>
+<script>
+    $(document).ready(function () {
+        if ('@Model.Count()' == 0) {
+            $("#btnBuscar").attr("disabled", true);
+            $("#btnEliminar").attr("disabled", true);
+        }
+
+        $("#btnBuscar").off('click').click(function () {
+            if ($("#FechaDesde").val() != '' && $("#FechaHasta").val() == '')
+            {
+                BootstrapDialog.alert({
+                    title: '¡Validar Fecha!',
+                    message: '<strong>Debe seleccionar Fecha Hasta.</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+                return;
+            }
+            else if ($("#FechaDesde").val() == '' && $("#FechaHasta").val() != '')
+            {
+                BootstrapDialog.alert({
+                    title: '¡Validar Fecha!',
+                    message: '<strong>Debe seleccionar Fecha Desde.</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+                return;
+            }
+            
+            if ($("#FechaDesde").val() != '' && $("#FechaHasta").val() != '')
+            {
+                if ($("#FechaDesde").val() > $("#FechaHasta").val())
+                {
+                    BootstrapDialog.alert({
+                        title: '¡Validar Fecha!',
+                        message: '<strong>Fecha Desde debe ser menor o igual a Fecha Hasta.</strong>',
+                        type: BootstrapDialog.TYPE_WARNING
+                    });
+                    return;
+                }
+            }
+
+            FiltrarGrillaIndex();
+        });
+
+        $("#btnEliminar").off('click').click(function () {
+            var listaIdCuentaAd = [];
+            var valItemSel = false;
+            $('#TablaCtaDesh tbody tr').each(function () {
+                if ($(this).find('input').length) {
+                    var objInput = $(this).find('input');
+                    if (objInput.is(':checked')) {
+                        valItemSel = true;
+                        var objIdCuentaAd = objInput.filter('[id^="item1_IdEstadoCuentaUsuario"]');
+                        listaIdCuentaAd.push(objIdCuentaAd.val());
+                    }
+                }
+            });
+
+            if (valItemSel == false) {
+                BootstrapDialog.alert({
+                    title: '¡Validar cuenta seleccionada!',
+                    message: '<strong>Debe seleccionar al menos una cuenta para eliminar.</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+                return;
+            }
+
+            BootstrapDialog.show({
+                title: 'Confirmación Eliminación Cuentas AD.',
+                message: '<strong>¿Está seguro de Eliminar todas las cuentas de usuarios seleccionados?</strong>',
+                type: BootstrapDialog.TYPE_INFO,
+                buttons:
+                [
+                    {
+                        label: 'Si',
+                        cssClass: 'btn-success',
+                        action: function (dialog) {
+                            dialog.close();
+                            $("#loading-modal").show();
+                            setTimeout(function () {
+                                EliminarCuentasAd(listaIdCuentaAd);
+                            }, 1000);
+                        }
+                    },
+                    {
+                        label: 'No',
+                        cssClass: 'btn-danger',
+                        action: function (dialog) {
+                            dialog.close();
+                        }
+                    }
+                ]
+            });
+
+
+        });
+
+        function EliminarCuentasAd(listaIdCuentaAd) {
+            $.ajax({
+                url: '@Url.Action("EliminarCuentaAd", "BajaCuenta")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ idCuentaAdArray: listaIdCuentaAd }),
+                success: function (data) {
+                    if (data.Validar) {
+                        BootstrapDialog.show({
+                            title: 'Eliminación Exitosa',
+                            message: '<strong>El proceso de eliminación de las cuentas ha terminado correctamente.</strong>',
+                            type: BootstrapDialog.TYPE_SUCCESS,
+                            buttons:
+                            [
+                                {
+                                    label: 'Aceptar',
+                                    cssClass: 'btn-success',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                        reCargarPagina();
+                                    }
+                                }
+                            ]
+                        });
+                    } else {
+                        BootstrapDialog.show({
+                            title: 'Error Eliminación',
+                            message: '<strong>Error al eliminar cuentas del AD. ' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER,
+                            buttons:
+                            [
+                                {
+                                    label: 'Aceptar',
+                                    cssClass: 'btn-success',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                        reCargarPagina();
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                },
+                error: function () {
+                    $("#loading-modal").hide();
+                    BootstrapDialog.show({
+                        title: 'Error Eliminación',
+                        message: '<strong>Error al eliminar cuentas del AD.</strong>',
+                        type: BootstrapDialog.TYPE_DANGER,
+                        buttons:
+                        [
+                            {
+                                label: 'Aceptar',
+                                cssClass: 'btn-success',
+                                action: function (dialog) {
+                                    dialog.close();
+                                    reCargarPagina();
+                                }
+                            }
+                        ]
+                    });
+                }
+            });
+        }
+
+        function reCargarPagina() {
+            window.location = '@Url.Action("Index","BajaCuenta")';
+        }
+
+        function FiltrarGrillaIndex() {
+            $("#loading-modal").show();
+            var fechaDesde = $("#FechaDesde").val();
+            var fechaHasta = $("#FechaHasta").val();                       
+
+            $.ajax({
+                url: '@Url.Action("FiltrarGrillaIndex", "BajaCuenta")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ fechaDesde: fechaDesde, fechaHasta: fechaHasta }),
+                success: function (data) {
+                    $("#GrillaIndex").html(data.Html);                    
+                },
+                complete: function () {
+                    setTimeout(function () {
+                        $("#loading-modal").hide();
+                    }, 1000);                    
+                },
+                error: function () {
+                    setTimeout(function () {
+                        $("#loading-modal").hide();
+                    }, 1000);
+                    BootstrapDialog.alert({
+                        title: '¡Error!',
+                        message: 'Error al obtener datos de cuentas deshabilitadas, intente más tarde',
+                        type: BootstrapDialog.TYPE_DANGER,
+                    });
+                }
+            });
+        }
+    });
+</script>

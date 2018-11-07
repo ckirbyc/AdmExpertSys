@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+@section PanelPrimario
+{
+    <div class="panel panel-primary text-center">
+        <div class="panel-footer text-center">
+            <span class="fa fa-exclamation-circle bigicon colorSky"></span>
+        </div>
+        <div style="margin: 10px;">
+            @Html.Label("Error")
+        </div>
+    </div>
+}
+
+@section Menu{
+    <br />
+}
+
+<div class="alert alert-danger" role="alert">
+    <h4>Detalle del Error:</h4>
+
+    <p>
+        @ViewBag.Mensaje
+    </p>
+</div>
+<p>
+    @Html.ActionLink("Volver al inicio", "Index", "Home")
+</p>

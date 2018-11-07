@@ -1,0 +1,877 @@
+﻿@using CL.AdmExpertSys.WEB.Core.Domain.Dto
+@model CL.AdmExpertSys.WEB.Presentation.ViewModel.HomeSysWebVm
+@{
+    ViewBag.Title = "Editar Cuenta Usuario";
+    Layout = "~/Views/_Main.cshtml";
+
+    EstructuraArbolAd estructuraArbolAd = ViewBag.EstructuraArbolAd;
+    MsolAccountSku firstEnterPrisePack = Model.ListaAccountSkus.FirstOrDefault(x => x.CodigoLicencia.Equals("ENTERPRISEPACK"));
+    MsolAccountSku firstStandardPack = Model.ListaAccountSkus.FirstOrDefault(x => x.CodigoLicencia.Equals("STANDARDPACK"));
+    MsolAccountSku firstExStandard = Model.ListaAccountSkus.FirstOrDefault(x => x.CodigoLicencia.Equals("EXCHANGESTANDARD"));
+    string licEnterPrisePack = firstEnterPrisePack != null ? firstEnterPrisePack.MensajeCantidadLicencia : string.Empty;
+    string licStandardPack = firstStandardPack != null ? firstStandardPack.MensajeCantidadLicencia : string.Empty;
+    string licExStandard = firstExStandard != null ? firstExStandard.MensajeCantidadLicencia : string.Empty;
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Editar</h1>
+        <div class="form-inline col-md-3">            
+            <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-refresh"></span>
+                <input type="button" value="Guardar" class="btnInput" id="Guardar" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Cuenta Usuario</h2>
+        <div class="col-md-12">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.PatchOu)
+            @Html.HiddenFor(m => m.ExisteUsuario)
+            @Html.HiddenFor(m => m.CambioPatchOu)
+            <input type="hidden" id="EstadoSync" value="false" />
+            <input type="hidden" id="NombreGrupoSel" value="" />
+            <table class="table table-secondary">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Id Usuario")</th>
+                        <td colspan="2">
+                            @Html.TextBoxFor(m => m.NombreUsuario, new { @maxlength = "20", @class = "form-control", @style = "width: 75%" })
+                            @Html.ValidationMessageFor(m => m.NombreUsuario)
+                        </td>
+                        <td colspan="2">
+                            <div id="btnVerificar" class="btn btn-primary pull-right btn-sm">
+                                <span class="glyphicon glyphicon-search"></span>
+                                <input type="button" value="Buscar" class="btnInput" id="Buscar" />
+                            </div>
+                        </td>
+                        <td>
+                            <div id="btnDesUsr" class="btn btn-primary pull-right btn-sm">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <input type="button" value="Deshabilitar" class="btnInput" id="DeshabilitarUsr" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Dominio")</th>
+                        <td>
+                            @Html.DropDownListFor(m => m.UpnPrefijo, Model.UpnPrefijoLista, "Seleccione", new { @class = "form-control", @style = "width: 100%" })
+                            @Html.ValidationMessageFor(m => m.UpnPrefijo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Nombres)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Nombres, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Nombres)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Apellidos)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Apellidos, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Apellidos)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Nombre Completo")</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.NombreCompleto, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.NombreCompleto)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Clave)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Clave, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Clave)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Correo)</th>
+                        <td colspan="2">
+                            @Html.TextBoxFor(m => m.Correo, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Correo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Descripcion)</th>
+                        <td colspan="2">
+                            @Html.TextBoxFor(m => m.Descripcion, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Descripcion)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.CodigoLicencia)</th>
+                        <td colspan="2">
+                            @Html.DropDownListFor(m => m.CodigoLicencia, Model.CodigoLicenciaLista, "Seleccione", new { @class = "form-control", @style = "width: 100%" })
+                            @Html.ValidationMessageFor(m => m.CodigoLicencia)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Info)</th>
+                        <td>
+                            @Html.CheckBoxFor(m => m.Info, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Empresas")</th>
+                        <td>
+                            <div id="jstree">
+                                <!-- in this example the tree is populated from inline HTML -->
+                                <ul>
+                                    @if (estructuraArbolAd != null)
+                                    {
+                                        <li>
+                                            @estructuraArbolAd.Cabecera
+                                            <ul>
+                                                @Html.Raw(estructuraArbolAd.CodArbolHtml)
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" rowspan="3">@Html.DisplayNameFor(m => m.Licencia)</th>
+                        <td>
+                            <div id="btnLicE1" class="btn btn-primary btn-sm btn-block pull-right">
+                                <span class="glyphicon glyphicon-check"></span>
+                                <input type="button" value="Office 365 Empresarial Plan E1" class="btnInput" data-toggle="collapse" data-target="#demo1" id="STANDARDPACK" />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <label>@licStandardPack</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="btnLicE3" class="btn btn-primary btn-sm btn-block pull-right">
+                                <span class="glyphicon glyphicon-check"></span>
+                                <input type="button" value="Office 365 Empresarial Plan E3" class="btnInput" data-toggle="collapse" data-target="#demo2" id="ENTERPRISEPACK" />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <label>@licEnterPrisePack</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="btnLicExO" class="btn btn-primary btn-sm btn-block pull-right">
+                                <span class="glyphicon glyphicon-check"></span>
+                                <input type="button" value="Office 365 Exchange Online P1" class="btnInput" data-toggle="collapse" data-target="#demo3" id="EXCHANGESTANDARD" />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <label>@licExStandard</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" id="SeccionAsociarGrupo" style="display: none;">
+        <div class="col-md-12">            
+            <h2 class="sub-header">Asociar o Desasociar Usuario a Grupos</h2>
+            <div class="form-horizontal">
+                <div class="panel-group">
+                    <div class="form-group col-md-12">
+                        <table class="table table-hover tablaMantenedores" id="tbAsociarGrupo">
+                            <thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Nombre Grupo</th>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th class="acciones text-center">Asignar</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <a href="@Url.Action("Index", "UsuarioCreado")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#EditarCuenta').addClass('active');
+</script>
+<script>
+    $("#UpnPrefijo").attr("disabled", false);
+    $("#UpnPrefijo").prop('disabled', 'disabled');
+    $("#btnDesUsr").attr("disabled", true);
+    $("#btnLicE1").attr("disabled", true);
+    $("#btnLicE3").attr("disabled", true);
+    $("#btnLicExO").attr("disabled", true);
+    $("#CodigoLicencia").attr("disabled", false);
+    $("#CodigoLicencia").prop('disabled', 'disabled');
+    $("#Info").attr("disabled", false);
+    $("#Info").prop('disabled', 'disabled');
+    $(document).ready(function () {
+        $('#jstree').jstree();
+        //Seleccionar OU desde el Arbol
+        $('#jstree').on("changed.jstree", function (e, data) {                        
+            var ldap = data.selected[0];                                       
+            $("#PatchOu").val(ldap);
+            $("#CambioPatchOu").val(true);
+        });
+
+        $("#Apellidos").off('blur').blur(function () {
+            var nombreCompleto = $("#Apellidos").val() + ", " + $("#Nombres").val();
+            $("#NombreCompleto").val(nombreCompleto);
+        });
+
+        $("#UpnPrefijo").off('change').change(function () {
+            var correo = $("#NombreUsuario").val() + $("#UpnPrefijo").val();
+            $("#Correo").val(correo);
+        });
+
+        $("#btnVerificar").off('click').click(function () {
+            $("#loading-modal").show();            
+            if ($("#NombreUsuario").val() != '') {
+                setTimeout(function () {
+                    validarUsuario();
+                }, 1000);
+            } else {
+                setTimeout(function () {
+                    $("#loading-modal").hide();
+                    BootstrapDialog.alert({
+                        title: '¡Advertencia!',
+                        message: '<strong>Debe ingresar un ID de usuario</strong>',
+                        type: BootstrapDialog.TYPE_WARNING
+                    });
+                }, 1000);
+            }
+        });
+
+        function validarUsuario() {
+            var nombreUsuario = $("#NombreUsuario").val();
+
+            $.ajax({
+                url: '@Url.Action("VerificarUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ nombreUsuario: nombreUsuario }),
+                success: function (data) {
+                    if (data.Validar) {
+                        habilitarCampos(data);
+                        $("#EstadoSync").val(data.EstadoSync);
+                        BootstrapDialog.alert({
+                            title: '¡Verificación Exitosa!',
+                            message: '<strong>Usuario Existe y cuenta se encuentra en estado ' + data.DatosUsuario.EstadoCuenta + '</strong>',
+                            type: BootstrapDialog.TYPE_SUCCESS
+                        });
+                    } else {
+                        desHabilitarCampos(data);
+                        $("#EstadoSync").val(data.EstadoSync);
+                        BootstrapDialog.alert({
+                            title: '¡Verificación Exitosa!',
+                            message: '<strong>Usuario No Existe</strong>',
+                            type: BootstrapDialog.TYPE_SUCCESS
+                        });
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                    $("#SeccionAsociarGrupo").hide();
+                    $("#SeccionAsociarGrupo tbody").html('');
+                    listaGruposAdByOu();
+                },
+                error: function (data) {
+                    desHabilitarCampos(data);
+                    $("#EstadoSync").val(data.EstadoSync);
+                    BootstrapDialog.alert({
+                        title: '¡Verificación Erronea!',
+                        message: '<strong>Error en la verificación.</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }
+
+        function habilitarCampos(data)
+        {
+            var clave = data.Clave;
+            if (clave == '') {
+                clave = "***";
+            }
+
+            $('#jstree').jstree("deselect_all");
+            $("#btnSubmit").attr("disabled", false);  
+            $("#btnDesUsr").attr("disabled", false);
+            $("#UpnPrefijo").attr("disabled", false);            
+            $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);
+            $("#Nombres").removeAttr("disabled");
+            $("#Nombres").val(data.DatosUsuario.GivenName);
+            $("#Apellidos").removeAttr("disabled");
+            $("#Apellidos").val(data.DatosUsuario.Surname);
+            $("#Clave").removeAttr("disabled");
+            $("#Clave").val(clave);
+            $("#Licencia").attr("disabled", "disabled");                  
+            $("#NombreCompleto").attr("disabled", "disabled");
+            $("#NombreCompleto").val(data.DatosUsuario.DisplayName);
+            $("#Descripcion").removeAttr("disabled");
+            $("#Descripcion").val(data.DatosUsuario.Description);
+            $("#Correo").attr("disabled", "disabled");
+            $("#Correo").val(data.DatosUsuario.EmailAddress);
+            $("#ExisteUsuario").val(true);
+            $("#CodigoLicencia").attr("disabled", false);
+            $("#CodigoLicencia").val(data.CodigoLicencia);
+            $("#Info").attr("disabled", false);                  
+            if (data.DatosUsuario.Info == true) {                
+                $("#Info").prop("checked");
+                $("#Info").attr("checked", true);
+                $("#Info")[0].checked = true;
+            }
+            else {
+                $("#Info").attr("checked", false);
+            }
+            //Seleccionar nodo existente
+            var ubicGrupo = data.DatosUsuario.DistinguishedName;                        
+            var myLiId = '#' + ubicGrupo;
+            $("#jstree").jstree("select_node", myLiId);
+            $("#PatchOu").val(ubicGrupo);
+            $("#CambioPatchOu").val(false);
+        }
+
+        function desHabilitarCampos(data)
+        {
+            $('#jstree').jstree("deselect_all");
+            $("#btnSubmit").attr("disabled", true);     
+            $("#btnDesUsr").attr("disabled", true);
+            $("#UpnPrefijo").attr("disabled", true);
+            $("#UpnPrefijo").val('');
+            $("#Nombres").attr("disabled", true);
+            $("#Nombres").val('');
+            $("#Apellidos").attr("disabled", true);
+            $("#Apellidos").val('');
+            $("#NombreCompleto").attr("disabled", true);
+            $("#NombreCompleto").val('');
+            $("#Descripcion").attr("disabled", true);
+            $("#Descripcion").val('');
+            $("#Clave").attr("disabled", true);
+            $("#Clave").val('');
+            $("#Correo").attr("disabled", true);
+            $("#Correo").val('');
+            $("#ExisteUsuario").val(false);
+            $("#CodigoLicencia").attr("disabled", true);
+            $("#CodigoLicencia").val('');
+            $("#PatchOu").val('');
+            $("#CambioPatchOu").val(false);
+            $("#Info").attr("disabled", true);            
+            $("#Info").attr("checked", false);                        
+        }
+
+        function listaGruposAdByOu()
+        {
+            var sOu = $("#PatchOu").val();
+            var sUsrAd = $("#NombreUsuario").val();
+
+            if (sOu == '' || sUsrAd == '') {
+                $("#SeccionAsociarGrupo tbody").html('');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("ObtenerListaGruposAdOu2", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ patchOu: sOu, usrAD: sUsrAd }),
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Error != '') {                        
+                        BootstrapDialog.alert({
+                            title: '¡Error al encontrar listado de Grupos en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                    else {
+                        if (data.GrupoOu != null) {
+                            $('#tbAsociarGrupo .tbody').html('');
+                            var contentido = '';
+
+                            $("#NombreGrupoSel").val('');
+                            var nomGrupoSel = $("#NombreGrupoSel").val();
+
+                            for (var i = 0; i < data.GrupoOu.length; i++) {
+                                if (data.GrupoOu[i].ExisteGrupo == true) {
+                                    var nomGrupo = "'" + data.GrupoOu[i].NombreGrupo.trim() + "'";
+                                    contentido += '<tr class="trGrupoOu' + i + '">';
+                                    contentido += '<td>' + (data.GrupoOu[i].NumeroGrupo) + '</td>';
+                                    contentido += '<td>' + (data.GrupoOu[i].NombreGrupo == null ? '' : data.GrupoOu[i].NombreGrupo) + '</td>';
+                                    contentido += '<td>' + (data.GrupoOu[i].TipoGrupo == null ? '' : data.GrupoOu[i].TipoGrupo) + '</td>';
+                                    contentido += '<td>' + (data.GrupoOu[i].DescripcionGrupo == null ? '' : data.GrupoOu[i].DescripcionGrupo) + '</td>';                                    
+                                    contentido += '<td class="columnaAcciones textCenter">';
+                                    if (data.GrupoOu[i].Asociado) {
+                                        contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-remove colorOrange" title="Desasignar Grupo a Usuario" onclick="desAsignarGrupoUsuario(' + i + ', ' + nomGrupo + ')"></a>';
+                                    }
+                                    else
+                                    {
+                                        contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-plus" title="Asignar Grupo a Usuario" onclick="asignarGrupoUsuario(' + i + ', ' + nomGrupo + ')"></a>';
+                                    }                                    
+                                    contentido += '</td></tr>';
+                                    nomGrupoSel = data.GrupoOu[i].NombreGrupo + ',';
+                                }
+                            }
+                            $('#tbAsociarGrupo tbody').html(contentido);
+                            $("#NombreGrupoSel").val(nomGrupoSel);                            
+                        } else {                            
+                            BootstrapDialog.alert({
+                                title: '¡Error al encontrar listado de Grupos en el AD!',
+                                message: '<strong>No existen Grupos para OU seleccionada.</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#SeccionAsociarGrupo").show();
+                },
+                error: function (data) {                    
+                    BootstrapDialog.alert({
+                        title: '¡Error al encontrar listado de Grupos en el AD!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }
+
+        $("#btnSubmit").off('click').click(function () {
+            $("#loading-modal").show();
+            $("#Correo").val($("#NombreUsuario").val() + $("#UpnPrefijo").val());
+            setTimeout(function () {
+                actualizarCuentaUsuario();
+            }, 1000);
+        });
+
+        function actualizarCuentaUsuario() {
+            var infoBool = false;
+            if ($('#Info').is(":checked")) {
+                infoBool = true;
+            }
+            var objEnvio =
+            {
+                model:
+                {
+                    'Nombres': $('#Nombres').val(),
+                    'Apellidos': $('#Apellidos').val(),
+                    'NombreUsuario': $('#NombreUsuario').val(),
+                    'Clave': $('#Clave').val(),
+                    'Licencia': $('#LicenciaSel').val(),
+                    'UpnPrefijo': $('#UpnPrefijo').val(),
+                    'NombreCompleto': $('#NombreCompleto').val(),
+                    'Correo': $('#Correo').val(),
+                    'PatchOu': $('#PatchOu').val(),
+                    'ExisteUsuario': $("#ExisteUsuario").val(),
+                    'Descripcion': $("#Descripcion").val(),
+                    'CodigoLicencia': $("#CodigoLicencia").val(),
+                    'CambioPatchOu': $("#CambioPatchOu").val(),
+                    'Info': infoBool
+                }
+            };
+
+            $.ajax({
+                url: '@Url.Action("ActualizarCuentaUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ model: objEnvio.model }),
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Error != '') {
+                        $("#btnSubmit").attr("disabled", false);
+
+                        BootstrapDialog.show({
+                            title: 'Error al Actualizar Cuenta Usuario en el AD',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER,
+                            buttons:
+                            [
+                                {
+                                    label: 'Aceptar',
+                                    cssClass: 'btn-success',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }
+                            ]
+                        });
+                    } else {
+                        if (data.Validar) {
+                            $("#btnSubmit").attr("disabled", true);
+
+                            if ($("#CambioPatchOu").val() == 'true') {
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Cuenta modificada correctamente. Se han eliminado los grupos que tenía asociados. Favor asignar nuevos Grupos.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();
+                                            }
+                                        }
+                                    ]
+                                });
+                            }
+                            else
+                            {
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Cuenta modificada correctamente.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();
+                                            }
+                                        }
+                                    ]
+                                });
+                            }
+                            
+                        } else {
+                            $("#btnSubmit").attr("disabled", false);
+
+                            BootstrapDialog.show({
+                                title: 'Error al Actualizar Cuenta Usuario en el AD',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER,
+                                buttons:
+                                [
+                                    {
+                                        label: 'Aceptar',
+                                        cssClass: 'btn-success',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }
+                                ]
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                    listaGruposAdByOu();
+                },
+                error: function (data) {
+                    $("#btnSubmit").attr("disabled", false);
+                    $("#loading-modal").hide();
+
+                    BootstrapDialog.show({
+                        title: 'Error al Actualizar Cuenta Usuario en el AD',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER,
+                        buttons:
+                        [
+                            {
+                                label: 'Aceptar',
+                                cssClass: 'btn-success',
+                                action: function (dialog) {
+                                    dialog.close();
+                                }
+                            }
+                        ]
+                    });
+                }
+            });
+        }
+
+        $("#btnDesUsr").off('click').click(function () {
+            var estadoSync = $("#EstadoSync").val();
+            if (estadoSync == 'false') {
+                $("#loading-modal").show();
+                $("#SeccionAsociarGrupo").hide();
+                setTimeout(function () {
+                    deshabilitarUsuario();
+                }, 1000);
+            }
+            else
+            {
+                BootstrapDialog.alert({
+			                    title: '¡Validación Sincronización!',
+			                    message: '<strong>No se puede deshabilitar cuenta ya que existe un proceso de sincronización en ejecución. Vuelva a buscar cuenta para actualizar estado.</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+            }            
+        });
+
+        function deshabilitarUsuario() {
+            var objEnvio =
+            {
+                model:
+                {
+                    'Nombres': $('#Nombres').val(),
+                    'Apellidos': $('#Apellidos').val(),
+                    'NombreUsuario': $('#NombreUsuario').val(),
+                    'Clave': $('#Clave').val(),
+                    'Licencia': $('#LicenciaSel').val(),
+                    'UpnPrefijo': $('#UpnPrefijo').val(),
+                    'NombreCompleto': $('#NombreCompleto').val(),
+                    'Correo': $('#Correo').val(),
+                    'PatchOu': $('#PatchOu').val(),
+                    'ExisteUsuario': $("#ExisteUsuario").val(),
+                    'Descripcion': $("#Descripcion").val()
+                }
+            };
+            $.ajax({
+                url: '@Url.Action("DeshabilitarUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ model: objEnvio.model }),
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Error != '') {
+                        $("#btnSubmit").attr("disabled", true);                                                 
+                        $("#btnDesUsr").attr("disabled", false);
+                        BootstrapDialog.alert({
+                            title: '¡Error al Deshabilitar Usuario!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    } else {
+                        if (data.Validar) {
+                            $("#btnSubmit").attr("disabled", true);                                                                                        
+                            $("#btnDesUsr").attr("disabled", true);
+                            BootstrapDialog.alert({
+                                title: '¡Proceso Exitoso!',
+                                message: '<strong>Usuario deshabilitado correctamente</strong>',
+                                type: BootstrapDialog.TYPE_SUCCESS
+                            });
+                        } else {
+                            $("#btnSubmit").attr("disabled", true);                                                            
+                            $("#btnDesUsr").attr("disabled", false);
+                            BootstrapDialog.alert({
+                                title: '¡Error al Deshabilitar Usuario!',
+                                message: '<strong>No se pudo deshabilitar usuario, intente más tarde.</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                },
+                error: function (data) {
+                    $("#btnSubmit").attr("disabled", true);                                                                
+                    $("#btnDesUsr").attr("disabled", false);
+                    $("#loading-modal").hide();
+
+                    BootstrapDialog.alert({
+                        title: '¡Error al Deshabilitar Usuario!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }
+    });
+</script>
+<script language="javascript" type="text/javascript">
+    function asignarGrupoUsuario(idTrGrupoAsig, nombreGrupoAsig) {
+        var valida = true;
+        var userNameVal = $("#NombreUsuario").val();
+
+        if (userNameVal == '') {
+            valida = false;
+            BootstrapDialog.alert({
+                title: '¡Advertencia!',
+                message: '<strong>Debe asignar un ID de Usuario</strong>',
+                type: BootstrapDialog.TYPE_WARNING
+            });
+        }
+
+        if (valida == true) {
+            $.ajax({
+                url: '@Url.Action("AsociarGrupoUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Error != '') {
+                        BootstrapDialog.alert({
+                            title: '¡Error al asociar Grupo a Usuario en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    } else {
+                        if (data.Validar) {
+                            eliminarGrupo(idTrGrupoAsig, nombreGrupoAsig);
+                            BootstrapDialog.alert({
+                                title: '¡Proceso Exitoso!',
+                                message: '<strong>Grupo asociado exitosamente al Usuario.</strong>',
+                                type: BootstrapDialog.TYPE_SUCCESS
+                            });
+                        } else {
+                            BootstrapDialog.alert({
+                                title: '¡Error al asociar Grupo a Usuario en el AD!',
+                                message: '<strong>No se pudo asignar el Grupo al Usuario, intente más tarde.</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                },
+                error: function (data) {
+                    BootstrapDialog.alert({
+                        title: '¡Error al asociar Grupo a Usuario en el AD!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }
+    }
+
+    function desAsignarGrupoUsuario(idTrGrupoAsig, nombreGrupoAsig) {
+        var valida = true;
+        var userNameVal = $("#NombreUsuario").val();
+
+        if (userNameVal == '') {
+            valida = false;
+            BootstrapDialog.alert({
+                title: '¡Advertencia!',
+                message: '<strong>Debe asignar un ID de Usuario</strong>',
+                type: BootstrapDialog.TYPE_WARNING
+            });
+        }
+
+        if (valida == true) {
+            $.ajax({
+                url: '@Url.Action("DesAsociarGrupoUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Error != '') {
+                        BootstrapDialog.alert({
+                            title: '¡Error al Desasociar Grupo a Usuario en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    } else {
+                        if (data.Validar) {
+                            eliminarGrupo(idTrGrupoAsig, nombreGrupoAsig);
+                            BootstrapDialog.alert({
+                                title: '¡Proceso Exitoso!',
+                                message: '<strong>Grupo desasociado exitosamente al Usuario.</strong>',
+                                type: BootstrapDialog.TYPE_SUCCESS
+                            });
+                        } else {
+                            BootstrapDialog.alert({
+                                title: '¡Error al desasociar Grupo a Usuario en el AD!',
+                                message: '<strong>No se pudo desasignar el Grupo al Usuario, intente más tarde.</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                },
+                error: function (data) {
+                    BootstrapDialog.alert({
+                        title: '¡Error al desasociar Grupo a Usuario en el AD!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }        
+    }
+
+    function eliminarGrupo(idTrGrupo, nombreGrupoElm, tipo) {
+        var nomGrupoSel = $("#NombreGrupoSel").val();
+        var nomGrupoSelFinal = '';
+        if (nomGrupoSel != '') {
+            var nomGrupoSplit = $("#NombreGrupoSel").val().split(',');
+            $("#NombreGrupoSel").val('');
+            for (var i = 0; i < nomGrupoSplit.length; i++) {
+                var nomGrupoIngresado = nomGrupoSplit[i];
+                if (nomGrupoIngresado.trim() != nombreGrupoElm.trim() && nomGrupoIngresado.trim() != '') {
+                    nomGrupoSelFinal = nomGrupoIngresado.trim() + ',' + nomGrupoSelFinal;
+                }
+            }
+        }
+
+        $("#NombreGrupoSel").val(nomGrupoSelFinal);
+        $('.trGrupoOu' + idTrGrupo).html('');
+    }
+</script>

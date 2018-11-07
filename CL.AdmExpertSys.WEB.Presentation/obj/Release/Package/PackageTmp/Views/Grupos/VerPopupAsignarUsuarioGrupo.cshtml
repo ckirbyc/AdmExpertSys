@@ -1,0 +1,195 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.GrupoAdVm
+@{
+    Layout = null;
+    var nombreGrupo = Model.NombreGrupo;
+}
+@Html.HiddenFor(m => m.NombreGrupo)
+<div class="row">
+    <h2 class="sub-header">Asignar Usuario a Grupo - @nombreGrupo</h2>
+    <div class="col-md-12">
+        <table class="table table-secondary">
+            <tbody>
+                <tr>
+                    <th scope="row">Id Usuario</th>
+                    <td>
+                        <input type="text" maxlength="20" class="form-control" id="NombreUsuario" style="width: 75%" />
+                    </td>
+                    <td>
+                        <div id="btnVerificar" class="btn btn-primary pull-right btn-sm">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <input type="button" value="Buscar" class="btnInput" id="Buscar" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row" id="SeccionAsociarUsuario" style="display: none;">
+    <div class="col-md-12">
+        <h2 class="sub-header">Asociar Usuario a Grupo</h2>
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="form-group col-md-12">
+                    <table class="table table-hover tablaMantenedores" id="tbAsociarUsuario">
+                        <thead>
+                            <tr>                                
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Descripción</th>
+                                <th class="acciones text-center">Asignar</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#btnVerificar").off('click').click(function () {
+        $("#loading-modal").show();            
+        if ($("#NombreUsuario").val() != '') {
+            setTimeout(function () {
+                validarUsuario();
+            }, 1000);
+        } else {
+            setTimeout(function () {
+                $("#loading-modal").hide();
+                BootstrapDialog.alert({
+                    title: '¡Advertencia!',
+                    message: '<strong>Debe ingresar un ID de usuario</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+            }, 1000);
+        }
+    });
+
+    function validarUsuario() {
+        var nombreUsuario = $("#NombreUsuario").val();
+
+        $.ajax({
+            url: '@Url.Action("VerificarUsuario", "Home")',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            dataType: 'json',
+            processData: false,
+            data: JSON.stringify({ nombreUsuario: nombreUsuario }),
+            success: function (data) {
+                if (data.Validar) {
+                    $("#SeccionAsociarUsuario").show();                    
+                    cargarTabla(data);
+                    BootstrapDialog.alert({
+                        title: '¡Verificación Exitosa!',
+                        message: '<strong>Usuario Existe y cuenta se encuentra en estado ' + data.DatosUsuario.EstadoCuenta + '</strong>',
+                        type: BootstrapDialog.TYPE_SUCCESS
+                    });
+                } else {           
+                    $("#SeccionAsociarUsuario").hide();                    
+                    BootstrapDialog.alert({
+                        title: '¡Verificación Exitosa!',
+                        message: '<strong>Usuario No Existe. Intente nuevamente</strong>',
+                        type: BootstrapDialog.TYPE_WARNING
+                    });
+                }
+            },
+            complete: function () {
+                $("#loading-modal").hide();                                
+            },
+            error: function (data) {      
+                $("#SeccionAsociarUsuario").hide();                
+                BootstrapDialog.alert({
+                    title: '¡Verificación Erronea!',
+                    message: '<strong>Error en la verificación.</strong>',
+                    type: BootstrapDialog.TYPE_DANGER
+                });
+            }
+        });
+    }
+
+    function cargarTabla(data)
+    {
+        $('#SeccionAsociarUsuario .tbody').html('');
+        var contentido = '';
+        contentido += '<tr>';
+        contentido += '<td>' + data.DatosUsuario.DisplayName + '</td>';
+        contentido += '<td>' + data.DatosUsuario.EmailAddress + '</td>';
+        contentido += '<td>' + data.DatosUsuario.Description + '</td>';        
+        contentido += '<td class="columnaAcciones textCenter">';        
+        contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-plus" title="Asignar Usuario a Grupo" onclick="asignarUsuarioGrupo()"></a>';        
+        contentido += '</td></tr>';
+        $('#SeccionAsociarUsuario tbody').html(contentido);
+    }
+
+    function asignarUsuarioGrupo()
+    {
+        var valida = true;
+        var userNameVal = $("#NombreUsuario").val();
+
+        if (userNameVal == '') {
+            valida = false;
+            BootstrapDialog.alert({
+                title: '¡Advertencia!',
+                message: '<strong>Debe asignar un ID de Usuario</strong>',
+                type: BootstrapDialog.TYPE_WARNING
+            });
+        }
+
+        if (valida == true) {
+            $("#loading-modal").show();
+            var nombreGrupoAsig = $("#NombreGrupo").val();            
+            $.ajax({
+                url: '@Url.Action("AsociarGrupoUsuario", "Home")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,
+                data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Error != '') {
+                        $("#loading-modal").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Error al asociar Usuario a Grupo en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    } else {
+                        if (data.Validar) {
+                            window.location = '@Url.Action("Edit", "Grupos", new { nombreGrupo = nombreGrupo })';
+                        } else {
+                            $("#loading-modal").hide();
+                            BootstrapDialog.alert({
+                                title: '¡Error al asociar Usuario a Grupo en el AD!',
+                                message: '<strong>No se pudo asignar el Grupo al Usuario, intente más tarde.</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                },
+                error: function (data) {
+                    $("#loading-modal").hide();
+                    BootstrapDialog.alert({
+                        title: '¡Error al asociar Usuario a Grupo en el AD!',
+                        message: '<strong>' + data.Error + '</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }
+    }
+</script>

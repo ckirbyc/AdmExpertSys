@@ -1,0 +1,62 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.MantenedorLicenciaVm
+@{
+    ViewBag.Title = "Mantenedor Licencia";
+    Layout = "~/Views/_Main.cshtml";
+    var idMant = Convert.ToInt64(Model.IdMantenedorLicencia);    
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Eliminar</h1>
+    <div class="form-inline col-md-3">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.IdMantenedorLicencia)
+            <div id="btnSubmit" class="btn btn-danger pull-right btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+                <input type="submit" value="Eliminar" class="btnInput" id="Eliminar" data-loading-text="Eliminando..." />
+            </div>
+        }
+    </div>
+</div>
+<div class="row">
+    <h2 class="sub-header">Mantenedor Licencia</h2>
+    <div class="col-md-6">
+        <table class="table table-secondary">
+            <tbody>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.IdMantenedorLicencia)</th>
+                    <td>@idMant</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Codigo)</th>
+                    <td>@Html.DisplayFor(m => m.Codigo)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.RolCargoId)</th>
+                    <td>@Html.DisplayFor(m => m.ROL_CARGO.Nombre)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.LicenciaId)</th>
+                    <td>@Html.DisplayFor(m => m.LICENCIAS_O365.Nombre)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>
+<script>
+    $("#btnSubmit").on("click", function () {
+        var form = document.getElementsByTagName("form");
+        $(form).submit();
+        var $btn = $("#Eliminar");
+        $btn.button('loading');
+    });
+</script>
+

@@ -1,0 +1,61 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@model IEnumerable<EstadoCuentaUsuarioVm>
+@{
+    ViewBag.Title = "Usuarios Creados";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Estados Cuentas Usuarios</h1>
+    <div class="form-inline col-md-3">
+        <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Index", "UsuarioCreado")">
+            <span class="glyphicon glyphicon-refresh"></span>
+            Refrescar
+        </a>
+    </div>
+</div>
+<div class="row">
+    <table class="table table-hover tablaMantenedores">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Usuario Creado AD</th>
+                <th>Usuario Sincronizado</th>
+                <th>Licencia O365</th>                
+            </tr>
+        </thead>
+        @foreach (var item in Model.OrderByDescending(x => x.FechaCreacion))
+        {
+            var item1 = item;
+            string classUsrCreado = "glyphicon glyphicon-remove colorOrange";
+            string classSincronizado = "glyphicon glyphicon-remove colorOrange";
+            string classLicencia = "glyphicon glyphicon-remove colorOrange";
+
+            var nombreCompleto = item1.Nombres + ' ' + item1.Apellidos;
+
+            if (item1.CreadoAd)
+            {
+                classUsrCreado = "glyphicon glyphicon-ok colorGreen";
+            }
+            if (item1.Sincronizado)
+            {
+                classSincronizado = "glyphicon glyphicon-ok colorGreen";
+            }
+            if (item1.LicenciaAsignada)
+            {
+                classLicencia = "glyphicon glyphicon-ok colorGreen";
+            }
+            <tr>
+                <td class="textCenter">@nombreCompleto</td>
+                <td class="textCenter"><a class="@classUsrCreado" href="#" title=""></a></td>
+                <td class="textCenter"><a class="@classSincronizado" href="#" title=""></a></td>
+                <td class="textCenter"><a class="@classLicencia" href="#" title=""></a></td>
+            </tr>
+        }
+    </table>
+</div>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>   
+    $('#EstadoCuenta').addClass('active');
+</script>

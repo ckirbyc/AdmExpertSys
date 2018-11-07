@@ -1,0 +1,1240 @@
+﻿@using CL.AdmExpertSys.WEB.Core.Domain.Dto
+@model CL.AdmExpertSys.WEB.Presentation.ViewModel.HomeSysWebVm
+
+@{
+    EstructuraArbolAd estructuraArbolAd = ViewBag.EstructuraArbolAd;
+    MsolAccountSku firstEnterPrisePack = Model.ListaAccountSkus.FirstOrDefault(x => x.CodigoLicencia.Equals("ENTERPRISEPACK"));
+    MsolAccountSku firstStandardPack = Model.ListaAccountSkus.FirstOrDefault(x => x.CodigoLicencia.Equals("STANDARDPACK"));
+    MsolAccountSku firstExStandard = Model.ListaAccountSkus.FirstOrDefault(x => x.CodigoLicencia.Equals("EXCHANGESTANDARD"));
+    string licEnterPrisePack = firstEnterPrisePack != null ? firstEnterPrisePack.MensajeCantidadLicencia : string.Empty;
+    string licStandardPack = firstStandardPack != null ? firstStandardPack.MensajeCantidadLicencia : string.Empty;
+    string licExStandard = firstExStandard != null ? firstExStandard.MensajeCantidadLicencia : string.Empty;
+}
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-7">Crear usuario y asignar licencia O365</h1>
+        <div class="form-inline col-md-5">
+            @*<div id="btnAsignarLic" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-save"></span>
+                <input type="button" value="Asignar Licencia" class="btnInput" id="AsignarLic" />
+            </div>
+            <div id="btnSync" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-save"></span>
+                <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" />
+            </div>
+            <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-save"></span>
+                <input type="button" value="Guardar" class="btnInput" id="Guardar" />
+            </div>*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <table class="table table-secondary">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Id Usuario")</th>
+                        <td colspan="2">
+                            @Html.TextBoxFor(m => m.NombreUsuario, new { @maxlength = "20", @class = "form-control", @style = "width: 75%" })
+                            @Html.ValidationMessageFor(m => m.NombreUsuario)
+                        </td>
+                        <td colspan="2">
+                            <div id="btnVerificar" class="btn btn-primary pull-right btn-sm">
+                                <span class="glyphicon glyphicon-search"></span>
+                                <input type="button" value="Buscar" class="btnInput" id="Buscar" />
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Dominio")</th>
+                        <td>
+                            @Html.DropDownListFor(m => m.UpnPrefijo, Model.UpnPrefijoLista, "Seleccione", new { @class = "form-control", @style = "width: 100%" })
+                            @Html.ValidationMessageFor(m => m.UpnPrefijo)
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Nombres)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Nombres, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Nombres)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Apellidos)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Apellidos, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Apellidos)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Nombre Completo")</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.NombreCompleto, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.NombreCompleto)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Clave)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Clave, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Clave)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Correo)</th>
+                        <td colspan="2">
+                            @Html.TextBoxFor(m => m.Correo, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Correo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Descripcion)</th>
+                        <td colspan="2">
+                            @Html.TextBoxFor(m => m.Descripcion, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.Descripcion)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.CodigoLicencia)</th>
+                        <td colspan="2">
+                            @Html.DropDownListFor(m => m.CodigoLicencia, Model.CodigoLicenciaLista, "Seleccione", new { @class = "form-control", @style = "width: 100%" })
+                            @Html.ValidationMessageFor(m => m.CodigoLicencia)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Info)</th>
+                        <td>
+                            @Html.CheckBoxFor(m => m.Info, new { @class = "form-control" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.CodigoRutaAd)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.CodigoRutaAd, new { @maxlength = "50", @class = "form-control", @disabled = "disabled" })                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Empresas")</th>
+                        <td>
+                            <div id="jstree">
+                                <!-- in this example the tree is populated from inline HTML -->
+                                <ul>
+                                    @if (estructuraArbolAd != null)
+                                    {
+                                        <li>
+                                            @estructuraArbolAd.Cabecera
+                                            <ul>
+                                                @Html.Raw(estructuraArbolAd.CodArbolHtml)
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                                <span class="glyphicon glyphicon-refresh"></span>
+                                <input type="button" value="Guardar Usuario en AD" class="btnInput" id="Guardar" />
+                            </div>
+                            @*<div id="btnSync" class="btn btn-primary pull-right btn-sm">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" />
+                </div>*@
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row" rowspan="3">@Html.DisplayNameFor(m => m.Licencia)</th>
+                        <td>
+                            <div id="btnLicE1" class="btn btn-primary btn-sm btn-block pull-right">
+                                <span class="glyphicon glyphicon-check"></span>
+                                <input type="button" value="Office 365 Empresarial Plan E1" class="btnInput" data-toggle="collapse" data-target="#demo1" id="STANDARDPACK" />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <label>@licStandardPack</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="btnLicE3" class="btn btn-primary btn-sm btn-block pull-right">
+                                <span class="glyphicon glyphicon-check"></span>
+                                <input type="button" value="Office 365 Empresarial Plan E3" class="btnInput" data-toggle="collapse" data-target="#demo2" id="ENTERPRISEPACK" />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <label>@licEnterPrisePack</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="btnLicExO" class="btn btn-primary btn-sm btn-block pull-right">
+                                <span class="glyphicon glyphicon-check"></span>
+                                <input type="button" value="Office 365 Exchange Online P1" class="btnInput" data-toggle="collapse" data-target="#demo3" id="EXCHANGESTANDARD" />
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <label>@licExStandard</label>
+                        </td>
+                    </tr>
+                    @*<tr>
+            <td>
+                <div id="btnAsignarLic" class="btn btn-primary pull-right btn-sm">
+                    <span class="glyphicon glyphicon-save"></span>
+                    <input type="button" value="Asignar Licencia" class="btnInput" id="AsignarLic" />
+                </div>
+            </td>
+        </tr>*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" id="SeccionGrupo" style="display: none;">
+        <div class="col-md-12">
+            <h2 class="page-header colorSky col-md-12">Agregar Usuarios a Grupos</h2> 
+            <div class="form-horizontal">
+                <div class="panel-group">
+                    <div class="form-group col-md-12">
+                        <table class="table table-secondary">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">@Html.DisplayName("Nombre Grupo")</th>
+                                    <td colspan="2">
+                                        @Html.TextBoxFor(m => m.NombreGrupo, new { @class = "form-control" })
+                                    </td>
+                                    <td>
+                                        <div id="btnAgregarGrupo" class="btn btn-primary pull-right btn-sm">
+                                            <span class="glyphicon glyphicon-cloud-upload"></span>
+                                            <input type="button" value="Agregar +" class="btnInput" id="AgregarGrupo" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <table class="table table-hover tablaMantenedores" id="tbGrupos">
+                            <thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Nombre Grupo</th>
+                                    <th>Correo</th>
+                                    <th class="acciones text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="btnGuardarGrupo" class="btn btn-primary pull-right btn-sm" style="display: none;">
+                            <span class="glyphicon glyphicon-save"></span>
+                            <input type="button" value="Guardar" class="btnInput" id="GuardarGrupo" />
+                        </div>                                
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="SeccionAsociarGrupo" style="display: none;">
+        <div class="col-md-12">
+            <h2 class="page-header colorSky col-md-12">Asociar Usuario a Grupos</h2>
+            <div class="form-horizontal">
+                <div class="panel-group">
+                    <div class="form-group col-md-12">
+                        <table class="table table-hover tablaMantenedores" id="tbAsociarGrupo">
+                            <thead>
+                                <tr>
+                                    <th>Nº</th>
+                                    <th>Nombre Grupo</th>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th class="acciones text-center">Asignar</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.PatchOu)
+    @Html.HiddenFor(m => m.ExisteUsuario)    
+    <input type="hidden" id="LicenciaSel" value="" />
+    <input type="hidden" id="NombreGrupoSel" value="" />
+    }
+
+    <script>
+        $(document).ready(function () {
+            $("#btnSubmit").attr("disabled", true);
+            $("#btnLicE1").attr("disabled", true);
+            $("#btnLicE3").attr("disabled", true);
+            $("#btnLicExO").attr("disabled", true);                        
+            $("#UpnPrefijo").attr("disabled", false);
+            $("#UpnPrefijo").prop('disabled', 'disabled');
+            $("#CodigoLicencia").attr("disabled", false);
+            $("#CodigoLicencia").prop('disabled', 'disabled');
+            $("#Info").attr("disabled", false);
+            $("#Info").prop('disabled', 'disabled');
+            $("#CodigoRutaAd").attr("disabled", true);
+
+            $('#jstree').jstree();
+
+            //Seleccionar OU desde el Arbol
+            $('#jstree').on("changed.jstree", function (e, data) {
+                $("#tbAsociarGrupo tbody").html('');
+                $("#SeccionAsociarGrupo").show();
+                var ldap = data.selected[0];
+                $("#PatchOu").val(ldap);
+                //if (ldap != null) {
+                //    listaGruposAdByOu(ldap);
+                //}                
+            });            
+
+            $("#Apellidos").off('blur').blur(function () {
+                var nombreCompleto = $("#Apellidos").val() + ", " + $("#Nombres").val();
+                $("#NombreCompleto").val(nombreCompleto);
+            });
+
+            $("#UpnPrefijo").off('change').change(function () {
+                var correo = $("#NombreUsuario").val() + $("#UpnPrefijo").val();
+                $("#Correo").val(correo);
+            });
+
+            //$("#ENTERPRISEPACK").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    $("#LicenciaSel").val("agrosuper:ENTERPRISEPACK");
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
+
+            //$("#STANDARDPACK").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    $("#LicenciaSel").val("agrosuper:STANDARDPACK");
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
+
+            //$("#EXCHANGESTANDARD").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    $("#LicenciaSel").val("agrosuper:EXCHANGESTANDARD");
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
+
+            $("#btnVerificar").off('click').click(function () {
+                $("#loading-modal").show();
+                $("#SeccionAsociarGrupo").hide();
+                if ($("#NombreUsuario").val() != '') {
+                    setTimeout(function () {
+                        validarUsuario();
+                    }, 1000);
+                } else {
+                    setTimeout(function () {
+                        $("#loading-modal").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Advertencia!',
+                            message: '<strong>Debe ingresar un ID de usuario</strong>',
+                            type: BootstrapDialog.TYPE_WARNING
+                        });
+                    }, 1000);
+                }
+            });
+
+
+            function validarUsuario() {
+                var nombreUsuario = $("#NombreUsuario").val();
+                $('#jstree').jstree("deselect_all");
+                $.ajax({
+                    url: '@Url.Action("VerificarUsuario", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ nombreUsuario: nombreUsuario }),
+                    success: function (data) {
+                        if (data.Session == false)
+                        {
+                            BootstrapDialog.alert({
+                                title: '¡Validación Sesión!',
+                                message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+                                type: BootstrapDialog.TYPE_WARNING
+                            });
+                            return;
+                        }
+                        if (data.Validar) {
+                            //Seleccionar nodo existente                            
+                            var ubicGrupo = data.DatosUsuario.DistinguishedName;
+                            var myLiId = '#' + ubicGrupo;
+                            $("#jstree").jstree("select_node", myLiId);
+                            $("#PatchOu").val(ubicGrupo);
+
+                            $("#btnSubmit").attr("disabled", true);
+                            //$("#btnLicE1").attr("disabled", true);
+                            //$("#btnLicE3").attr("disabled", true);
+                            //$("#btnLicExO").attr("disabled", true);
+                            $("#UpnPrefijo").attr("disabled", true);
+                            $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);                            
+                            $("#Nombres").attr("disabled", true);
+                            $("#Nombres").val(data.DatosUsuario.GivenName);
+                            $("#Apellidos").attr("disabled", true);
+                            $("#Apellidos").val(data.DatosUsuario.Surname);
+                            $("#NombreCompleto").attr("disabled", true);
+                            $("#NombreCompleto").val(data.DatosUsuario.DisplayName);
+                            $("#Descripcion").attr("disabled", true);
+                            $("#Descripcion").val(data.DatosUsuario.Description);
+                            $("#Clave").attr("disabled", true);
+                            $("#Clave").val(data.Clave);
+                            $("#Correo").attr("disabled", true);
+                            $("#Correo").val(data.DatosUsuario.EmailAddress);                            
+                            $("#ExisteUsuario").val(true);
+                            $("#CodigoLicencia").attr("disabled", true);
+                            $("#CodigoLicencia").val(data.CodigoLicencia);                            
+                            if (data.DatosUsuario.Info == true) {
+                                $("#Info").prop("checked");
+                                $("#Info").attr("checked", true);
+                                $("#Info")[0].checked = true;
+                            }
+                            else {                                
+                                $("#Info").attr("checked", false);
+                            }            
+                            $("#Info").attr("disabled", true);
+                            $("#CodigoRutaAd").attr("disabled", true);
+                            $("#SeccionGrupo").hide();
+                            $("#SeccionAsociarGrupo").hide();                            
+
+                            BootstrapDialog.alert({
+                                title: '¡Verificación Exitosa!',
+                                message: '<strong>Usuario Existe y cuenta se encuentra en estado ' + data.DatosUsuario.EstadoCuenta + '</strong>',
+                                type: BootstrapDialog.TYPE_SUCCESS
+                            });
+                        } else {
+                            $("#btnSubmit").attr("disabled", false);
+                            //$("#btnLicE1").attr("disabled", true);
+                            //$("#btnLicE3").attr("disabled", true);
+                            //$("#btnLicExO").attr("disabled", true);                            
+                            $("#UpnPrefijo").attr("disabled", false);                            
+                            $("#Nombres").val("");
+                            $("#Nombres").removeAttr("disabled");
+                            $("#Apellidos").val("");
+                            $("#Apellidos").removeAttr("disabled");
+                            $("#Rut").attr("disabled", "disabled");
+                            $("#Dv").attr("disabled", "disabled");
+                            $("#Clave").val("");
+                            $("#Clave").removeAttr("disabled");
+                            $("#Licencia").attr("disabled", "disabled");
+                            $("#Ou").attr("disabled", "disabled");
+                            $("#NombreCompleto").val("");
+                            $("#NombreCompleto").attr("disabled", "disabled");
+                            $("#Descripcion").removeAttr("disabled");
+                            $("#Descripcion").val("");
+                            $("#Correo").val("");
+                            $("#Correo").attr("disabled", "disabled");
+                            $("#ExisteUsuario").val(false);
+                            $("#CodigoLicencia").attr("disabled", false);
+                            $("#CodigoLicencia").val(data.CodigoLicencia);                                                        
+                            $("#Info").attr("checked", false);                            
+                            $("#Info").attr("disabled", false);
+                            $("#CodigoRutaAd").attr("disabled", false);
+                            //$("#SeccionGrupo").show();
+                            BootstrapDialog.alert({
+                                title: '¡Verificación Exitosa!',
+                                message: '<strong>Usuario No Existe</strong>',
+                                type: BootstrapDialog.TYPE_SUCCESS
+                            });
+                        }
+                    },
+                    complete: function () {
+                        $("#loading-modal").hide();
+                    },
+                    error: function () {
+                        $("#btnSubmit").attr("disabled", true);
+                        //$("#btnLicE1").attr("disabled", true);
+                        //$("#btnLicE3").attr("disabled", true);
+                        //$("#btnLicExO").attr("disabled", true);
+                        $("#UpnPrefijo").attr("disabled", true);                                                
+                        $("#Nombres").attr("disabled", true);
+                        $("#Nombres").val(data.DatosUsuario.GivenName);
+                        $("#Apellidos").attr("disabled", true);
+                        $("#Apellidos").val(data.DatosUsuario.Surname);
+                        $("#NombreCompleto").attr("disabled", true);
+                        $("#NombreCompleto").val(data.DatosUsuario.DisplayName);
+                        $("#Descripcion").attr("disabled", true);
+                        $("#Descripcion").val(data.DatosUsuario.Description);
+                        $("#Correo").attr("disabled", true);
+                        $("#Correo").val(data.DatosUsuario.EmailAddress);                        
+                        $("#ExisteUsuario").val(true);
+                        $("#CodigoLicencia").val(true);
+                        $("#CodigoLicencia").val(data.CodigoLicencia);                        
+                        $("#Info").attr("checked", false);                        
+                        $("#Info").attr("disabled", true);
+                        $("#CodigoRutaAd").attr("disabled", true);
+                        $("#SeccionGrupo").hide();
+                        $("#SeccionAsociarGrupo").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Verificación Erronea!',
+                            message: '<strong>Error en la verificación.</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+            }
+
+            $("#btnSubmit").off('click').click(function () {
+                $("#loading-modal").show();
+                $("#Correo").val($("#NombreUsuario").val() + $("#UpnPrefijo").val())
+                setTimeout(function () {
+                    guardarSincronizarUsuario();
+                    //sincronizarUsuario(); mantener comentado
+                }, 1000);
+            });
+
+            function guardarSincronizarUsuario() {                
+                var msgError = '';
+                var codRuta = '';
+                var infoBool = false;
+                if ($('#Info').is(":checked"))
+                {
+                    infoBool = true;
+                }
+                var objEnvio =
+                {
+                    model:
+                    {
+                        'Nombres': $('#Nombres').val(),
+                        'Apellidos': $('#Apellidos').val(),
+                        'NombreUsuario': $('#NombreUsuario').val(),
+                        'Clave': $('#Clave').val(),
+                        'Licencia': $('#LicenciaSel').val(),
+                        'UpnPrefijo': $('#UpnPrefijo').val(),
+                        'NombreCompleto': $('#NombreCompleto').val(),
+                        'Correo': $('#Correo').val(),
+                        'PatchOu': $('#PatchOu').val(),
+                        'ExisteUsuario': $("#ExisteUsuario").val(),
+                        'Descripcion': $("#Descripcion").val(),
+                        'CodigoLicencia': $("#CodigoLicencia").val(),
+                        'Info': infoBool,
+                        'CodigoRutaAd': $("#CodigoRutaAd").val()
+                    }
+                };
+
+                $.ajax({
+                    url: '@Url.Action("GuardarSincronizarUsuario", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ model: objEnvio.model }),
+                    success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }                        
+
+                        if (data.Error != '') {
+                            msgError = data.Error;
+                            $("#btnSubmit").attr("disabled", false);
+                            //$("#btnLicE1").attr("disabled", true);
+                            //$("#btnLicE3").attr("disabled", true);
+                            //$("#btnLicExO").attr("disabled", true);                                                        
+
+                            BootstrapDialog.show({
+                                title: 'Error al Guardar Usuario en el AD',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER,
+                                buttons:
+                                [
+                                    {
+                                        label: 'Aceptar',
+                                        cssClass: 'btn-success',
+                                        action: function (dialog) {
+                                            dialog.close();                                            
+                                        }
+                                    }
+                                ]
+                            });
+                        } else {
+                            if (data.Validar) {
+                                codRuta = data.CodigoRuta;
+                                $("#btnSubmit").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", false);
+                                //$("#btnLicE3").attr("disabled", false);
+                                //$("#btnLicExO").attr("disabled", false);                                                                                               
+                                $("#SeccionAsociarGrupo").show();
+                                
+                                BootstrapDialog.show({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Usuario creado correctamente. Favor asignar Grupo(s) al usuario.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {                                                
+                                                dialog.close();                                                                                                                                                                                                
+                                            }
+                                        }
+                                    ]
+                                });
+                            } else {
+                                $("#btnSubmit").attr("disabled", false);
+                                //$("#btnLicE1").attr("disabled", true);
+                                //$("#btnLicE3").attr("disabled", true);
+                                //$("#btnLicExO").attr("disabled", true);
+                                
+                                BootstrapDialog.show({
+                                    title: 'Error al Guardar Usuario en el AD',
+                                    message: '<strong>' + data.Error + '</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER,
+                                    buttons:
+                                    [
+                                        {
+                                            label: 'Aceptar',
+                                            cssClass: 'btn-success',
+                                            action: function (dialog) {
+                                                dialog.close();                                                
+                                            }
+                                        }
+                                    ]
+                                });
+                            }
+                        }
+                    },
+                    complete: function () {                        
+                        $("#loading-modal").hide();                        
+                        if (msgError == '')
+                        {
+                            if (codRuta == '') {
+                                var sOu = $("#PatchOu").val();
+                                listaGruposAdByOu(sOu);
+                            }
+                            else
+                            {
+                                var codRutaNew = 'LDAP://DC1ASPCORTES/' + codRuta;                                
+                                listaGruposAdByOu(codRutaNew);
+                                //var ubicGrupo = codRuta;
+                                //var myLiId = '#' + ubicGrupo;
+                                //$("#jstree").jstree("select_node", myLiId);
+                            }
+                        }                   
+                    },
+                    error: function (data) {
+                        $("#btnSubmit").attr("disabled", false);
+                        //$("#btnLicE1").attr("disabled", true);
+                        //$("#btnLicE3").attr("disabled", true);
+                        //$("#btnLicExO").attr("disabled", true);                        
+                        $("#loading-modal").hide();                        
+
+                        BootstrapDialog.show({
+                            title: 'Error al Guardar Usuario en el AD',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER,
+                            buttons:
+                            [
+                                {
+                                    label: 'Aceptar',
+                                    cssClass: 'btn-success',
+                                    action: function (dialog) {
+                                        dialog.close();                                        
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                });
+            }
+
+            function reCargarPagina()
+            {
+                $("#loading-modal").show();
+                window.location = '@Url.Action("HomeSysWeb", "Home")';
+            }
+
+            //$("#btnSync").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    setTimeout(function () {
+            //        sincronizarUsuario();
+            //    }, 1000);
+            //});
+
+            function sincronizarUsuario() {
+                var objEnvio =
+                {
+                    model:
+                    {
+                        'Nombres': $('#Nombres').val(),
+                        'Apellidos': $('#Apellidos').val(),
+                        'NombreUsuario': $('#NombreUsuario').val(),
+                        'Clave': $('#Clave').val(),
+                        'Licencia': $('#LicenciaSel').val(),
+                        'UpnPrefijo': $('#UpnPrefijo').val(),
+                        'NombreCompleto': $('#NombreCompleto').val(),
+                        'Correo': $('#Correo').val(),
+                        'PatchOu': $('#PatchOu').val(),
+                        'ExisteUsuario': $("#ExisteUsuario").val()
+                    }
+                };
+                $.ajax({
+                    url: '@Url.Action("SincronizarUsuario", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ model: objEnvio.model }),
+                    success: function (data) {
+                        if (data.Error != '') {
+                            $("#btnSubmit").attr("disabled", true);
+                            //$("#btnLicE1").attr("disabled", false);
+                            //$("#btnLicE3").attr("disabled", false);
+                            //$("#btnLicExO").attr("disabled", false);
+                            
+                            BootstrapDialog.alert({
+                                title: '¡Error al Sincronizar!',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        } else {
+                            if (data.Validar) {
+                                $("#btnSubmit").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", false);
+                                //$("#btnLicE3").attr("disabled", false);
+                                //$("#btnLicExO").attr("disabled", false);
+                                
+                                BootstrapDialog.alert({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Usuario guardado o modificado correctamente, proceso de sincronización iniciado.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS
+                                });
+                            } else {
+                                $("#btnSubmit").attr("disabled", true);
+                                $("#btnSync").attr("disabled", false);
+                                $("#btnAsignarLic").attr("disabled", true);
+                                BootstrapDialog.alert({
+                                    title: '¡Error al Sincronizar!',
+                                    message: '<strong>' + data.Error + '</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER
+                                });
+                            }
+                        }
+                    },
+                    complete: function () {
+                        $("#loading-modal").hide();
+                    },
+                    error: function (data) {
+                        $("#btnSubmit").attr("disabled", true);
+                        $("#btnSync").attr("disabled", false);
+                        $("#btnAsignarLic").attr("disabled", true);
+                        $("#loading-modal").hide();
+
+                        BootstrapDialog.alert({
+                            title: '¡Error al Sincronizar!',
+                            message: '<strong>Error ' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+
+            }
+
+            //$("#btnAsignarLic").off('click').click(function () {
+            //    $("#loading-modal").show();
+            //    setTimeout(function () {
+            //        asignarLicenciaUsuario();
+            //    }, 1000);
+            //});
+
+            function asignarLicenciaUsuario() {
+                var objEnvio =
+                {
+                    model:
+                    {
+                        'Nombres': $('#Nombres').val(),
+                        'Apellidos': $('#Apellidos').val(),
+                        'NombreUsuario': $('#NombreUsuario').val(),
+                        'Clave': $('#Clave').val(),
+                        'Licencia': $('#LicenciaSel').val(),
+                        'UpnPrefijo': $('#UpnPrefijo').val(),
+                        'NombreCompleto': $('#NombreCompleto').val(),
+                        'Correo': $('#Correo').val(),
+                        'PatchOu': $('#PatchOu').val(),
+                        'ExisteUsuario': $("#ExisteUsuario").val(),
+                        'Descripcion': $("#Descripcion").val()
+                    }
+                };
+                $.ajax({
+                    url: '@Url.Action("AsignarLicenciaUsuario", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ model: objEnvio.model }),
+                    success: function (data) {
+                        if (data.Error != '') {
+                            $("#btnSubmit").attr("disabled", false);
+                            //$("#btnLicE1").attr("disabled", false);
+                            //$("#btnLicE3").attr("disabled", false);
+                            //$("#btnLicExO").attr("disabled", false);
+                            
+                            var msgError = data.Error.indexOf('Usuario consultado no existe en el portal Office 365');
+                            if (msgError > -1) {
+                                BootstrapDialog.alert({
+                                    title: '¡Advertencia al Asignar Licencia a Usuario!',
+                                    message: '<strong>' + data.Error + '</strong>',
+                                    type: BootstrapDialog.TYPE_WARNING
+                                });
+                            } else {
+                                BootstrapDialog.alert({
+                                    title: '¡Error al Asignar Licencia a Usuario!',
+                                    message: '<strong>' + data.Error + '</strong>',
+                                    type: BootstrapDialog.TYPE_WARNING
+                                });
+                            }
+                        } else {
+                            if (data.Validar) {
+                                $("#btnSubmit").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", true);
+                                //$("#btnLicE3").attr("disabled", true);
+                                //$("#btnLicExO").attr("disabled", true);
+                                
+                                BootstrapDialog.alert({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Licencia usuario asignado correctamente</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS
+                                });
+                            } else {
+                                $("#btnSubmit").attr("disabled", true);
+                                //$("#btnLicE1").attr("disabled", true);
+                                //$("#btnLicE3").attr("disabled", true);
+                                //$("#btnLicExO").attr("disabled", true);
+                                
+                                BootstrapDialog.alert({
+                                    title: '¡Error al Asignar Licencia!',
+                                    message: '<strong>No se pudo asignar licencias al usuario, favor intente más tarde.</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER
+                                });
+                            }
+                        }
+                    },
+                    complete: function () {
+                        $("#loading-modal").hide();
+                    },
+                    error: function (data) {
+                        $("#btnSubmit").attr("disabled", false);
+                        //$("#btnLicE1").attr("disabled", false);
+                        //$("#btnLicE3").attr("disabled", false);
+                        //$("#btnLicExO").attr("disabled", false);
+                        
+                        $("#loading-modal").hide();
+
+                        BootstrapDialog.alert({
+                            title: '¡Error al Asignar Licencia!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+            }            
+
+            $("#btnAgregarGrupo").off('click').click(function () {
+                var nombreGrupo = $("#NombreGrupo").val();
+                if (nombreGrupo != '') {
+                    $("#loading-modal").show();
+                    setTimeout(function () {
+                        var msgGrupoIgual = '';
+                        if ($("#NombreGrupoSel").val() != '') {
+                            var nomGrupoSplit = $("#NombreGrupoSel").val().split(',');
+                            for (var i = 0; i < nomGrupoSplit.length; i++) {
+                                var nomGrupoIngresado = nomGrupoSplit[i];
+                                if (nomGrupoIngresado == nombreGrupo) {
+                                    msgGrupoIgual = msgGrupoIgual + " Grupo ingresado  " + nomGrupoIngresado + " ya existe en la búsqueda <br />";
+                                }
+                            }
+                        }
+
+                        if (msgGrupoIgual != '') {
+                            $("#loading-modal").hide();
+                            BootstrapDialog.alert({
+                                title: '¡Advertencia!',
+                                message: '<strong>' + msgGrupoIgual + '</strong>',
+                                type: BootstrapDialog.TYPE_WARNING
+                            });
+                        } else {
+                            var nomGrupoSel = $("#NombreGrupoSel").val();
+                            nomGrupoSel = nombreGrupo + ',' + nomGrupoSel;
+                            $("#NombreGrupoSel").val(nomGrupoSel);
+                            buscarAsignarGrupo(nomGrupoSel);
+                        }
+                    }, 1000);
+                } else {
+                    BootstrapDialog.alert({
+                        title: '¡Advertencia!',
+                        message: '<strong>Debe ingresar un nombre de grupo</strong>',
+                        type: BootstrapDialog.TYPE_WARNING
+                    });
+                }
+            });
+
+            function listaGruposAdByOu(sOu)
+            {                
+                $.ajax({
+                    url: '@Url.Action("ObtenerListaGruposAdOu", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ patchOu: sOu }),
+                    success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
+                        if (data.Error != '') {
+                            $("#loading-modal").hide();
+                            BootstrapDialog.alert({
+                                title: '¡Error al encontrar listado de Grupos en el AD!',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        }
+                        else {
+                            if (data.GrupoOu != null) {
+                                $('#tbAsociarGrupo .tbody').html('');
+                                var contentido = '';
+
+                                $("#NombreGrupoSel").val('');
+                                var nomGrupoSel = $("#NombreGrupoSel").val();
+
+                                for (var i = 0; i < data.GrupoOu.length; i++) {
+                                    if (data.GrupoOu[i].ExisteGrupo == true) {
+                                        var nomGrupo = "'" + data.GrupoOu[i].NombreGrupo.trim() + "'";
+                                        contentido += '<tr class="trGrupoOu' + i + '">';
+                                        contentido += '<td>' + (data.GrupoOu[i].NumeroGrupo) + '</td>';
+                                        contentido += '<td>' + (data.GrupoOu[i].NombreGrupo == null ? '' : data.GrupoOu[i].NombreGrupo) + '</td>';
+                                        contentido += '<td>' + (data.GrupoOu[i].TipoGrupo == null ? '' : data.GrupoOu[i].TipoGrupo) + '</td>';
+                                        contentido += '<td>' + (data.GrupoOu[i].DescripcionGrupo == null ? '' : data.GrupoOu[i].DescripcionGrupo) + '</td>';
+                                        contentido += '<td class="columnaAcciones textCenter">';
+                                        contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-plus" title="Asignar Grupo a Usuario" onclick="asignarGrupoUsuario(' + i + ', ' + nomGrupo + ')"></a>';
+                                        contentido += '</td></tr>';
+                                        nomGrupoSel = data.GrupoOu[i].NombreGrupo + ',';
+                                    }
+                                }
+                                $('#tbAsociarGrupo tbody').html(contentido);
+                                $("#NombreGrupoSel").val(nomGrupoSel);
+                                $("#loading-modal").hide();
+                            } else {
+                                $("#loading-modal").hide();
+                                BootstrapDialog.alert({
+                                    title: '¡Error al encontrar listado de Grupos en el AD!',
+                                    message: '<strong>No existen Grupos para OU seleccionada.</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER
+                                });
+                            }
+                        }
+                    },                    
+                    error: function (data) {
+                        $("#loading-modal").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Error al encontrar listado de Grupos en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+            }
+
+            function buscarAsignarGrupo(nombreGrupo) {
+                $.ajax({
+                    url: '@Url.Action("ObtenerGrupoAd", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ nomGrupo: nombreGrupo }),
+                    success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
+                        if (data.Error != '') {
+                            BootstrapDialog.alert({
+                                title: '¡Error al buscar Grupo en el AD!',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        } else {
+                            if (data.Grupo != null) {
+                                $('#tbGrupos .tbody').html('');
+                                var contentido = '';
+                                $("#NombreGrupoSel").val('');
+                                var nomGrupoSel = $("#NombreGrupoSel").val();
+
+                                for (var i = 0; i < data.Grupo.length; i++) {
+                                    if (data.Grupo[i].ExisteGrupo == true) {
+                                        var nomGrupo = "'" + data.Grupo[i].NombreGrupo.trim() + "'";
+                                        contentido += '<tr class="trGrupo' + i + '">';
+                                        contentido += '<td>' + (data.Grupo[i].NumeroGrupo) + '</td>';
+                                        contentido += '<td>' + (data.Grupo[i].NombreGrupo == null ? '' : data.Grupo[i].NombreGrupo) + '</td>';
+                                        contentido += '<td>' + (data.Grupo[i].CorreoGrupo == null ? '' : data.Grupo[i].CorreoGrupo) + '</td>';
+                                        contentido += '<td class="columnaAcciones textCenter">';
+                                        contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-remove colorOrange" onclick="eliminarGrupo(' + i + ', ' + nomGrupo + ',1)"></a> <text>|</text> ';
+                                        contentido += '</td></tr>';
+                                        nomGrupoSel = data.Grupo[i].NombreGrupo + ',' + nomGrupoSel;
+                                    }
+                                }
+                                $('#tbGrupos tbody').html(contentido);
+                                $("#NombreGrupoSel").val(nomGrupoSel);
+                                if (nomGrupoSel != '') {
+                                    $("#btnGuardarGrupo").show();
+                                }
+                            } else {
+                                BootstrapDialog.alert({
+                                    title: '¡Error al buscar Grupo en el AD!',
+                                    message: '<strong>No existe Grupo</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER
+                                });
+                            }
+                        }
+                    },
+                    complete: function () {
+                        $("#NombreGrupo").val('');
+                        $("#loading-modal").hide();
+                    },
+                    error: function (data) {
+                        $("#loading-modal").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Error al buscar Grupo en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+            }
+
+            $("#btnGuardarGrupo").off('click').click(function () {
+                $("#loading-modal").show();
+                var valida = true;
+                var userName = $("#NombreUsuario").val();
+                var selGrupos = $("#NombreGrupoSel").val();
+                if (userName == '') {
+                    valida = false;
+                    $("#loading-modal").hide();
+                    BootstrapDialog.alert({
+                        title: '¡Advertencia!',
+                        message: '<strong>Debe asignar un ID de Usuario</strong>',
+                        type: BootstrapDialog.TYPE_WARNING
+                    });
+                }
+                if (selGrupos == '') {
+                    valida = false;
+                    $("#loading-modal").hide();
+                    BootstrapDialog.alert({
+                        title: '¡Advertencia!',
+                        message: '<strong>Debe buscar y asignar Grupo</strong>',
+                        type: BootstrapDialog.TYPE_WARNING
+                    });
+                }
+
+                if (valida == true) {
+                    setTimeout(function () {
+                        guardarGrupos();
+                    }, 1000);
+                }
+            });
+
+            function guardarGrupos() {
+                $.ajax({
+                    url: '@Url.Action("GuardarGrupos", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ nomGrupos: $("#NombreGrupoSel").val(), userName: $("#NombreUsuario").val(), upnPrefijo: $("#UpnPrefijo").val() }),
+                    success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
+                        if (data.Error != '') {
+                            BootstrapDialog.alert({
+                                title: '¡Error al guardar Grupo en el AD!',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        } else {
+                            if (data.Validar) {
+                                if (data.TieneLicencia) {
+                                    BootstrapDialog.alert({
+                                        title: '¡Proceso Exitoso!',
+                                        message: '<strong>Grupos guardados exitosamente y licencia se encuentra asignada a la cuenta.</strong>',
+                                        type: BootstrapDialog.TYPE_SUCCESS
+                                    });
+                                } else {
+                                    BootstrapDialog.alert({
+                                        title: '¡Proceso Incompleto!',
+                                        message: '<strong>Grupos guardados exitosamente, pero debe asignar licencia a la cuenta para terminar proceso.</strong>',
+                                        type: BootstrapDialog.TYPE_WARNING
+                                    });
+                                }
+                            } else {
+                                BootstrapDialog.alert({
+                                    title: '¡Error al guardar Grupo en el AD!',
+                                    message: '<strong>No se pudo asignar usuario a los Grupos, intente más tarde.</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER
+                                });
+                            }
+                        }
+                    },
+                    complete: function () {
+                        $("#loading-modal").hide();
+                    },
+                    error: function (data) {
+                        $("#loading-modal").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Error al guardar Grupo en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function eliminarGrupo(idTrGrupo, nombreGrupoElm, tipo) {
+            var nomGrupoSel = $("#NombreGrupoSel").val();
+            var nomGrupoSelFinal = '';
+            if (nomGrupoSel != '') {
+                var nomGrupoSplit = $("#NombreGrupoSel").val().split(',');
+                $("#NombreGrupoSel").val('');
+                for (var i = 0; i < nomGrupoSplit.length; i++) {
+                    var nomGrupoIngresado = nomGrupoSplit[i];
+                    if (nomGrupoIngresado.trim() != nombreGrupoElm.trim() && nomGrupoIngresado.trim() != '') {
+                        nomGrupoSelFinal = nomGrupoIngresado.trim() + ',' + nomGrupoSelFinal;
+                    }
+                }
+            }
+
+            $("#NombreGrupoSel").val(nomGrupoSelFinal);
+            if(tipo == 1)
+                $('.trGrupo' + idTrGrupo).html('');
+            else
+                $('.trGrupoOu' + idTrGrupo).html('');
+
+            if (nomGrupoSelFinal == '' && tipo == 1) {
+                $("#btnGuardarGrupo").hide();
+            }
+        }
+
+        function asignarGrupoUsuario(idTrGrupoAsig, nombreGrupoAsig)
+        {
+            MostrarCargando();
+            var valida = true;
+            var userNameVal = $("#NombreUsuario").val();
+
+            if (userNameVal == '') {
+                valida = false;
+                $("#loading-modal").hide();
+                BootstrapDialog.alert({
+                    title: '¡Advertencia!',
+                    message: '<strong>Debe asignar un ID de Usuario</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+            }
+
+            if (valida == true) {
+                $.ajax({
+                    url: '@Url.Action("AsociarGrupoUsuario", "Home")',
+                    type: 'POST',
+                    contentType: "application/json; charset=utf-8",
+                    async: false,
+                    dataType: 'json',
+                    processData: false,
+                    data: JSON.stringify({ nomGrupo: nombreGrupoAsig, userName: userNameVal }),
+                    success: function (data) {
+                        if (data.Session == false) {
+                            BootstrapDialog.alert({
+			                        title: '¡Validación Sesión!',
+			                        message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                        type: BootstrapDialog.TYPE_WARNING
+		                        });
+                            return;
+                        }
+
+                        if (data.Error != '') {
+                            BootstrapDialog.alert({
+                                title: '¡Error al asociar Grupo a Usuario en el AD!',
+                                message: '<strong>' + data.Error + '</strong>',
+                                type: BootstrapDialog.TYPE_DANGER
+                            });
+                        } else {
+                            if (data.Validar) {
+                                eliminarGrupo(idTrGrupoAsig, nombreGrupoAsig, 2);
+                                $("#PatchOu").val('');
+                                BootstrapDialog.alert({
+                                    title: '¡Proceso Exitoso!',
+                                    message: '<strong>Grupo asociado exitosamente al Usuario.</strong>',
+                                    type: BootstrapDialog.TYPE_SUCCESS
+                                });                                
+                            } else {
+                                BootstrapDialog.alert({
+                                    title: '¡Error al asociar Grupo a Usuario en el AD!',
+                                    message: '<strong>No se pudo asignar el Grupo al Usuario, intente más tarde.</strong>',
+                                    type: BootstrapDialog.TYPE_DANGER
+                                });
+                            }
+                        }
+                    },
+                    complete: function () {
+                        $("#loading-modal").hide();
+                    },
+                    error: function (data) {
+                        $("#loading-modal").hide();
+                        BootstrapDialog.alert({
+                            title: '¡Error al asociar Grupo a Usuario en el AD!',
+                            message: '<strong>' + data.Error + '</strong>',
+                            type: BootstrapDialog.TYPE_DANGER
+                        });
+                    }
+                });
+            }            
+        }
+
+        function MostrarCargando() {
+            $("#loading-modal").show();            
+        }
+    </script>

@@ -1,0 +1,66 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.MantenedorLicenciaVm
+@{
+    ViewBag.Title = "Mantenedor Licencia";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Editar</h1>
+        <div class="form-inline col-md-3">
+            <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-save"></span>
+                <input type="submit" value="Guardar" class="btnInput" id="Guardar" data-loading-text="Guardando..." />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Mantenedor Licencias</h2>
+        <div class="col-md-8">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(m => m.IdMantenedorLicencia)
+            <table class="table table-secondary">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.Codigo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.Codigo, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Codigo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.RolCargoId)</th>
+                        <td>
+                            @Html.DropDownListFor(m => m.RolCargoId, new SelectList(Model.RolCargoSelectListItem, "Value", "Text", ""), "--Seleccione--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.RolCargoId)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.LicenciaId)</th>
+                        <td>
+                            @Html.DropDownListFor(m => m.LicenciaId, new SelectList(Model.LicenciaSelectListItem, "Value", "Text", ""), "--Seleccione--", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.LicenciaId)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>
+<script>
+    $("#btnSubmit").on("click", function () {
+        var form = document.getElementsByTagName("form");
+        $(form).submit();
+        var $btn = $("#Guardar");
+        $btn.button('loading');
+    });
+</script>

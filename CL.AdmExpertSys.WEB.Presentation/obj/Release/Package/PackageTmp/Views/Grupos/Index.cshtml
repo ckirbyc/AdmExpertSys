@@ -1,0 +1,71 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@using CL.AdmExpertSys.WEB.Presentation.Models
+@using CL.AdmExpertSys.WEB.Core.Domain.Enums
+@model IEnumerable<GrupoAdVm>
+    @{
+        ViewBag.Title = "Grupos AD";
+        Layout = "~/Views/_Main.cshtml";
+    }
+
+    <div class="row">
+        @if ((int)EnumPerfilUsuario.ADMP == SessionViewModel.Usuario.PerfilId)
+        {
+            <h1 class="page-header colorOrange col-md-9">Grupos Active Directoy</h1>
+            <div class="form-inline col-md-3">
+                <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Create", "Grupos")">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Nuevo
+                </a>
+            </div>
+        }
+        else
+        {
+            <h1 class="page-header colorOrange col-md-12">Grupos Active Directoy</h1>
+        }
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Vista de todos los Grupos existentes en el AD.</h2>
+    </div>
+    <div class="row">
+        <table class="table table-hover tablaMantenedores">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>                                      
+                    <th>Acción</th>                    
+                </tr>
+            </thead>
+            @foreach (var item in Model.OrderBy(x => x.NumeroGrupo))
+            {
+                var item1 = item;
+                <tr>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.NumeroGrupo)</td>
+                    <td class="textCenter" title="@Html.DisplayFor(m => item1.UbicacionGrupo)"><a href="#">@Html.DisplayFor(m => item1.NombreGrupo)</a></td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.CorreoGrupo)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.TipoGrupo)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.DescripcionGrupo)</td>
+                    @if ((int)EnumPerfilUsuario.ADMP == SessionViewModel.Usuario.PerfilId)
+                    {
+                        <td class="columnaAcciones textCenter">
+                            @Html.ActionLink(" ", "Edit", new { nombreGrupo = item1.NombreGrupo }, new { @class = "glyphicon glyphicon-edit", title = "Editar" }) <label>|</label>
+                            @Html.ActionLink(" ", "Delete", new { nombreGrupo = item1.NombreGrupo }, new { @class = "glyphicon glyphicon-remove colorOrange", title = "Eliminar" })
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="columnaAcciones textCenter">
+                            @Html.ActionLink(" ", "Edit", new { nombreGrupo = item1.NombreGrupo }, new { @class = "glyphicon glyphicon-edit", title = "Editar" })                        
+                        </td>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+    <script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+    <script src="~/Scripts/Menu/ActivaMenu.js"></script>
+    <script>
+        $('#Grupos').addClass('active');
+    </script>

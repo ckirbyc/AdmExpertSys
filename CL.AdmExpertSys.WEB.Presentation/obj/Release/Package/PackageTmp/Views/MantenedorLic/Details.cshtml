@@ -1,0 +1,49 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.MantenedorLicenciaVm
+@{
+    ViewBag.Title = "Mantenedor Licencia";
+    Layout = "~/Views/_Main.cshtml";
+    var idMant = Convert.ToInt64(Model.IdMantenedorLicencia);
+    var codigoMant = Convert.ToInt64(Model.Codigo);
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Detalles</h1>
+    <div class="form-inline col-md-3">
+        <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Edit", "MantenedorLic", new { id = Model.IdMantenedorLicencia })">
+            <span class="glyphicon glyphicon-edit"></span>
+            Editar
+        </a>
+    </div>
+</div>
+<div class="row">
+    <h2 class="sub-header">Mantenedor Licencia</h2>
+    <div class="col-md-6">
+        <table class="table table-secondary">
+            <tbody>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.IdMantenedorLicencia)</th>
+                    <td>@idMant</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Codigo)</th>
+                    <td>@codigoMant</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.RolCargoId)</th>
+                    <td>@Html.DisplayFor(m => m.ROL_CARGO.Nombre)</td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(m => m.LicenciaId)</th>
+                    <td>@Html.DisplayFor(m => m.LICENCIAS_O365.Nombre)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>

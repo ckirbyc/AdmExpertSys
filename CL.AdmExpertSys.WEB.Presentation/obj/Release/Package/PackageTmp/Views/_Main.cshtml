@@ -1,0 +1,138 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.Models
+<!DOCTYPE html>
+<html lang="en">
+<script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script>
+<head>
+
+    <!--[if lt IE 9]>
+            <script type="text/javascript">
+                document.createElement("nav");
+                document.createElement("header");
+                document.createElement("footer");
+                document.createElement("section");
+                document.createElement("article");
+                document.createElement("aside");
+                document.createElement("hgroup");
+            </script>
+        <![endif]-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="~/Img/favicon.ico" type="image/x-icon" />
+    <title>@ViewBag.Title - Easy User Agrosuper</title>
+
+    <!--SCRIPT-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/otros")
+    <script type="text/javascript" src="~/Scripts/bootstrap-dialog.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jstree/jstree.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/TableTools/js/dataTables.tableTools.js"></script>    
+    <!-- CSS -->
+    @Styles.Render("~/Content/css")
+    <link href="~/Css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Css/tree/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/TableTools/css/dataTables.tableTools.css" rel="stylesheet" type="text/css" />    
+    <!--CSS-PRINT-->
+    <link href="@Styles.Url("~/Css/media-print.css")" rel="stylesheet" type="text/css" media="print" />
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Activar navegaci&oacute;n</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("HomeSysWeb", "Home")" onclick="javascript:$('#loading-modal').show();">
+                    <img src="@Url.Content("~/Img/logo_header.png")" style="width: 100px; margin-top: -25px;" alt="" />
+                    <div style="font-weight: bold; font-size: 14px;" class="hideMobile">
+                        <span class="saniHeaderLink colorWhite"></span> <span class="colorWhite">WEB EASY USER OFFICE 365</span>
+                    </div>
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="@Url.Action("HomeSysWeb", "Home")" title="Home" onclick="javascript:$('#loading-modal').show();"><span class="glyphicon glyphicon-home"></span></a></li>
+                    <li><a href="@Url.Action("Index", "Home")" title="Mantenedores"><span class="glyphicon glyphicon-wrench"></span></a></li>
+                    <li><a href="#" target="_blank" title="Ayuda"><span class="glyphicon glyphicon-question-sign"></span></a></li>
+                    <li><a href="@Url.Action("Index", "Home")" title="Usuario"><span class="glyphicon glyphicon-user"></span>&nbsp;@SessionViewModel.Usuario.Nombre</a></li>
+                    <li><a href="@Url.Action("Index", "Home")" title="Cerrar Sesión"><span class="glyphicon glyphicon-off"></span>&nbsp;Cerrar sesi&oacute;n</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                @if (IsSectionDefined("PanelPrimario"))
+                {
+                    @RenderSection("PanelPrimario")
+                }
+                else if (ViewBag.Mantenedor != null && ViewBag.Mantenedor)
+                {
+                    <div class="panel panel-primary text-center">
+                        <div class="panel-footer text-center">
+                            <span class="fa fa-edit bigicon colorSky"></span>
+                        </div>
+                        <div style="margin: 10px;">
+                            @ViewBag.Title
+                        </div>
+                    </div>
+                }                
+
+                @if (IsSectionDefined("Menu"))
+                {
+                    @RenderSection("Menu")
+                }
+                else if (ViewBag.Mantenedor != null && ViewBag.Mantenedor)
+                {
+                    <div></div>
+                }
+                else
+                {
+                    Html.RenderPartial("~/Views/Partials/_Menu.cshtml");
+                }                
+            </div>
+
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                @RenderBody()
+                <div id="loading-modal"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $('#userMenuHead,#userMenuArrow').on('click', function (e) {
+            if (!$(this).is(e.target)) return; // from Arun P Johny
+            $('#userMenuArrow').toggleClass('glyphicon-chevron-up glyphicon-chevron-down ', 200);
+        });
+    </script>
+
+    <script type="text/javascript">
+        jQuery(function ($) {
+            $('.panel-heading span.clickable').on("click", function () {
+                if ($(this).hasClass('panel-collapsed')) {
+                    // expand the panel
+                    $(this).parents('.panel').find('.panel-body').slideDown();
+                    $(this).removeClass('panel-collapsed');
+                    $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+                }
+                else {
+                    // collapse the panel
+                    $(this).parents('.panel').find('.panel-body').slideUp();
+                    $(this).addClass('panel-collapsed');
+                    $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

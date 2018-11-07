@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/_Login.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 main">
+
+            <div class="panel panel-primary">
+                <!-- Default panel contents -->
+                <div class="panel-heading text-center">
+                    <div class="col-xs-10 col-md-5">
+                        <img class="img-responsive saniHeaderLoginImg" src="@Url.Content("~/Img/logo_header.png")" width="50%" alt="Agrosuper logo">
+                    </div>
+                    <div class="text-left">
+                        <h4 class="saniHeaderLogin colorWhite">Easy User</h4>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    @*<div class="col-md-5">
+                        <img alt="Snoopy image" class="img-responsive" src="~/Img/vecinos.png">
+                    </div>*@
+                    <div class="alert alert-danger col-md-12" role="alert">
+
+                        <p>
+                            @ViewBag.Mensaje
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("Volver al inicio", "Index", "Home")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

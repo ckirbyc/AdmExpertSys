@@ -1,0 +1,65 @@
+﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
+@model IEnumerable<MantenedorLicenciaVm>
+@{
+    ViewBag.Title = "Mantenedor de Licencias";
+    Layout = "~/Views/_Main.cshtml";
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Mantenedor de Licencias</h1>
+    <div class="form-inline col-md-1">
+        <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("DescargarPlanilla", "MantenedorLic")">
+            <span class="glyphicon glyphicon-download"></span>
+            Descargar
+        </a>
+    </div>
+    <div class="form-inline col-md-1">
+        <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("CargarPlanilla", "MantenedorLic")">
+            <span class="glyphicon glyphicon-upload"></span>
+            Cargar
+        </a>
+    </div>
+    <div class="form-inline col-md-1">
+        <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Create", "MantenedorLic")">
+            <span class="glyphicon glyphicon-plus"></span>
+            Nuevo
+        </a>
+    </div>        
+</div>
+<div class="row">
+    <h2 class="sub-header">Vista de todos los datos existentes en Mantenedor de Licencias.</h2>    
+</div>
+<div class="row">
+    <table class="table table-hover tablaMantenedores">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Código</th>
+                <th>Rol Cargo</th>
+                <th>Licencia</th>                
+                <th>Acción</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.OrderBy(x => x.IdMantenedorLicencia))
+        {
+            var item1 = item;
+            var idMantLic = Convert.ToInt64(item1.IdMantenedorLicencia);            
+            <tr>
+                <td class="textCenter">@idMantLic</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Codigo)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.ROL_CARGO.Nombre)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.LICENCIAS_O365.Nombre)</td>                
+                <td class="columnaAcciones textCenter">
+                    @Html.ActionLink(" ", "Details", new { id = item1.IdMantenedorLicencia }, new { @class = "glyphicon glyphicon-search", title = "Detalles" }) <label>|</label>
+                    @Html.ActionLink(" ", "Edit", new { id = item1.IdMantenedorLicencia }, new { @class = "glyphicon glyphicon-edit", title = "Editar" }) <label>|</label>
+                    @Html.ActionLink(" ", "Delete", new { id = item1.IdMantenedorLicencia }, new { @class = "glyphicon glyphicon-remove colorOrange", title = "Eliminar" })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>

@@ -1,0 +1,70 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.MantenedorLicenciaFileVm
+@{
+    ViewBag.Title = "Cargar Planilla Licencias";
+    Layout = "~/Views/_Main.cshtml";
+    var error = (string)ViewData["errorExcel"];
+}
+
+@using (Html.BeginForm("ImportarExcel", "MantenedorLic", FormMethod.Post, new { enctype = "multipart/form-data", @id = "form-importar-excel" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)    
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-8">Cargar Planilla de Licencias</h1>
+        <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+            <span class="glyphicon glyphicon-upload"></span>
+            <input type="submit" value="Cargar" class="btnInput" id="Cargar" data-loading-text="Validando espere por favor..." />
+        </div>
+    </div>
+
+    <div class="row">
+        <h2 class="sub-header">Seleccionar Archivo</h2>
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="alert alert-warning">
+                <p>@error</p>
+            </div>
+        }    
+        <div class="col-md-10">
+            <table class="table table-secondary">
+                <tbody>                    
+                    <tr>
+                        <th>Archivo</th>
+                        <td>
+                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                <div class="form-control" data-trigger="fileinput">
+                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                    <span class="fileinput-filename"></span>
+                                </div>
+                                <span class="input-group-addon btn btn-default btn-file">
+                                    <span class="fileinput-new">Seleccionar Archivo</span>
+                                    <span class="fileinput-exists">Cambiar</span>
+                                    <input id="Archivo" type="file" name="Archivo">
+                                </span>
+                                <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Archivo)                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>            
+        </div>
+    </div>
+}
+
+<div class="row">
+    <a href="@Url.Action("Index", "MantenedorLic")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Licencias').addClass('active');
+</script>
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").off('click').click(function() {
+            $("#loading-modal").show();
+            var form = $("#form-importar-excel");
+            form.submit();
+        });
+    });
+</script>

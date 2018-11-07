@@ -1,0 +1,113 @@
+﻿@model CL.AdmExpertSys.WEB.Presentation.ViewModel.GrupoAdVm
+@{
+    ViewBag.Title = "Grupos AD";
+    Layout = "~/Views/_Main.cshtml";    
+}
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Crear</h1>
+        <div class="form-inline col-md-3">
+            <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-plus"></span>
+                <input type="submit" value="Crear" class="btnInput" id="Crear" data-loading-text="Creando..." />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2 class="sub-header">Grupos de Distribución</h2>
+        <div class="col-md-8">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <table class="table table-secondary">
+                <tbody>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.NombreGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.NombreGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.NombreGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.DescripcionGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.DescripcionGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.DescripcionGrupo)
+                        </td>
+                    </tr>                    
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.CorreoGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.CorreoGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.CorreoGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayNameFor(m => m.UbicacionGrupo)</th>
+                        <td>
+                            @Html.TextBoxFor(m => m.UbicacionGrupo, new { @class = "form-control", @maxlength = "100" })
+                            @Html.ValidationMessageFor(m => m.UbicacionGrupo)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">@Html.DisplayName("Empresas")</th>
+                        <td>
+                            <div id="jstree">
+                                <!-- in this example the tree is populated from inline HTML -->
+                                <ul>
+                                    @if (Model.EstructuraArbolAd != null)
+                                    {
+                                        <li>
+                                            @Model.EstructuraArbolAd.Cabecera
+                                            <ul>
+                                                @Html.Raw(Model.EstructuraArbolAd.CodArbolHtml)
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </td>                        
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+<div class="row">
+    <a href="@Url.Action("Index")" class="btn btn-info"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp;Volver</a>
+</div>
+<script src="~/Scripts/Menu/ActivaMenu.js"></script>
+<script>
+    $('#Grupos').addClass('active');
+</script>
+<script>
+    $(document).ready(function () {
+        $("#UbicacionGrupo").attr("disabled", true);
+        $('#jstree').jstree();
+
+        //Seleccionar OU desde el Arbol
+        $('#jstree').on("changed.jstree", function (e, data) {                        
+            var ldap = data.selected[0];            
+            $("#UbicacionGrupo").val(ldap);                      
+        });                
+        
+        //Seleccionar nodo existente
+        var ubicGrupo = '@Model.UbicacionGrupo';
+        var myLiId = '#' + ubicGrupo;
+        $("#jstree").jstree("select_node", myLiId);
+        
+
+        $("#btnSubmit").on("click", function () {
+            $("#UbicacionGrupo").attr("disabled", false);
+            var form = document.getElementsByTagName("form");
+            var $btn = $("#Crear");
+            $btn.button('loading');
+            $("input").focus(function () {
+                $btn.button('reset');
+            });
+            $(form).submit();
+        });
+    });
+</script>
+

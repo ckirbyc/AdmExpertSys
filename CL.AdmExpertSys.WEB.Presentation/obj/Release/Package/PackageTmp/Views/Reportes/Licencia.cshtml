@@ -1,0 +1,166 @@
+﻿@using CL.AdmExpertSys.WEB.Core.Domain.Dto
+@model IEnumerable<UsuarioAd>
+@{
+    ViewBag.Title = "Reporte Cuentas de Usuarios";
+    Layout = "~/Views/_Main.cshtml";
+    bool esProceso = ViewBag.EstadoProceso;
+    bool existeReg = ViewBag.ExistenRegistro;
+
+    var msgProceso = string.Empty;
+    if (esProceso)
+    {
+        msgProceso = "Proceso en ejecución, actualice la página para comprobar que el proceso ha terminado.";
+    }    
+}
+
+<div class="row">
+    <h1 class="page-header colorOrange col-md-9">Listado cuentas de usuarios AD con Licencias Office 365.</h1>
+    <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
+        <span class="glyphicon glyphicon-download"></span>
+        <input type="button" value="Descargar" class="btnInput" id="Descargar" title="@msgProceso" />
+    </div>
+    <div id="btnProcesar" class="btn btn-primary pull-right btn-sm">
+        <span class="glyphicon glyphicon-transfer"></span>
+        <input type="button" value="Procesar" class="btnInput" id="Procesar" title="@msgProceso" />
+    </div>
+</div>
+<div class="row">
+    <h2 class="sub-header">Vista de todos las cuentas de usuarios existentes en el AD más licencias de Ofiice 365.</h2>
+</div>
+<div class="row">
+    <table class="table table-hover tablaMantenedores">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Cuenta</th>
+                <th>Descripción</th>
+                <th>Upn</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model.OrderBy(x => x.SamAccountName))
+        {
+            var item1 = item;
+            <tr>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Name)</td>
+                <td class="textCenter" title="@Html.DisplayFor(m => item1.DistinguishedName)"><a href="#">@Html.DisplayFor(m => item1.SamAccountName)</a></td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.Description)</td>
+                <td class="textCenter">@Html.DisplayFor(m => item1.UpnPrefijo)</td>
+            </tr>
+        }
+    </table>
+</div>
+<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+<script src="~/Scripts/Menu/ActivaMenu1.js"></script>
+<script>
+    $('#RepCtaUsrLic').addClass('active');
+</script>
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").off('click').click(function () {
+            if ('@esProceso' == 'True' || '@existeReg' == 'False') {
+                BootstrapDialog.alert({
+                    title: '¡Validación Descarga Archivo!',
+                    message: '<strong>No se puede iniciar la descarga del archivo, se puede deber a:</br>1.- Proceso en ejecución.</br>2.- No existen datos a descargar.</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+                return;
+            }
+            monitorDescargaExcel();
+            window.location = '@Url.Action("ExportarExcel", "Reportes")?licencia=S&processToken=' + @ViewBag.processToken;
+        });
+        $("#btnProcesar").off('click').click(function () {
+            if ('@esProceso' == 'True' || '@existeReg' == 'True') {
+                BootstrapDialog.alert({
+                    title: '¡Validación Inicio Proceso!',
+                    message: '<strong>No se puede iniciar el proceso de generación de datos del reporte, se puede deber a:</br>1.- Proceso en ejecución.</br>2.- Existen datos a descargar.</strong>',
+                    type: BootstrapDialog.TYPE_WARNING
+                });
+                return;
+            }
+
+            BootstrapDialog.show({
+                title: 'Confirmación Procesar Datos.',
+                message: '<strong>¿Está seguro de iniciar el proceso de generación de datos para el reporte de Licencias?</br>Proceso toma alrededor de una hora.</strong>',
+                type: BootstrapDialog.TYPE_INFO,
+                buttons:
+                    [
+                        {
+                            label: 'Si',
+                            cssClass: 'btn-success',
+                            action: function (dialog) {
+                                dialog.close();
+                                $("#btnProcesar").attr("disabled", true);
+                                $("#loading-modal").show();                                
+                                procesarDatosReporte();                                
+                            }
+                        },
+                        {
+                            label: 'No',
+                            cssClass: 'btn-danger',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }
+                    ]
+            });
+        });
+        function procesarDatosReporte()
+        {
+            $.ajax({
+                url: '@Url.Action("ProcesarDatos", "Reportes")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                dataType: 'json',
+                processData: false,                
+                success: function (data) {
+                    if (data.Session == false) {
+                        BootstrapDialog.alert({
+			                    title: '¡Validación Sesión!',
+			                    message: '<strong>Su sesión ha expirado. Seleccione <a href="@Url.Action("IndexLogin", "Error", new { mensajeError = "Su sesión ha expirado." })">aquí</a> para iniciar sesión nuevamente</strong>',
+			                    type: BootstrapDialog.TYPE_WARNING
+		                    });
+                        return;
+                    }
+
+                    if (data.Validar) {
+                        BootstrapDialog.alert({
+                            title: '¡Inicio Proceso Exitoso!',
+                            message: '<strong>El proceso para la obtención de los datos del reporte se ha iniciado correctamente.</strong>',
+                            type: BootstrapDialog.TYPE_SUCCESS
+                        });
+                    } else {
+                        BootstrapDialog.alert({
+                            title: '¡Inicio Proceso Erroneo!',
+                            message: '<strong>El proceso para la obtención de los datos del reporte no ha podido iniciar. Intente más tarde.</strong>',
+                            type: BootstrapDialog.TYPE_WARNING
+                        });
+                    }
+                },
+                complete: function () {
+                    $("#loading-modal").hide();
+                },
+                error: function () {
+                    $("#loading-modal").hide();   
+                    BootstrapDialog.alert({
+                        title: '¡Inicio Proceso Erroneo!',
+                        message: '<strong>El proceso para la obtención de los datos del reporte no ha podido iniciar. Intente más tarde.</strong>',
+                        type: BootstrapDialog.TYPE_DANGER
+                    });
+                }
+            });
+        }
+        function monitorDescargaExcel() {
+            $("#loading-modal").show();
+            var interval = setInterval(function () {
+                var cookieValue = $.cookie('processToken');
+                if (cookieValue == '@ViewBag.processToken') {
+                    $("#loading-modal").hide();
+                    clearInterval(interval);
+                    $.removeCookie('processToken', { path: '/' });
+                }
+            }, 1000);
+        }
+    });
+</script>
+
