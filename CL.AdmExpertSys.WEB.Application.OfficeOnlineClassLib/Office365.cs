@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
+using System.Net;
 using System.Security;
 using System.Text;
 
@@ -829,25 +830,31 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
         /// <returns></returns>
         public bool ForzarDirSync()
         {
-            //CommonServices = new Common();
+            CommonServices = new Common();
             //var sRutaPsExec = CommonServices.GetAppSetting("RutaPsExec");
-            //var sUserPsExec = CommonServices.GetAppSetting("UserPsExec");
-            //var sPassPsExec = CommonServices.GetAppSetting("PassPsExec");
+            var sUserPsExec = CommonServices.GetAppSetting("UserPsExec");
+            var sPassPsExec = CommonServices.GetAppSetting("PassPsExec");
             //var sServerPsExec = CommonServices.GetAppSetting("ServerPsExec");
             //var sRutaBatPsExec = CommonServices.GetAppSetting("RutaBatPsExec");
             try
             {
+                SecureString securePassString = new NetworkCredential(string.Empty, sPassPsExec).SecurePassword;
                 var processInfo = new ProcessStartInfo
                 {
                     //FileName = @"C:\\PSTools\\PsExec64.exe",
                     //Arguments = @"-d \\192.168.19.50 -u AS\mauricio.gonzalez -p inicio01 C:\\sync.bat"
-                    FileName = @"C:\\sync.bat"
+                    FileName = @"C:\\sync.bat",
+                    UserName = sUserPsExec,
+                    Password = securePassString
                 };
 
                 using (Process process = Process.Start(processInfo))
                 {
                     if (process != null) process.WaitForExit();
                 }
+
+                securePassString.Dispose();
+
                 //var processInfo = new ProcessStartInfo
                 //{
                 //    FileName = sRutaPsExec,

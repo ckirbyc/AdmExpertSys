@@ -30,3 +30,12 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.We
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj.CopyComplete
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.dll
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csprojAssemblyReference.cache
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj.CoreCompileInputs.cache
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.csproj.CopyComplete
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.dll
+F:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional\obj\Release\CL.AdmExpertSys.Web.Infrastructure.LogTransaccional.pdb

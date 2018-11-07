@@ -60,31 +60,20 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                     usuarioModificacion
                 };
 
-                HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");
-
-                HomeSysWebFactory = new HomeSysWebFactory();
-                try
-                {
-                    HomeSysWebFactory.ForzarDirSync();
-                }
-                catch (Exception ex)
-                {
-                    HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
-                    Utils.LogErrores(ex);
-                }
+                //HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");               
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
 
-                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                 _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta)
                 {
                     IsBackground = true,
                     Priority = ThreadPriority.Highest
                 };
                 _hiloEjecucion.Start(listaEstCuentaVmHilo);
-                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
 
                 return new JsonResult
                 {
@@ -112,9 +101,20 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [SoapDocumentMethod(OneWay = true)]
         public void InciarProcesoHiloSincronizarCuenta(object estadoCuentaHilo)
         {
-            var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
+            //var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
             try
-            {                               
+            {
+                HomeSysWebFactory = new HomeSysWebFactory();
+                try
+                {
+                    HomeSysWebFactory.ForzarDirSync();
+                }
+                catch (Exception ex)
+                {
+                    //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                    Utils.LogErrores(ex);
+                }
+
                 var estadoCuentaLista = (List<EstadoCuentaUsuarioVm>)estadoCuentaHilo.CastTo<List<object>>()[0];
                 
                 var comm = new Common();
@@ -135,18 +135,18 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             }
                             catch (Exception ex)
                             {
-                                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                                 Utils.LogErrores(ex);
                                 break;
                             }
                         }
                     }                    
                 }
-                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");                
+                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");                
             }
             catch (Exception ex)
             {               
-                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                 var msgError = @"Error en proceso asincronico Syncronizar : " + ex.Message;
                 var exNew = new Exception(msgError);
                 Utils.LogErrores(exNew);                

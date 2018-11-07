@@ -15,10 +15,10 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:47</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>10/26/2018 13:59:56</publishTime>
+      <publishTime>10/26/2018 14:32:31</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>10/26/2018 13:59:54</publishTime>
+      <publishTime>10/26/2018 14:32:31</publishTime>
     </File>
     <File Include="bin/AutoMapper.dll">
       <publishTime>06/01/2018 20:28:46</publishTime>
@@ -858,7 +858,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:46</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>10/26/2018 13:59:45</publishTime>
+      <publishTime>10/26/2018 14:32:24</publishTime>
     </File>
     <File Include="Scripts/autoNumeric.js">
       <publishTime>06/01/2018 20:28:32</publishTime>
@@ -1137,7 +1137,7 @@ editando este archivo MSBuild. Para conocer más acerca de esto, visite http://g
       <publishTime>06/01/2018 20:28:32</publishTime>
     </File>
     <File Include="Views/LicCuenta/Index.cshtml">
-      <publishTime>10/26/2018 13:57:03</publishTime>
+      <publishTime>10/26/2018 14:31:44</publishTime>
     </File>
     <File Include="Views/MantenedorLic/CargarPlanilla.cshtml">
       <publishTime>06/01/2018 20:28:32</publishTime>
