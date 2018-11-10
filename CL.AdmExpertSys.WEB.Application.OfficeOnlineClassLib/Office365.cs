@@ -357,28 +357,28 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 {
                     desLic = new List<string>
                     {
-                        "PROJECTWORKMANAGEMENT", 
-                        "INTUNE_O365", 
-                        "YAMMER_ENTERPRISE", 
-                        "RMS_S_ENTERPRISE", 
-                        "SWAY", 
-                        "OFFICESUBSCRIPTION", 
-                        "MCOSTANDARD", 
-                        "SHAREPOINTWAC", 
-                        "SHAREPOINTENTERPRISE"
+                        "BPOS_S_TODO_2",
+                        "STREAM_O365_E3",
+                        "Deskless",
+                        "FLOW_O365_P2",
+                        "POWERAPPS_O365_P2",
+                        "SWAY",
+                        "INTUNE_O365",
+                        "RMS_S_ENTERPRISE"
                     };
                 }
                 else if (sLicense.Equals(codStandardPack))
                 {
                     desLic = new List<string>
                     {
-                        "SHAREPOINTWAC",
-                        "PROJECTWORKMANAGEMENT",
+                        "OFFICEMOBILE_SUBSCRIPTION",
+                        "BPOS_S_TODO_1",
+                        "STREAM_O365_E1",
+                        "Deskless",
+                        "FLOW_O365_P1",
+                        "POWERAPPS_O365_P1",
                         "SWAY",
-                        "INTUNE_O365",
-                        "YAMMER_ENTERPRISE",
-                        "MCOSTANDARD",
-                        "SHAREPOINTSTANDARD"
+                        "INTUNE_O365"
                     };
                 }
                 else
@@ -842,12 +842,18 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 {
                     //FileName = @"C:\\PSTools\\PsExec64.exe",
                     //Arguments = @"-d \\192.168.19.50 -u AS\mauricio.gonzalez -p inicio01 C:\\sync.bat"
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
                     FileName = @"C:\\sync.bat"                    
                 };
 
                 using (Process process = Process.Start(processInfo))
                 {
-                    if (process != null) process.WaitForExit();
+                    if (process != null)
+                    {
+                        process.WaitForExit();
+                    }                    
+                    process.Close();
                 }
 
                 //securePassString.Dispose();
