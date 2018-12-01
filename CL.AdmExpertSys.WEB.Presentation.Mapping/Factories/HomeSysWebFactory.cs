@@ -516,63 +516,41 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
         {
             try
             {
-                var listaGrupo = new List<GrupoAdVm>();
+                List<GrupoAdVm> listaGrupo;
                 AdFactory = new AdLib();
 
-                var userAd = AdFactory.GetUser(adUsr);
-
-                var j = 1;
-                foreach (GroupPrincipal objGroup in userAd.GetGroups())
+                using (var userAd = AdFactory.GetUser(adUsr))
                 {
-                    if (!(bool)objGroup.IsSecurityGroup)
-                    {
-                        var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
-                        var grupoVm = new GrupoAdVm
-                        {
-                            NumeroGrupo = j,
-                            NombreGrupo = objGroup.Name,
-                            UbicacionGrupo = objGroup.DistinguishedName,
-                            CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
-                            ExisteGrupo = true,
-                            DescripcionGrupo = objGroup.Description,
-                            TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
-                            Asociado = true
-                        };
-                        listaGrupo.Add(grupoVm);
-                        j++;
-                    }
-                    objGroup.Dispose();
-                }
+                    listaGrupo = AdFactory.GetGroupsUserByUserPrincipal(userAd);
+                    var countListaGrupo = listaGrupo.Count;
 
-                var objListaGroup = AdFactory.GetListGroupByOu(sOu);
+                    var objListaGroup = AdFactory.GetListGroupByOu(sOu);
 
-                var i = j;                
-                foreach (GroupPrincipal objGroup in objListaGroup.ToList())
-                {                                       
-                    var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);
-                    if (!asocUsrGrp)
+                    var i = countListaGrupo == 0 ? 1 : countListaGrupo;
+                    foreach (GroupPrincipal objGroup in objListaGroup.ToList())
                     {
-                        var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
-                        var grupoVm = new GrupoAdVm
+                        var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);
+                        if (!asocUsrGrp)
                         {
-                            NumeroGrupo = i,
-                            NombreGrupo = objGroup.Name,
-                            UbicacionGrupo = objGroup.DistinguishedName,
-                            CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
-                            ExisteGrupo = true,
-                            DescripcionGrupo = objGroup.Description,
-                            TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
-                            Asociado = asocUsrGrp
-                        };
-                        listaGrupo.Add(grupoVm);
-                        i++;
+                            var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+                            var grupoVm = new GrupoAdVm
+                            {
+                                NumeroGrupo = i,
+                                NombreGrupo = objGroup.Name,
+                                UbicacionGrupo = objGroup.DistinguishedName,
+                                CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                                ExisteGrupo = true,
+                                DescripcionGrupo = objGroup.Description,
+                                TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
+                                Asociado = asocUsrGrp
+                            };
+                            listaGrupo.Add(grupoVm);
+                            i++;
+                        }
+                        objGroup.Dispose();
                     }                    
-                    objGroup.Dispose();                    
-                }
-
-                userAd.Dispose();                
-
-                return listaGrupo;
+                    return listaGrupo;
+                };                
             }
             catch (Exception ex)
             {

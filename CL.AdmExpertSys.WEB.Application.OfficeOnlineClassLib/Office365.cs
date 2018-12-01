@@ -828,20 +828,11 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
         /// </summary>
         /// <returns></returns>
         public bool ForzarDirSync()
-        {
-            //CommonServices = new Common();
-            //var sRutaPsExec = CommonServices.GetAppSetting("RutaPsExec");
-            //var sUserPsExec = CommonServices.GetAppSetting("UserPsExec");
-            //var sPassPsExec = CommonServices.GetAppSetting("PassPsExec");
-            //var sServerPsExec = CommonServices.GetAppSetting("ServerPsExec");
-            //var sRutaBatPsExec = CommonServices.GetAppSetting("RutaBatPsExec");
+        {            
             try
-            {
-                //SecureString securePassString = new NetworkCredential(string.Empty, sPassPsExec).SecurePassword;
+            {                
                 var processInfo = new ProcessStartInfo
-                {
-                    //FileName = @"C:\\PSTools\\PsExec64.exe",
-                    //Arguments = @"-d \\192.168.19.50 -u AS\mauricio.gonzalez -p inicio01 C:\\sync.bat"
+                {                    
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     FileName = @"C:\\sync.bat"                    
@@ -850,25 +841,11 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
                 using (Process process = Process.Start(processInfo))
                 {
                     if (process != null)
-                    {
+                    {                        
                         process.WaitForExit();
-                    }                    
+                    }
                     process.Close();
                 }
-
-                //securePassString.Dispose();
-
-                //var processInfo = new ProcessStartInfo
-                //{
-                //    FileName = sRutaPsExec,
-                //    Arguments = string.Format("-d \\{0} -u {1} -p {2} {3}", sServerPsExec, sUserPsExec, sPassPsExec, sRutaBatPsExec),
-                //    UseShellExecute = false
-                //};
-
-                //using (var process = Process.Start(processInfo))
-                //{
-                //    if (process != null) process.WaitForExit();
-                //}
 
                 return true;
             }

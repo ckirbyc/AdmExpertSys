@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot;
 using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
+using CL.AdmExpertSys.WEB.Infrastructure.CompositionRoot;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Mapping;
 using CL.AdmExpertSys.WEB.Presentation.Models;
@@ -10,7 +10,6 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using CL.AdmExpertSys.WEB.Presentation.ViewModel;
 
 namespace CL.AdmExpertSys.WEB.Presentation
 {
@@ -42,7 +41,8 @@ namespace CL.AdmExpertSys.WEB.Presentation
                 SessionViewModel.ListaOuAd = listaOuAd;
 
                 var estructura = HomeSysWebFactory.GetArquitecturaArbolAd(listaOuAd);
-                SessionViewModel.EstructuraArbolAd = estructura;                
+                SessionViewModel.EstructuraArbolAd = estructura;
+                //SessionViewModel.EstructuraArbolAd = new Core.Domain.Dto.EstructuraArbolAd();
             }
             catch (Exception ex)
             {

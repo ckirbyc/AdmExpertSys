@@ -37,7 +37,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
             LogInfoFactory = logInfoFactory;
             EstadoCuentaUsuarioFactory = estadoCuentaUsuarioFactory;
             MantenedorLicenciaFactory = mantenedorLicenciaFactory;
-            UsuarioFactory = usuarioFactory;
+            UsuarioFactory = usuarioFactory;            
         }
 
         [AllowNotAutenticate]

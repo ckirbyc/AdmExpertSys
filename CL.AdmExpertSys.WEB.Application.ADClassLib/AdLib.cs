@@ -1266,5 +1266,37 @@ namespace CL.AdmExpertSys.WEB.Application.ADClassLib
                 
             };            
         }
+
+        public List<GrupoAdVm> GetGroupsUserByUserPrincipal(UserPrincipal user)
+        {          
+            var listGroups = new List<GrupoAdVm>();
+            PropertyValueCollection groupsPerson = ((DirectoryEntry)user.GetUnderlyingObject()).Properties["memberOf"];            
+            var count = 1;
+            foreach (string groupName in groupsPerson)
+            {
+                using (var objGroup = GetGroup(groupName))
+                {
+                    if (!(bool)objGroup.IsSecurityGroup)
+                    {
+                        //var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+                        var grupoVm = new GrupoAdVm
+                        {
+                            NumeroGrupo = count,
+                            NombreGrupo = objGroup.Name,
+                            UbicacionGrupo = objGroup.DistinguishedName,
+                            //CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                            ExisteGrupo = true,
+                            DescripcionGrupo = objGroup.Description,
+                            TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
+                            Asociado = true
+                        };
+                        listGroups.Add(grupoVm);
+                        count++;
+                    }
+                };
+            }            
+
+            return listGroups;
+        }
     }
 }
