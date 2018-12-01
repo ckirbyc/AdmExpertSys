@@ -521,24 +521,23 @@ namespace CL.AdmExpertSys.WEB.Presentation.Mapping.Factories
 
                 using (var userAd = AdFactory.GetUser(adUsr))
                 {
-                    listaGrupo = AdFactory.GetGroupsUserByUserPrincipal(userAd);
-                    var countListaGrupo = listaGrupo.Count;
+                    listaGrupo = AdFactory.GetGroupsUserByUserPrincipal(userAd);                    
 
                     var objListaGroup = AdFactory.GetListGroupByOu(sOu);
 
-                    var i = countListaGrupo == 0 ? 1 : countListaGrupo;
+                    var i = listaGrupo.Count + 1;
                     foreach (GroupPrincipal objGroup in objListaGroup.ToList())
                     {
                         var asocUsrGrp = AdFactory.IsUserGroupMember(userAd, objGroup);
                         if (!asocUsrGrp)
                         {
-                            var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
+                            //var correo = ((DirectoryEntry)objGroup.GetUnderlyingObject()).Properties["mail"];
                             var grupoVm = new GrupoAdVm
                             {
                                 NumeroGrupo = i,
                                 NombreGrupo = objGroup.Name,
                                 UbicacionGrupo = objGroup.DistinguishedName,
-                                CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
+                                //CorreoGrupo = correo.Value != null ? correo.Value.ToString() : string.Empty,
                                 ExisteGrupo = true,
                                 DescripcionGrupo = objGroup.Description,
                                 TipoGrupo = (bool)objGroup.IsSecurityGroup ? "Grupo Seguridad - " + objGroup.GroupScope.Value : "Grupo Distribución - " + objGroup.GroupScope.Value,
