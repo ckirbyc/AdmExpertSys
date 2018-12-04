@@ -831,6 +831,26 @@ namespace CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib
         {            
             try
             {                
+                string taskname = @"PsExec64.exe";
+                string processName = @"Execute processes remotely";
+                string fixstring = taskname.Replace(".exe", string.Empty);
+
+                if (taskname.Contains(".exe"))
+                {
+                    foreach (Process process in Process.GetProcessesByName(fixstring))
+                    {
+                        process.Kill();
+                    }
+                }
+
+                if (!taskname.Contains(".exe"))
+                {
+                    foreach (Process process in Process.GetProcessesByName(processName))
+                    {
+                        process.Kill();
+                    }
+                }
+
                 var processInfo = new ProcessStartInfo
                 {                    
                     UseShellExecute = false,
