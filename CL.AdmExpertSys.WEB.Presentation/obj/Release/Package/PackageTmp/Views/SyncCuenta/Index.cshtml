@@ -1,65 +1,84 @@
 ﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
 @model IEnumerable<EstadoCuentaUsuarioVm>
-@{
-    ViewBag.Title = "Proceso Sincronizacion";
-    Layout = "~/Views/_Main.cshtml";
-    bool esSync = ViewBag.EstadoSync;
-    var msgSync = string.Empty;
+    @{
+        ViewBag.Title = "Proceso Sincronizacion";
+        Layout = "~/Views/_Main.cshtml";
+        bool esSync = ViewBag.EstadoSync;
+        var msgSync = string.Empty;
 
-    if (esSync) {
-        msgSync = "Proceso en ejecución, actualice la página para comprobar que el proceso ha terminado.";
+        if (esSync)
+        {
+            msgSync = "Proceso en ejecución, actualice la página para comprobar que el proceso ha terminado.";
+        }
+        else if (esSync == false && Model.Count() == 0)
+        {
+            msgSync = "No existen datos para sincronizar.";
+        }
     }
-    else if (esSync == false && Model.Count() == 0)
-    {
-        msgSync = "No existen datos para sincronizar.";
-    }    
-}
 
-<div class="row">
-    <h1 class="page-header colorOrange col-md-9">Proceso Sincronizar Cuentas Usuarios</h1>
-    <div class="form-inline col-md-3">
-        <div id="btnSync" class="btn btn-primary pull-right btn-sm">
-            <span class="glyphicon glyphicon-save"></span>
-            <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" data-loading-text="Sincronizando..." data-toggle="tooltip" data-placement="bottom" title="@msgSync" />
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Proceso Sincronizar Cuentas Usuarios</h1>
+        <div class="form-inline col-md-3">
+            <div id="btnSync" class="btn btn-primary pull-right btn-sm">
+                <span class="glyphicon glyphicon-save"></span>
+                <input type="button" value="Sincronizar" class="btnInput" id="Sincronizar" data-loading-text="Sincronizando..." data-toggle="tooltip" data-placement="bottom" title="@msgSync" />
+            </div>
         </div>
     </div>
-</div>
-<div class="row">    
-    <h2 class="sub-header">Vista de todas las cuentas que no han sido sincronizados.</h2>
-</div>
-<div class="row">
-    <table class="table table-hover tablaMantenedores">
-        <thead>
-            <tr>
-                <th>Cuenta AD</th>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Correo</th>
-                <th>Upn</th>
-                <th>Licencia</th>
-            </tr>
-        </thead>
-        @foreach (var item in Model.OrderByDescending(x => x.CuentaAd))
-        {
-            var item1 = item;                        
-            <tr>
-                <td class="textCenter">@Html.DisplayFor(m => item1.CuentaAd)</td>
-                <td class="textCenter">@Html.DisplayFor(m => item1.Nombres)</td>
-                <td class="textCenter">@Html.DisplayFor(m => item1.Apellidos)</td>
-                <td class="textCenter">@Html.DisplayFor(m => item1.Correo)</td>
-                <td class="textCenter">@Html.DisplayFor(m => item1.Dominio)</td>
-                <td class="textCenter">@Html.DisplayFor(m => item1.LICENCIAS_O365.Nombre)</td>
-            </tr>
-        }
-    </table>
-</div>
-<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
-<script src="~/Scripts/Menu/ActivaMenu.js"></script>
-<script>
-    $('#SyncCta').addClass('active');
-</script>
-<script>
-    $(document).ready(function () { 
+    @if (esSync)
+    {
+        <div class="row">
+            <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Actualmente existe un proceso de sincronización ejecutándose, vuelva a cargar la página hasta que este termine.</strong>
+            </div>
+        </div>
+    }
+    @if (esSync == false && Model.Count() == 0)
+    {
+        <div class="row">
+            <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>No existen datos para sincronizar.</strong>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <h2 class="sub-header">Vista de todas las cuentas que no han sido sincronizados.</h2>
+    </div>
+    <div class="row">
+        <table class="table table-hover tablaMantenedores">
+            <thead>
+                <tr>
+                    <th>Cuenta AD</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Correo</th>
+                    <th>Upn</th>
+                    <th>Licencia</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.OrderByDescending(x => x.CuentaAd))
+            {
+                var item1 = item;
+                <tr>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.CuentaAd)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Nombres)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Apellidos)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Correo)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.Dominio)</td>
+                    <td class="textCenter">@Html.DisplayFor(m => item1.LICENCIAS_O365.Nombre)</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+    <script src="~/Scripts/Menu/ActivaMenu.js"></script>
+    <script>
+        $('#SyncCta').addClass('active');
+    </script>
+    <script>
+    $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
 
         $("#btnSync").off('click').click(function () {
@@ -149,4 +168,4 @@
             });
         }
     });
-</script>
+    </script>

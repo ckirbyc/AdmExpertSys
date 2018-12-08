@@ -11,19 +11,29 @@
     string licEnterPrisePack = firstEnterPrisePack != null ? firstEnterPrisePack.MensajeCantidadLicencia : string.Empty;
     string licStandardPack = firstStandardPack != null ? firstStandardPack.MensajeCantidadLicencia : string.Empty;
     string licExStandard = firstExStandard != null ? firstExStandard.MensajeCantidadLicencia : string.Empty;
+    bool esSync = ViewBag.EstadoSync;
+    var mostrarMsgSync = esSync == true ? "display:block;" : "display:none;";
 }
 
 @using (Html.BeginForm())
 {
     <div class="row">
         <h1 class="page-header colorOrange col-md-9">Editar</h1>
-        <div class="form-inline col-md-3">            
+        <div class="form-inline col-md-3">
             <div id="btnSubmit" class="btn btn-primary pull-right btn-sm">
                 <span class="glyphicon glyphicon-refresh"></span>
                 <input type="button" value="Guardar" class="btnInput" id="Guardar" />
             </div>
         </div>
     </div>
+
+    <div class="row" id="MsgSync" style=@mostrarMsgSync >
+        <div class="alert alert-warning alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Actualmente existe un proceso de sincronización ejecutándose, no podrá deshabilitar cuentas hasta que este termine.</strong>
+        </div>
+    </div>
+    
     <div class="row">
         <h2 class="sub-header">Cuenta Usuario</h2>
         <div class="col-md-12">
@@ -175,7 +185,7 @@
         </div>
     </div>
     <div class="row" id="SeccionAsociarGrupo" style="display: none;">
-        <div class="col-md-12">            
+        <div class="col-md-12">
             <h2 class="sub-header">Asociar o Desasociar Usuario a Grupos</h2>
             <div class="form-horizontal">
                 <div class="panel-group">
@@ -219,8 +229,8 @@
     $(document).ready(function () {
         $('#jstree').jstree();
         //Seleccionar OU desde el Arbol
-        $('#jstree').on("changed.jstree", function (e, data) {                        
-            var ldap = data.selected[0];                                       
+        $('#jstree').on("changed.jstree", function (e, data) {
+            var ldap = data.selected[0];
             $("#PatchOu").val(ldap);
             $("#CambioPatchOu").val(true);
         });
@@ -236,7 +246,7 @@
         });
 
         $("#btnVerificar").off('click').click(function () {
-            $("#loading-modal").show();            
+            $("#loading-modal").show();
             if ($("#NombreUsuario").val() != '') {
                 setTimeout(function () {
                     validarUsuario();
@@ -268,6 +278,13 @@
                     if (data.Validar) {
                         habilitarCampos(data);
                         $("#EstadoSync").val(data.EstadoSync);
+                        if (data.EstadoSync == false) {
+                            $("#MsgSync").hide();
+                        }
+                        else
+                        {
+                            $("#MsgSync").show();
+                        }
                         BootstrapDialog.alert({
                             title: '¡Verificación Exitosa!',
                             message: '<strong>Usuario Existe y cuenta se encuentra en estado ' + data.DatosUsuario.EstadoCuenta + '</strong>',
@@ -276,6 +293,12 @@
                     } else {
                         desHabilitarCampos(data);
                         $("#EstadoSync").val(data.EstadoSync);
+                        if (data.EstadoSync == false) {
+                            $("#MsgSync").hide();
+                        }
+                        else {
+                            $("#MsgSync").show();
+                        }
                         BootstrapDialog.alert({
                             title: '¡Verificación Exitosa!',
                             message: '<strong>Usuario No Existe</strong>',
@@ -309,9 +332,9 @@
             }
 
             $('#jstree').jstree("deselect_all");
-            $("#btnSubmit").attr("disabled", false);  
+            $("#btnSubmit").attr("disabled", false);
             $("#btnDesUsr").attr("disabled", false);
-            $("#UpnPrefijo").attr("disabled", false);            
+            $("#UpnPrefijo").attr("disabled", false);
             $("#UpnPrefijo").val(data.DatosUsuario.UpnPrefijo);
             $("#Nombres").removeAttr("disabled");
             $("#Nombres").val(data.DatosUsuario.GivenName);
@@ -319,7 +342,7 @@
             $("#Apellidos").val(data.DatosUsuario.Surname);
             $("#Clave").removeAttr("disabled");
             $("#Clave").val(clave);
-            $("#Licencia").attr("disabled", "disabled");                  
+            $("#Licencia").attr("disabled", "disabled");
             $("#NombreCompleto").attr("disabled", "disabled");
             $("#NombreCompleto").val(data.DatosUsuario.DisplayName);
             $("#Descripcion").removeAttr("disabled");
@@ -329,8 +352,8 @@
             $("#ExisteUsuario").val(true);
             $("#CodigoLicencia").attr("disabled", false);
             $("#CodigoLicencia").val(data.CodigoLicencia);
-            $("#Info").attr("disabled", false);                  
-            if (data.DatosUsuario.Info == true) {                
+            $("#Info").attr("disabled", false);
+            if (data.DatosUsuario.Info == true) {
                 $("#Info").prop("checked");
                 $("#Info").attr("checked", true);
                 $("#Info")[0].checked = true;
@@ -339,7 +362,7 @@
                 $("#Info").attr("checked", false);
             }
             //Seleccionar nodo existente
-            var ubicGrupo = data.DatosUsuario.DistinguishedName;                        
+            var ubicGrupo = data.DatosUsuario.DistinguishedName;
             var myLiId = '#' + ubicGrupo;
             $("#jstree").jstree("select_node", myLiId);
             $("#PatchOu").val(ubicGrupo);
@@ -349,7 +372,7 @@
         function desHabilitarCampos(data)
         {
             $('#jstree').jstree("deselect_all");
-            $("#btnSubmit").attr("disabled", true);     
+            $("#btnSubmit").attr("disabled", true);
             $("#btnDesUsr").attr("disabled", true);
             $("#UpnPrefijo").attr("disabled", true);
             $("#UpnPrefijo").val('');
@@ -370,8 +393,8 @@
             $("#CodigoLicencia").val('');
             $("#PatchOu").val('');
             $("#CambioPatchOu").val(false);
-            $("#Info").attr("disabled", true);            
-            $("#Info").attr("checked", false);                        
+            $("#Info").attr("disabled", true);
+            $("#Info").attr("checked", false);
         }
 
         function listaGruposAdByOu()
@@ -402,7 +425,7 @@
                         return;
                     }
 
-                    if (data.Error != '') {                        
+                    if (data.Error != '') {
                         BootstrapDialog.alert({
                             title: '¡Error al encontrar listado de Grupos en el AD!',
                             message: '<strong>' + data.Error + '</strong>',
@@ -424,7 +447,7 @@
                                     contentido += '<td>' + (data.GrupoOu[i].NumeroGrupo) + '</td>';
                                     contentido += '<td>' + (data.GrupoOu[i].NombreGrupo == null ? '' : data.GrupoOu[i].NombreGrupo) + '</td>';
                                     contentido += '<td>' + (data.GrupoOu[i].TipoGrupo == null ? '' : data.GrupoOu[i].TipoGrupo) + '</td>';
-                                    contentido += '<td>' + (data.GrupoOu[i].DescripcionGrupo == null ? '' : data.GrupoOu[i].DescripcionGrupo) + '</td>';                                    
+                                    contentido += '<td>' + (data.GrupoOu[i].DescripcionGrupo == null ? '' : data.GrupoOu[i].DescripcionGrupo) + '</td>';
                                     contentido += '<td class="columnaAcciones textCenter">';
                                     if (data.GrupoOu[i].Asociado) {
                                         contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-remove colorOrange" title="Desasignar Grupo a Usuario" onclick="desAsignarGrupoUsuario(' + i + ', ' + nomGrupo + ')"></a>';
@@ -432,14 +455,14 @@
                                     else
                                     {
                                         contentido += '<a style="cursor: pointer;" class="glyphicon glyphicon-plus" title="Asignar Grupo a Usuario" onclick="asignarGrupoUsuario(' + i + ', ' + nomGrupo + ')"></a>';
-                                    }                                    
+                                    }
                                     contentido += '</td></tr>';
                                     nomGrupoSel = data.GrupoOu[i].NombreGrupo + ',';
                                 }
                             }
                             $('#tbAsociarGrupo tbody').html(contentido);
-                            $("#NombreGrupoSel").val(nomGrupoSel);                            
-                        } else {                            
+                            $("#NombreGrupoSel").val(nomGrupoSel);
+                        } else {
                             BootstrapDialog.alert({
                                 title: '¡Error al encontrar listado de Grupos en el AD!',
                                 message: '<strong>No existen Grupos para OU seleccionada.</strong>',
@@ -451,7 +474,7 @@
                 complete: function () {
                     $("#SeccionAsociarGrupo").show();
                 },
-                error: function (data) {                    
+                error: function (data) {
                     BootstrapDialog.alert({
                         title: '¡Error al encontrar listado de Grupos en el AD!',
                         message: '<strong>' + data.Error + '</strong>',
@@ -570,7 +593,7 @@
                                     ]
                                 });
                             }
-                            
+
                         } else {
                             $("#btnSubmit").attr("disabled", false);
 
@@ -635,7 +658,7 @@
 			                    message: '<strong>No se puede deshabilitar cuenta ya que existe un proceso de sincronización en ejecución. Vuelva a buscar cuenta para actualizar estado.</strong>',
 			                    type: BootstrapDialog.TYPE_WARNING
 		                    });
-            }            
+            }
         });
 
         function deshabilitarUsuario() {
@@ -675,7 +698,7 @@
                     }
 
                     if (data.Error != '') {
-                        $("#btnSubmit").attr("disabled", true);                                                 
+                        $("#btnSubmit").attr("disabled", true);
                         $("#btnDesUsr").attr("disabled", false);
                         BootstrapDialog.alert({
                             title: '¡Error al Deshabilitar Usuario!',
@@ -684,7 +707,7 @@
                         });
                     } else {
                         if (data.Validar) {
-                            $("#btnSubmit").attr("disabled", true);                                                                                        
+                            $("#btnSubmit").attr("disabled", true);
                             $("#btnDesUsr").attr("disabled", true);
                             BootstrapDialog.alert({
                                 title: '¡Proceso Exitoso!',
@@ -692,7 +715,7 @@
                                 type: BootstrapDialog.TYPE_SUCCESS
                             });
                         } else {
-                            $("#btnSubmit").attr("disabled", true);                                                            
+                            $("#btnSubmit").attr("disabled", true);
                             $("#btnDesUsr").attr("disabled", false);
                             BootstrapDialog.alert({
                                 title: '¡Error al Deshabilitar Usuario!',
@@ -706,7 +729,7 @@
                     $("#loading-modal").hide();
                 },
                 error: function (data) {
-                    $("#btnSubmit").attr("disabled", true);                                                                
+                    $("#btnSubmit").attr("disabled", true);
                     $("#btnDesUsr").attr("disabled", false);
                     $("#loading-modal").hide();
 
@@ -854,7 +877,7 @@
                     });
                 }
             });
-        }        
+        }
     }
 
     function eliminarGrupo(idTrGrupo, nombreGrupoElm, tipo) {

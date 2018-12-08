@@ -106,14 +106,11 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WE
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\System.Web.Razor.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\System.Web.WebPages.Razor.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\System.Web.WebPages.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\Microsoft.Web.Infrastructure.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\Newtonsoft.Json.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\System.Web.WebPages.Deployment.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.Contracts.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.dll.config
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\EntityFramework.xml
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\Microsoft.Web.Infrastructure.xml
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\bin\Release\es\EntityFramework.resources.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\obj\Release\CL.AdmExpertSys.WEB.Application.Contracts.csprojAssemblyReference.cache
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.Contracts\obj\Release\CL.AdmExpertSys.WEB.Application.Contracts.csproj.CoreCompileInputs.cache

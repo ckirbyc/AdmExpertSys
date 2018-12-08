@@ -111,11 +111,9 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WE
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\System.Web.Razor.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\System.Web.WebPages.Razor.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\System.Web.WebPages.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\Microsoft.Web.Infrastructure.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\System.Web.WebPages.Deployment.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\Newtonsoft.Json.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.dll.config
@@ -123,7 +121,6 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WE
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\CL.AdmExpertSys.WEB.Presentation.ViewModel.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\EntityFramework.xml
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\CL.AdmExpertSys.Web.Infrastructure.Helpers.pdb
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\Microsoft.Web.Infrastructure.xml
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\bin\Release\es\EntityFramework.resources.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\obj\Release\CL.AdmExpertSys.WEB.Application.ADClassLib.csprojAssemblyReference.cache
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.ADClassLib\obj\Release\CL.AdmExpertSys.WEB.Application.ADClassLib.csproj.CoreCompileInputs.cache

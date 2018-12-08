@@ -66,6 +66,9 @@
     <Compile Include="Model\ACCION_INFO.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ARBOL_OU.cs">
+      <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\EstadoCuentaUsuarioEntity.cs" />
     <Compile Include="Model\ESTADO_ASIGNACION_LICENCIA.cs">
       <DependentUpon>ModelAdmExpertSysWeb.tt</DependentUpon>

@@ -58,15 +58,13 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 {
                     listaEstUsr,
                     usuarioModificacion
-                };
-
-                //HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");               
+                };                               
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
 
-                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                HiloEstadoSincronizacion.ActualizarEstadoSync(true, usuarioModificacion, "S");
                 _hiloEjecucion = new Thread(InciarProcesoHiloSincronizarCuenta)
                 {
                     IsBackground = true,
@@ -101,7 +99,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         [SoapDocumentMethod(OneWay = true)]
         public void InciarProcesoHiloSincronizarCuenta(object estadoCuentaHilo)
         {
-            //var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
+            var usuarioModificacion = (string)estadoCuentaHilo.CastTo<List<object>>()[1];
             try
             {
                 HomeSysWebFactory = new HomeSysWebFactory();
@@ -111,7 +109,7 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                 }
                 catch (Exception ex)
                 {
-                    //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                    HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                     Utils.LogErrores(ex);
                 }
 
@@ -135,18 +133,18 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
                             }
                             catch (Exception ex)
                             {
-                                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                                 Utils.LogErrores(ex);
                                 break;
                             }
                         }
                     }                    
                 }
-                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");                
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
             }
             catch (Exception ex)
             {               
-                //HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
+                HiloEstadoSincronizacion.ActualizarEstadoSync(false, usuarioModificacion, "S");
                 var msgError = @"Error en proceso asincronico Syncronizar : " + ex.Message;
                 var exNew = new Exception(msgError);
                 Utils.LogErrores(exNew);                

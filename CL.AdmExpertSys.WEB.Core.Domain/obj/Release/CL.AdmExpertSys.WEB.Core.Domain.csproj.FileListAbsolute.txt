@@ -66,7 +66,6 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WE
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\Newtonsoft.Json.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\EntityFramework.xml
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\EntityFramework.SqlServer.xml
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Core.Domain\bin\Release\es\EntityFramework.resources.dll

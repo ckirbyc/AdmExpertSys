@@ -1,5 +1,6 @@
 ﻿using CL.AdmExpertSys.Web.Infrastructure.LogTransaccional;
 using CL.AdmExpertSys.WEB.Presentation.Mapping.Factories;
+using CL.AdmExpertSys.WEB.Presentation.Mapping.Thread;
 using System;
 using System.Web.Mvc;
 
@@ -23,7 +24,10 @@ namespace CL.AdmExpertSys.WEB.Presentation.Controllers
         public ActionResult Index()
         {
             try
-            {                
+            {
+                ViewBag.EstadoSync = HiloEstadoSincronizacion.EsSincronizacion();
+                ViewBag.EstadoLicencia = HiloEstadoAsignacionLicencia.EsAsignacionLicencia();
+
                 var model = EstadoCuentaUsuarioFactory.GetAllEstadoCuentaUsuario();
                 return View(model);
             }

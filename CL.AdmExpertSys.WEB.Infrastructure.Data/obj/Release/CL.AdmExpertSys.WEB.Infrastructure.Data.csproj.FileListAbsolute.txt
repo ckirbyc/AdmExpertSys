@@ -71,7 +71,6 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WE
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\Newtonsoft.Json.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.Contracts.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Infrastructure.Data\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.dll.config

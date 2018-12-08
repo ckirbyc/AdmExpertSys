@@ -1,61 +1,81 @@
 ﻿@using CL.AdmExpertSys.WEB.Presentation.ViewModel
 @model IEnumerable<EstadoCuentaUsuarioVm>
-@{
-    ViewBag.Title = "Usuarios Creados";
-    Layout = "~/Views/_Main.cshtml";
-}
+    @{
+        ViewBag.Title = "Usuarios Creados";
+        Layout = "~/Views/_Main.cshtml";
+        bool esSync = ViewBag.EstadoSync;
+        bool esLicencia = ViewBag.EstadoLicencia;
+    }
 
-<div class="row">
-    <h1 class="page-header colorOrange col-md-9">Estados Cuentas Usuarios</h1>
-    <div class="form-inline col-md-3">
-        <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Index", "UsuarioCreado")">
-            <span class="glyphicon glyphicon-refresh"></span>
-            Refrescar
-        </a>
+    <div class="row">
+        <h1 class="page-header colorOrange col-md-9">Estados Cuentas Usuarios</h1>
+        <div class="form-inline col-md-3">
+            <a class="btn btn-primary pull-right btn-sm" href="@Url.Action("Index", "UsuarioCreado")">
+                <span class="glyphicon glyphicon-refresh"></span>
+                Refrescar
+            </a>
+        </div>
     </div>
-</div>
-<div class="row">
-    <table class="table table-hover tablaMantenedores">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Usuario Creado AD</th>
-                <th>Usuario Sincronizado</th>
-                <th>Licencia O365</th>                
-            </tr>
-        </thead>
-        @foreach (var item in Model.OrderByDescending(x => x.FechaCreacion))
-        {
-            var item1 = item;
-            string classUsrCreado = "glyphicon glyphicon-remove colorOrange";
-            string classSincronizado = "glyphicon glyphicon-remove colorOrange";
-            string classLicencia = "glyphicon glyphicon-remove colorOrange";
+    @if (esSync)
+    {
+        <div class="row">
+            <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Actualmente existe un proceso de sincronización ejecutándose, refresque la página hasta que este termine.</strong>
+            </div>
+        </div>
+    }
+    @if (esLicencia)
+    {
+        <div class="row">
+            <div class="alert alert-warning alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Actualmente existe un proceso de asignación de licencias ejecutándose, refresque la página hasta que este termine.</strong>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <table class="table table-hover tablaMantenedores">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Usuario Creado AD</th>
+                    <th>Usuario Sincronizado</th>
+                    <th>Licencia O365</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model.OrderByDescending(x => x.FechaCreacion))
+            {
+                var item1 = item;
+                string classUsrCreado = "glyphicon glyphicon-remove colorOrange";
+                string classSincronizado = "glyphicon glyphicon-remove colorOrange";
+                string classLicencia = "glyphicon glyphicon-remove colorOrange";
 
-            var nombreCompleto = item1.Nombres + ' ' + item1.Apellidos;
+                var nombreCompleto = item1.Nombres + ' ' + item1.Apellidos;
 
-            if (item1.CreadoAd)
-            {
-                classUsrCreado = "glyphicon glyphicon-ok colorGreen";
+                if (item1.CreadoAd)
+                {
+                    classUsrCreado = "glyphicon glyphicon-ok colorGreen";
+                }
+                if (item1.Sincronizado)
+                {
+                    classSincronizado = "glyphicon glyphicon-ok colorGreen";
+                }
+                if (item1.LicenciaAsignada)
+                {
+                    classLicencia = "glyphicon glyphicon-ok colorGreen";
+                }
+                <tr>
+                    <td class="textCenter">@nombreCompleto</td>
+                    <td class="textCenter"><a class="@classUsrCreado" href="#" title=""></a></td>
+                    <td class="textCenter"><a class="@classSincronizado" href="#" title=""></a></td>
+                    <td class="textCenter"><a class="@classLicencia" href="#" title=""></a></td>
+                </tr>
             }
-            if (item1.Sincronizado)
-            {
-                classSincronizado = "glyphicon glyphicon-ok colorGreen";
-            }
-            if (item1.LicenciaAsignada)
-            {
-                classLicencia = "glyphicon glyphicon-ok colorGreen";
-            }
-            <tr>
-                <td class="textCenter">@nombreCompleto</td>
-                <td class="textCenter"><a class="@classUsrCreado" href="#" title=""></a></td>
-                <td class="textCenter"><a class="@classSincronizado" href="#" title=""></a></td>
-                <td class="textCenter"><a class="@classLicencia" href="#" title=""></a></td>
-            </tr>
-        }
-    </table>
-</div>
-<script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
-<script src="~/Scripts/Menu/ActivaMenu.js"></script>
-<script>   
-    $('#EstadoCuenta').addClass('active');
-</script>
+        </table>
+    </div>
+    <script src="~/Scripts/Tabla/ConfiguracionTabla.js"></script>
+    <script src="~/Scripts/Menu/ActivaMenu.js"></script>
+    <script>
+        $('#EstadoCuenta').addClass('active');
+    </script>

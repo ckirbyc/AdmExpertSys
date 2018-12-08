@@ -90,7 +90,6 @@ E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WE
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\Microsoft.Practices.EnterpriseLibrary.PolicyInjection.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\Microsoft.Practices.EnterpriseLibrary.Logging.dll
-E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\Newtonsoft.Json.dll
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\CL.AdmExpertSys.WEB.Application.CommonLib.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.pdb
 E:\Proyectos\IngenieriaInversa\Agrosuper\Fuentes\AdmExpertSys\CL.AdmExpertSys.WEB.Application.OfficeOnlineClassLib\bin\Release\CL.AdmExpertSys.WEB.Core.Domain.dll.config
